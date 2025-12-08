@@ -52,7 +52,7 @@ class GPURegistry:
         """
         try:
             return winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path, 0, access)
-        except WindowsError as e:
+        except OSError as e:
             logger.debug(f"Could not open registry key {path}: {e}")
             return None
 
@@ -64,7 +64,7 @@ class GPURegistry:
             try:
                 subkeys.append(winreg.EnumKey(key, i))
                 i += 1
-            except WindowsError:
+            except OSError:
                 break
         return subkeys
 
@@ -77,7 +77,7 @@ class GPURegistry:
                 name, data, value_type = winreg.EnumValue(key, i)
                 values[name] = (data, value_type)
                 i += 1
-            except WindowsError:
+            except OSError:
                 break
         return values
 
@@ -119,7 +119,7 @@ class GPURegistry:
                             if isinstance(data, bytes):
                                 try:
                                     data = data.decode('utf-16-le').rstrip('\x00')
-                                except:
+                                except UnicodeDecodeError:
                                     pass
                             adapter_info[name] = data
 
@@ -189,7 +189,7 @@ class GPURegistry:
                             if isinstance(data, bytes):
                                 try:
                                     data = data.decode('utf-16-le').rstrip('\x00')
-                                except:
+                                except UnicodeDecodeError:
                                     pass
                             info[name] = data
 
@@ -227,7 +227,7 @@ class GPURegistry:
                 0,
                 winreg.KEY_WRITE | winreg.KEY_READ
             )
-        except WindowsError as e:
+        except OSError as e:
             logger.error(f"Could not open adapter key for writing: {e}")
             logger.info("Make sure to run as Administrator!")
             return False
@@ -250,7 +250,7 @@ class GPURegistry:
 
                     logger.debug(f"Set registry value: {name} = {value}")
 
-                except WindowsError as e:
+                except OSError as e:
                     logger.error(f"Failed to set {name}: {e}")
 
             logger.info(f"Applied GPU profile: {profile.name}")

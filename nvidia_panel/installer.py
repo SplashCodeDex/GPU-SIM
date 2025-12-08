@@ -14,11 +14,18 @@ from typing import Optional, Tuple
 logger = logging.getLogger(__name__)
 
 
+def is_windows() -> bool:
+    """Return True if running on Windows."""
+    return os.name == 'nt' or sys.platform.startswith('win')
+
+
 def is_admin() -> bool:
-    """Check if running as administrator."""
+    """Check if running as administrator (Windows). Returns False on non-Windows."""
+    if not is_windows():
+        return False
     try:
         return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
+    except Exception:
         return False
 
 
@@ -27,6 +34,11 @@ def get_install_paths() -> Tuple[Path, Path, Path]:
     Get installation paths.
     Returns: (install_dir, start_menu_dir, desktop_path)
     """
+    if not is_windows():
+        # Return plausible placeholders; callers should guard usage on non-Windows
+        home = Path(os.path.expanduser("~"))
+        return (home / "NVIDIA_Control_Panel_Sim"), (home / "StartMenu"), (home / "Desktop")
+
     # Program Files path
     program_files = Path(os.environ.get("PROGRAMFILES", "C:/Program Files"))
     install_dir = program_files / "NVIDIA Corporation" / "Control Panel"
@@ -46,6 +58,9 @@ def create_shortcut(target_path: Path, shortcut_path: Path, icon_path: Optional[
     """
     Create a Windows shortcut (.lnk) file.
     """
+    if not is_windows():
+        logger.warning("create_shortcut called on non-Windows platform; skipping.")
+        return False
     try:
         import win32com.client
 
@@ -77,6 +92,8 @@ def install_nvidia_control_panel(source_dir: Path) -> Tuple[bool, str]:
     Returns:
         Tuple of (success, message)
     """
+    if not is_windows():
+        return False, "Installation is only supported on Windows."
     if not is_admin():
         return False, "Administrator privileges required.\nPlease run GPU-SIM as Administrator."
 
@@ -181,6 +198,8 @@ def uninstall_nvidia_control_panel() -> Tuple[bool, str]:
     """
     Uninstall the NVIDIA Control Panel.
     """
+    if not is_windows():
+        return False, "Uninstallation is only supported on Windows."
     if not is_admin():
         return False, "Administrator privileges required."
 
@@ -209,5 +228,7 @@ def uninstall_nvidia_control_panel() -> Tuple[bool, str]:
 
 def is_installed() -> bool:
     """Check if NVIDIA Control Panel is already installed."""
+    if not is_windows():
+        return False
     install_dir, _, _ = get_install_paths()
     return (install_dir / "nvidia_control_panel.py").exists()

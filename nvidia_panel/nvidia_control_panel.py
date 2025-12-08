@@ -11,7 +11,8 @@ from typing import Optional
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QLabel, QTreeWidget, QTreeWidgetItem, QStackedWidget, QSplitter,
-    QFrame, QMenuBar, QMenu, QAction, QStatusBar, QMessageBox
+    QFrame, QMenuBar, QMenu, QAction, QStatusBar, QMessageBox,
+    QSystemTrayIcon
 )
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QPainter, QColor
 from PyQt5.QtCore import Qt
@@ -21,6 +22,7 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from nvidia_panel.nvidia_style import get_theme, NVIDIA_GREEN, NVIDIA_BLACK
+from nvidia_panel.nvidia_tray import NVIDIATrayIcon
 from nvidia_panel.panels.system_info import SystemInfoPanel
 from nvidia_panel.panels.manage_3d import Manage3DPanel
 from nvidia_panel.panels.display_settings import DisplaySettingsPanel
@@ -47,6 +49,7 @@ class NVIDIAControlPanel(QMainWindow):
         self._setup_window()
         self._setup_ui()
         self._create_menus()
+        self._setup_tray_icon()
         self._apply_theme()
 
     def _load_default_profile(self) -> None:
@@ -222,7 +225,7 @@ class NVIDIAControlPanel(QMainWindow):
         # File menu
         file_menu = menubar.addMenu("File")
         exit_action = QAction("Exit", self)
-        exit_action.triggered.connect(self.close)
+        exit_action.triggered.connect(self._force_close)
         file_menu.addAction(exit_action)
 
         # View menu
@@ -230,6 +233,23 @@ class NVIDIAControlPanel(QMainWindow):
         theme_action = QAction("Toggle Dark/Light Theme", self)
         theme_action.triggered.connect(self._toggle_theme)
         view_menu.addAction(theme_action)
+
+        # Desktop menu (new)
+        desktop_menu = menubar.addMenu("Desktop")
+
+        context_action = QAction("Add to Right-Click Menu", self)
+        context_action.triggered.connect(self._add_context_menu)
+        desktop_menu.addAction(context_action)
+
+        remove_context_action = QAction("Remove from Right-Click Menu", self)
+        remove_context_action.triggered.connect(self._remove_context_menu)
+        desktop_menu.addAction(remove_context_action)
+
+        desktop_menu.addSeparator()
+
+        autostart_action = QAction("Start with Windows", self)
+        autostart_action.triggered.connect(self._toggle_autostart)
+        desktop_menu.addAction(autostart_action)
 
         # Help menu
         help_menu = menubar.addMenu("Help")
@@ -262,6 +282,95 @@ class NVIDIAControlPanel(QMainWindow):
             )
         else:
             self._status_bar.showMessage("No GPU profile loaded")
+
+    def _setup_tray_icon(self) -> None:
+        """Set up the NVIDIA system tray icon."""
+        self._tray_icon = NVIDIATrayIcon(self)
+        self._tray_icon.show_control_panel.connect(self._show_from_tray)
+        self._tray_icon.open_settings.connect(self._show_from_tray)
+        self._tray_icon.show()
+
+        # Show startup notification
+        self._tray_icon.show_startup_notification()
+
+    def _show_from_tray(self) -> None:
+        """Show the window from system tray."""
+        self.showNormal()
+        self.activateWindow()
+        self.raise_()
+
+    def closeEvent(self, event) -> None:
+        """Handle window close - minimize to tray instead of closing."""
+        event.ignore()
+        self.hide()
+        if self._tray_icon.supportsMessages():
+            self._tray_icon.showMessage(
+                "NVIDIA Control Panel",
+                "Running in background. Right-click tray icon to open.",
+                QSystemTrayIcon.Information,
+                2000
+            )
+
+    def _force_close(self) -> None:
+        """Actually close the application instead of minimizing."""
+        self._tray_icon.hide()
+        QApplication.quit()
+
+    def _add_context_menu(self) -> None:
+        """Add NVIDIA Control Panel to right-click menu."""
+        try:
+            from nvidia_panel.context_menu import add_context_menu, is_admin
+
+            if not is_admin():
+                QMessageBox.warning(
+                    self,
+                    "Administrator Required",
+                    "Adding to right-click menu requires Administrator privileges.\n\n"
+                    "Please restart as Administrator."
+                )
+                return
+
+            success, message = add_context_menu()
+            if success:
+                QMessageBox.information(self, "Success", message)
+            else:
+                QMessageBox.critical(self, "Error", message)
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed:\n{str(e)}")
+
+    def _remove_context_menu(self) -> None:
+        """Remove NVIDIA Control Panel from right-click menu."""
+        try:
+            from nvidia_panel.context_menu import remove_context_menu, is_admin
+
+            if not is_admin():
+                QMessageBox.warning(self, "Administrator Required", "Requires Administrator privileges.")
+                return
+
+            success, message = remove_context_menu()
+            if success:
+                QMessageBox.information(self, "Success", message)
+            else:
+                QMessageBox.critical(self, "Error", message)
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed:\n{str(e)}")
+
+    def _toggle_autostart(self) -> None:
+        """Toggle auto-start on Windows login."""
+        try:
+            from nvidia_panel.context_menu import is_autostart_enabled, add_autostart, remove_autostart
+
+            if is_autostart_enabled():
+                success, message = remove_autostart()
+            else:
+                success, message = add_autostart()
+
+            if success:
+                QMessageBox.information(self, "Success", message)
+            else:
+                QMessageBox.critical(self, "Error", message)
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed:\n{str(e)}")
 
     def _show_about(self) -> None:
         """Show about dialog."""

@@ -95,7 +95,12 @@ class GPUProfile:
     @property
     def is_amd(self) -> bool:
         """Check if this is an AMD GPU."""
-        return "AMD" in self.manufacturer.upper() or "ATI" in self.manufacturer.upper()
+        m = self.manufacturer.upper()
+        return (
+            "AMD" in m
+            or "ATI" in m
+            or "ADVANCED MICRO DEVICES" in m
+        )
 
     def get_max_resolution(self) -> Optional[DisplayMode]:
         """Get the highest supported resolution."""
