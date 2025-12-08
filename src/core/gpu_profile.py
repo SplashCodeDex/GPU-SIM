@@ -95,11 +95,13 @@ class GPUProfile:
     @property
     def is_amd(self) -> bool:
         """Check if this is an AMD GPU."""
+        import re
         m = self.manufacturer.upper()
-        return (
-            "AMD" in m
-            or "ATI" in m
-            or "ADVANCED MICRO DEVICES" in m
+        # Match AMD brands as whole words to avoid false positives like 'Corporation' containing 'ATI'
+        return bool(
+            re.search(r"\bAMD\b", m)
+            or re.search(r"\bATI\b", m)
+            or re.search(r"\bADVANCED\s+MICRO\s+DEVICES\b", m)
         )
 
     def get_max_resolution(self) -> Optional[DisplayMode]:

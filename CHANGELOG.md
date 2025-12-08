@@ -2,6 +2,26 @@
 
 All notable changes to GPU-SIM will be documented in this file.
 
+## [1.1.0] - 2024-12-08
+
+### Added
+- **PhysX Configuration Panel**: Simulated PhysX processor selection and visual indicator settings
+- **Surround Configuration Panel**: Multi-monitor preview with NVIDIA Surround simulation
+- **GeForce Experience App**: Full replica with Home, Drivers, and Settings tabs
+  - Game library simulation with optimization status
+  - Driver history and update simulation
+  - ShadowPlay and overlay settings
+  - System tray integration
+- **Professional Installer**: Inno Setup-based installer with component selection
+  - Full/custom installation options
+  - Desktop shortcuts and context menu integration
+  - Windows autostart configuration
+  - Clean uninstaller with registry cleanup
+
+### Changed
+- Updated installer to include all 3 applications (GPU-SIM, Control Panel, GeForce Experience)
+- Build script now compiles all executables in sequence
+
 ## [1.0.0] - 2024-12-08
 
 ### Added

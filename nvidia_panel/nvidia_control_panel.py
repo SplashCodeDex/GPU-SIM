@@ -26,6 +26,8 @@ from nvidia_panel.nvidia_tray import NVIDIATrayIcon
 from nvidia_panel.panels.system_info import SystemInfoPanel
 from nvidia_panel.panels.manage_3d import Manage3DPanel
 from nvidia_panel.panels.display_settings import DisplaySettingsPanel
+from nvidia_panel.panels.physx_panel import PhysXPanel
+from nvidia_panel.panels.surround_panel import SurroundPanel
 from src.core.config_manager import get_config_manager
 from src.core.gpu_profile import GPUProfile
 
@@ -119,16 +121,22 @@ class NVIDIAControlPanel(QMainWindow):
         self._system_info_panel = SystemInfoPanel()
         self._manage_3d_panel = Manage3DPanel()
         self._display_panel = DisplaySettingsPanel()
+        self._physx_panel = PhysXPanel()
+        self._surround_panel = SurroundPanel()
 
         self._content_stack.addWidget(self._system_info_panel)  # 0
         self._content_stack.addWidget(self._manage_3d_panel)    # 1
         self._content_stack.addWidget(self._display_panel)      # 2
+        self._content_stack.addWidget(self._physx_panel)        # 3
+        self._content_stack.addWidget(self._surround_panel)     # 4
 
         # Set profile on panels
         if self._current_profile:
             self._system_info_panel.set_profile(self._current_profile)
             self._manage_3d_panel.set_profile(self._current_profile)
             self._display_panel.set_profile(self._current_profile)
+            self._physx_panel.set_profile(self._current_profile)
+            self._surround_panel.set_profile(self._current_profile)
 
         splitter.addWidget(self._content_stack)
         splitter.setSizes([250, 750])
@@ -199,6 +207,20 @@ class NVIDIAControlPanel(QMainWindow):
         change_res.setData(0, Qt.UserRole, 2)
         display.addChild(change_res)
         self._nav_tree.addTopLevelItem(display)
+
+        # PhysX Configuration
+        physx = QTreeWidgetItem(["PhysX"])
+        physx_config = QTreeWidgetItem(["Configure PhysX"])
+        physx_config.setData(0, Qt.UserRole, 3)
+        physx.addChild(physx_config)
+        self._nav_tree.addTopLevelItem(physx)
+
+        # Surround / Multi-Display
+        surround = QTreeWidgetItem(["Surround"])
+        config_surround = QTreeWidgetItem(["Configure Surround, PhysX"])
+        config_surround.setData(0, Qt.UserRole, 4)
+        surround.addChild(config_surround)
+        self._nav_tree.addTopLevelItem(surround)
 
         # Video
         video = QTreeWidgetItem(["Video"])
