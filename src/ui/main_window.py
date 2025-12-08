@@ -27,6 +27,8 @@ from src.ui.panels.home_panel import HomePanel
 from src.ui.panels.gpu_info_panel import GPUInfoPanel
 from src.ui.panels.settings_3d_panel import Settings3DPanel
 from src.ui.panels.display_panel import DisplayPanel
+from src.ui.panels.metrics_dashboard import MetricsDashboardPanel
+from src.ui.panels.vdd_panel import VDDPanel
 
 logger = logging.getLogger(__name__)
 
@@ -278,11 +280,15 @@ class MainWindow(QMainWindow):
         self._gpu_info_panel = GPUInfoPanel()
         self._display_panel = DisplayPanel()
         self._settings_3d_panel = Settings3DPanel()
+        self._metrics_panel = MetricsDashboardPanel()
+        self._vdd_panel = VDDPanel()
 
         self._content_stack.addWidget(self._home_panel)     # Index 0
         self._content_stack.addWidget(self._gpu_info_panel) # Index 1
         self._content_stack.addWidget(self._display_panel)  # Index 2
         self._content_stack.addWidget(self._settings_3d_panel) # Index 3
+        self._content_stack.addWidget(self._metrics_panel)  # Index 4
+        self._content_stack.addWidget(self._vdd_panel)      # Index 5
 
         splitter.addWidget(self._content_stack)
 
@@ -313,6 +319,16 @@ class MainWindow(QMainWindow):
         settings_3d.setData(0, Qt.UserRole, 3)
         self._nav_tree.addTopLevelItem(settings_3d)
 
+        # Live Metrics Dashboard
+        metrics = QTreeWidgetItem(["📈 Live Metrics"])
+        metrics.setData(0, Qt.UserRole, 4)
+        self._nav_tree.addTopLevelItem(metrics)
+
+        # Virtual Display Driver
+        vdd = QTreeWidgetItem(["🔌 Virtual Display"])
+        vdd.setData(0, Qt.UserRole, 5)
+        self._nav_tree.addTopLevelItem(vdd)
+
         # Expand all and select home
         self._nav_tree.expandAll()
         self._nav_tree.setCurrentItem(home_item)
@@ -340,6 +356,7 @@ class MainWindow(QMainWindow):
         self._gpu_info_panel.set_profile(profile)
         self._display_panel.set_profile(profile)
         self._settings_3d_panel.set_profile(profile)
+        self._metrics_panel.set_profile(profile)
 
         if profile:
             self._update_status(f"Selected: {profile.name}")
