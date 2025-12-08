@@ -357,6 +357,7 @@ class MainWindow(QMainWindow):
         self._display_panel.set_profile(profile)
         self._settings_3d_panel.set_profile(profile)
         self._metrics_panel.set_profile(profile)
+        self._vdd_panel.set_profile(profile)
 
         if profile:
             self._update_status(f"Selected: {profile.name}")
