@@ -29,6 +29,8 @@ from src.ui.panels.settings_3d_panel import Settings3DPanel
 from src.ui.panels.display_panel import DisplayPanel
 from src.ui.panels.metrics_dashboard import MetricsDashboardPanel
 from src.ui.panels.vdd_panel import VDDPanel
+from src.ui.panels.profile_editor import ProfileEditorPanel
+from src.ui.system_tray import SystemTrayManager
 
 logger = logging.getLogger(__name__)
 
@@ -282,6 +284,7 @@ class MainWindow(QMainWindow):
         self._settings_3d_panel = Settings3DPanel()
         self._metrics_panel = MetricsDashboardPanel()
         self._vdd_panel = VDDPanel()
+        self._profile_editor = ProfileEditorPanel()
 
         self._content_stack.addWidget(self._home_panel)     # Index 0
         self._content_stack.addWidget(self._gpu_info_panel) # Index 1
@@ -289,6 +292,7 @@ class MainWindow(QMainWindow):
         self._content_stack.addWidget(self._settings_3d_panel) # Index 3
         self._content_stack.addWidget(self._metrics_panel)  # Index 4
         self._content_stack.addWidget(self._vdd_panel)      # Index 5
+        self._content_stack.addWidget(self._profile_editor) # Index 6
 
         splitter.addWidget(self._content_stack)
 
@@ -329,6 +333,11 @@ class MainWindow(QMainWindow):
         vdd.setData(0, Qt.UserRole, 5)
         self._nav_tree.addTopLevelItem(vdd)
 
+        # Profile Editor
+        editor = QTreeWidgetItem(["✏️ Profile Editor"])
+        editor.setData(0, Qt.UserRole, 6)
+        self._nav_tree.addTopLevelItem(editor)
+
         # Expand all and select home
         self._nav_tree.expandAll()
         self._nav_tree.setCurrentItem(home_item)
@@ -358,6 +367,7 @@ class MainWindow(QMainWindow):
         self._settings_3d_panel.set_profile(profile)
         self._metrics_panel.set_profile(profile)
         self._vdd_panel.set_profile(profile)
+        self._profile_editor.set_profile(profile)
 
         if profile:
             self._update_status(f"Selected: {profile.name}")

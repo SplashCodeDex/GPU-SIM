@@ -1,0 +1,88 @@
+name: Build and Release GPU-SIM
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers on version tags like v1.0.0
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Build with PyInstaller
+      run: |
+        pyinstaller build/gpu_sim.spec --clean --noconfirm
+
+    - name: Create Release Zip
+      run: |
+        Compress-Archive -Path "dist/GPU-SIM/*" -DestinationPath "GPU-SIM-${{ github.ref_name }}-windows.zip"
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: GPU-SIM-Windows
+        path: dist/GPU-SIM/
+        retention-days: 30
+
+    - name: Create GitHub Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          GPU-SIM-${{ github.ref_name }}-windows.zip
+        generate_release_notes: true
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Optional: Create portable single-file exe
+  build-onefile:
+    runs-on: windows-latest
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Build Single-File Exe
+      run: |
+        pyinstaller --onefile --windowed --name "GPU-SIM-Portable" --icon "assets/icons/gpu_sim.ico" src/main.py --add-data "config/gpu_profiles;config/gpu_profiles" --add-data "assets;assets"
+      continue-on-error: true
+
+    - name: Upload Portable Exe
+      uses: actions/upload-artifact@v4
+      with:
+        name: GPU-SIM-Portable
+        path: dist/GPU-SIM-Portable.exe
+        retention-days: 30
+        if-no-files-found: ignore

@@ -1,0 +1,66 @@
+{
+    "id": "nvidia_rtx_4080",
+    "name": "NVIDIA GeForce RTX 4080",
+    "manufacturer": "NVIDIA Corporation",
+    "driver_version": "546.65",
+    "driver_date": "2024-01-15",
+    "vram_mb": 16384,
+    "vram_type": "GDDR6X",
+    "memory_bus_width": 256,
+    "base_clock_mhz": 2205,
+    "boost_clock_mhz": 2505,
+    "memory_clock_mhz": 22400,
+    "cuda_cores": 9728,
+    "stream_processors": 0,
+    "tdp_watts": 320,
+    "pci_device_id": "10DE-2704",
+    "pci_vendor_id": "10DE",
+    "video_processor": "NVIDIA GeForce RTX 4080",
+    "dac_type": "Integrated RAMDAC",
+    "features": {
+        "ray_tracing": true,
+        "dlss": true,
+        "dlss_version": "3.5",
+        "cuda": true,
+        "nvenc": true,
+        "av1_encode": true,
+        "directx": "12 Ultimate",
+        "opengl": "4.6",
+        "vulkan": "1.3"
+    },
+    "display_modes": [
+        {
+            "width": 7680,
+            "height": 4320,
+            "refresh": 60
+        },
+        {
+            "width": 3840,
+            "height": 2160,
+            "refresh": 240
+        },
+        {
+            "width": 3840,
+            "height": 2160,
+            "refresh": 144
+        },
+        {
+            "width": 2560,
+            "height": 1440,
+            "refresh": 240
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "refresh": 360
+        }
+    ],
+    "registry_entries": {
+        "HardwareInformation.AdapterString": "NVIDIA GeForce RTX 4080",
+        "HardwareInformation.BiosString": "Version 95.02.42.00.01",
+        "HardwareInformation.ChipType": "AD103",
+        "HardwareInformation.DACType": "Integrated RAMDAC",
+        "HardwareInformation.MemorySize": "0x400000000",
+        "DriverDesc": "NVIDIA GeForce RTX 4080"
+    }
+}
