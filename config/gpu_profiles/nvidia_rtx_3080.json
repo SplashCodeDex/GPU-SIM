@@ -1,0 +1,53 @@
+{
+    "id": "nvidia_rtx_3080",
+    "name": "NVIDIA GeForce RTX 3080",
+    "manufacturer": "NVIDIA Corporation",
+    "driver_version": "546.33",
+    "driver_date": "2024-01-15",
+    "vram_mb": 10240,
+    "vram_type": "GDDR6X",
+    "cuda_cores": 8704,
+    "base_clock_mhz": 1440,
+    "boost_clock_mhz": 1710,
+    "memory_clock_mhz": 19000,
+    "memory_bus_width": 320,
+    "tdp_watts": 320,
+    "pci_device_id": "10DE",
+    "pci_vendor_id": "2206",
+    "subsystem_id": "10DE-2206",
+    "device_description": "NVIDIA GeForce RTX 3080",
+    "video_processor": "GeForce RTX 3080",
+    "dac_type": "Integrated RAMDAC",
+    "adapter_compatibility": "NVIDIA",
+    "registry_entries": {
+        "HardwareInformation.AdapterString": "NVIDIA GeForce RTX 3080",
+        "HardwareInformation.BiosString": "Version 94.02.42.00.0F",
+        "HardwareInformation.ChipType": "GeForce RTX 3080",
+        "HardwareInformation.DACType": "Integrated RAMDAC",
+        "HardwareInformation.MemorySize": 10737418240,
+        "ProviderName": "NVIDIA"
+    },
+    "display_modes": [
+        {
+            "width": 1920,
+            "height": 1080,
+            "refresh": 144
+        },
+        {
+            "width": 2560,
+            "height": 1440,
+            "refresh": 165
+        },
+        {
+            "width": 3840,
+            "height": 2160,
+            "refresh": 120
+        }
+    ],
+    "features": {
+        "ray_tracing": true,
+        "dlss": true,
+        "nvenc": true,
+        "cuda": true
+    }
+}

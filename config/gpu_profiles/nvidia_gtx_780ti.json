@@ -1,0 +1,47 @@
+{
+    "id": "nvidia_gtx_780ti",
+    "name": "NVIDIA GeForce GTX 780 Ti",
+    "manufacturer": "NVIDIA Corporation",
+    "driver_version": "332.25.7",
+    "driver_date": "2023-10-15",
+    "vram_mb": 3072,
+    "vram_type": "GDDR5",
+    "cuda_cores": 2880,
+    "base_clock_mhz": 876,
+    "boost_clock_mhz": 928,
+    "memory_clock_mhz": 7000,
+    "memory_bus_width": 384,
+    "tdp_watts": 250,
+    "pci_device_id": "10DE",
+    "pci_vendor_id": "1005",
+    "subsystem_id": "10DE-1005",
+    "device_description": "NVIDIA GeForce GTX 780 Ti",
+    "video_processor": "GeForce GTX 780 Ti",
+    "dac_type": "Integrated RAMDAC",
+    "adapter_compatibility": "NVIDIA",
+    "registry_entries": {
+        "HardwareInformation.AdapterString": "NVIDIA GeForce GTX 780 Ti",
+        "HardwareInformation.BiosString": "Version 80.04.C3.00.0F",
+        "HardwareInformation.ChipType": "GeForce GTX 780 Ti",
+        "HardwareInformation.DACType": "Integrated RAMDAC",
+        "HardwareInformation.MemorySize": 3221225472,
+        "ProviderName": "NVIDIA"
+    },
+    "display_modes": [
+        {
+            "width": 1920,
+            "height": 1080,
+            "refresh": 60
+        },
+        {
+            "width": 2560,
+            "height": 1440,
+            "refresh": 60
+        },
+        {
+            "width": 3840,
+            "height": 2160,
+            "refresh": 30
+        }
+    ]
+}

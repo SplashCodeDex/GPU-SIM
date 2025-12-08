@@ -1,0 +1,52 @@
+{
+    "id": "amd_rx_6800xt",
+    "name": "AMD Radeon RX 6800 XT",
+    "manufacturer": "Advanced Micro Devices, Inc.",
+    "driver_version": "24.1.1",
+    "driver_date": "2024-01-20",
+    "vram_mb": 16384,
+    "vram_type": "GDDR6",
+    "stream_processors": 4608,
+    "base_clock_mhz": 1825,
+    "boost_clock_mhz": 2250,
+    "memory_clock_mhz": 16000,
+    "memory_bus_width": 256,
+    "tdp_watts": 300,
+    "pci_device_id": "1002",
+    "pci_vendor_id": "73BF",
+    "subsystem_id": "1002-73BF",
+    "device_description": "AMD Radeon RX 6800 XT",
+    "video_processor": "Radeon RX 6800 XT",
+    "dac_type": "Internal DAC(400MHz)",
+    "adapter_compatibility": "AMD",
+    "registry_entries": {
+        "HardwareInformation.AdapterString": "AMD Radeon RX 6800 XT",
+        "HardwareInformation.BiosString": "113-D41211-X70",
+        "HardwareInformation.ChipType": "AMD Radeon Graphics",
+        "HardwareInformation.DACType": "Internal DAC(400MHz)",
+        "HardwareInformation.MemorySize": 17179869184,
+        "ProviderName": "Advanced Micro Devices, Inc."
+    },
+    "display_modes": [
+        {
+            "width": 1920,
+            "height": 1080,
+            "refresh": 144
+        },
+        {
+            "width": 2560,
+            "height": 1440,
+            "refresh": 165
+        },
+        {
+            "width": 3840,
+            "height": 2160,
+            "refresh": 120
+        }
+    ],
+    "features": {
+        "ray_tracing": true,
+        "fsr": true,
+        "infinity_cache_mb": 128
+    }
+}
