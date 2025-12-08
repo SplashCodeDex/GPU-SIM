@@ -294,6 +294,9 @@ class MainWindow(QMainWindow):
         self._content_stack.addWidget(self._vdd_panel)      # Index 5
         self._content_stack.addWidget(self._profile_editor) # Index 6
 
+        # Connect profile editor updates to refresh all panels
+        self._profile_editor.profile_updated.connect(self._on_profile_updated)
+
         splitter.addWidget(self._content_stack)
 
         # Set splitter sizes
@@ -373,6 +376,26 @@ class MainWindow(QMainWindow):
             self._update_status(f"Selected: {profile.name}")
         else:
             self._update_status("No profile selected")
+
+    def _on_profile_updated(self, updated_profile: GPUProfile) -> None:
+        """Handle profile update from editor - refresh all panels with new data."""
+        # Update local reference
+        self._current_profile = updated_profile
+        self._config_manager.active_profile = updated_profile
+
+        # Refresh all panels with updated profile
+        self._home_panel.set_profile(updated_profile)
+        self._gpu_info_panel.set_profile(updated_profile)
+        self._display_panel.set_profile(updated_profile)
+        self._settings_3d_panel.set_profile(updated_profile)
+        self._metrics_panel.set_profile(updated_profile)
+        self._vdd_panel.set_profile(updated_profile)
+        # Don't update profile_editor - it triggered this
+
+        # Refresh the GPU selector dropdown to show updated profile
+        self._gpu_selector.refresh_profiles()
+
+        self._update_status(f"Profile updated: {updated_profile.name}")
 
     def _on_nav_changed(self, current: QTreeWidgetItem, previous: QTreeWidgetItem) -> None:
         """Handle navigation tree selection change."""

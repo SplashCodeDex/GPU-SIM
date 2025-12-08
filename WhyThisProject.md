@@ -1,2 +1,0 @@
-- i want to simulate real GPU that will show in task manager, dxdiag and settings on windows.
-- Windows Softwares and Applications can detect it even though there is no physical GPU.

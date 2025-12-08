@@ -24,6 +24,8 @@ a = Analysis(
         (str(project_root / 'docs'), 'docs'),
         # Include scripts (optional, for advanced users)
         (str(project_root / 'scripts'), 'scripts'),
+        # Include NVIDIA panel assets
+        (str(project_root / 'Agenda' / '512x512.png'), 'Agenda'),
     ],
     hiddenimports=[
         'PyQt5',
@@ -39,6 +41,13 @@ a = Analysis(
         'json',
         'yaml',
         'jsonschema',
+        'nvidia_panel',
+        'nvidia_panel.nvidia_control_panel',
+        'nvidia_panel.nvidia_style',
+        'nvidia_panel.panels',
+        'nvidia_panel.panels.system_info',
+        'nvidia_panel.panels.manage_3d',
+        'nvidia_panel.panels.display_settings',
     ],
     hookspath=[],
     hooksconfig={},

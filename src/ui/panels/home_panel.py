@@ -152,6 +152,24 @@ class HomePanel(QWidget):
         self._wmi_btn.clicked.connect(self._on_wmi_clicked)
         actions_layout.addWidget(self._wmi_btn)
 
+        # NVIDIA Control Panel button
+        self._nvidia_btn = QPushButton("🟢 NVIDIA Control Panel")
+        self._nvidia_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #76b900;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                font-size: 14px;
+                border-radius: 5px;
+            }
+            QPushButton:hover {
+                background-color: #8bc34a;
+            }
+        """)
+        self._nvidia_btn.clicked.connect(self._on_nvidia_panel_clicked)
+        actions_layout.addWidget(self._nvidia_btn)
+
         actions_layout.addStretch()
         layout.addLayout(actions_layout)
 
@@ -290,4 +308,61 @@ class HomePanel(QWidget):
                 "WMI Error",
                 f"Could not query WMI:\n\n{str(e)}\n\n"
                 f"Make sure WMI module is installed:\npip install WMI"
+            )
+
+    def _on_nvidia_panel_clicked(self) -> None:
+        """Install the NVIDIA Control Panel as a system app."""
+        try:
+            from nvidia_panel.installer import (
+                install_nvidia_control_panel, is_installed, is_admin
+            )
+            from pathlib import Path
+
+            # Check if already installed
+            if is_installed():
+                reply = QMessageBox.question(
+                    self,
+                    "NVIDIA Control Panel",
+                    "NVIDIA Control Panel is already installed!\n\n"
+                    "Would you like to reinstall it?",
+                    QMessageBox.Yes | QMessageBox.No,
+                    QMessageBox.No
+                )
+                if reply != QMessageBox.Yes:
+                    return
+
+            # Check admin privileges
+            if not is_admin():
+                QMessageBox.warning(
+                    self,
+                    "Administrator Required",
+                    "Installing NVIDIA Control Panel requires Administrator privileges.\n\n"
+                    "Please restart GPU-SIM as Administrator."
+                )
+                return
+
+            # Get nvidia_panel source directory
+            source_dir = Path(__file__).parent.parent.parent / "nvidia_panel"
+
+            # Perform installation
+            success, message = install_nvidia_control_panel(source_dir)
+
+            if success:
+                QMessageBox.information(
+                    self,
+                    "Installation Complete",
+                    message
+                )
+            else:
+                QMessageBox.critical(
+                    self,
+                    "Installation Failed",
+                    message
+                )
+
+        except Exception as e:
+            QMessageBox.warning(
+                self,
+                "Error",
+                f"Could not install NVIDIA Control Panel:\n\n{str(e)}"
             )

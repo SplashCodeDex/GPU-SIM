@@ -143,3 +143,11 @@ class GPUSelector(QWidget):
                 self._combo.setCurrentIndex(i)
                 return True
         return False
+
+    def refresh_profiles(self) -> None:
+        """Public method to refresh profiles list after edits."""
+        current_id = self._current_profile.id if self._current_profile else None
+        self._load_profiles()
+        # Re-select the same profile after refresh
+        if current_id:
+            self.set_profile(current_id)
