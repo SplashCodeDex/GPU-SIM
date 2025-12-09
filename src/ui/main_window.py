@@ -25,10 +25,6 @@ from src.core.gpu_profile import GPUProfile
 from src.ui.widgets.gpu_selector import GPUSelector
 from src.ui.panels.home_panel import HomePanel
 from src.ui.panels.gpu_info_panel import GPUInfoPanel
-from src.ui.panels.settings_3d_panel import Settings3DPanel
-from src.ui.panels.display_panel import DisplayPanel
-from src.ui.panels.metrics_dashboard import MetricsDashboardPanel
-from src.ui.panels.vdd_panel import VDDPanel
 from src.ui.panels.profile_editor import ProfileEditorPanel
 from src.ui.panels.verification_panel import VerificationPanel
 from src.ui.system_tray import SystemTrayManager
@@ -278,24 +274,16 @@ class MainWindow(QMainWindow):
         # Right content area
         self._content_stack = QStackedWidget()
 
-        # Create panels
+        # Create panels (simplified - only essential ones)
         self._home_panel = HomePanel()
         self._gpu_info_panel = GPUInfoPanel()
-        self._display_panel = DisplayPanel()
-        self._settings_3d_panel = Settings3DPanel()
-        self._metrics_panel = MetricsDashboardPanel()
-        self._vdd_panel = VDDPanel()
         self._profile_editor = ProfileEditorPanel()
         self._verification_panel = VerificationPanel()
 
         self._content_stack.addWidget(self._home_panel)     # Index 0
         self._content_stack.addWidget(self._gpu_info_panel) # Index 1
-        self._content_stack.addWidget(self._display_panel)  # Index 2
-        self._content_stack.addWidget(self._settings_3d_panel) # Index 3
-        self._content_stack.addWidget(self._metrics_panel)  # Index 4
-        self._content_stack.addWidget(self._vdd_panel)      # Index 5
-        self._content_stack.addWidget(self._profile_editor) # Index 6
-        self._content_stack.addWidget(self._verification_panel) # Index 7
+        self._content_stack.addWidget(self._profile_editor) # Index 2
+        self._content_stack.addWidget(self._verification_panel) # Index 3
 
         # Connect profile editor updates to refresh all panels
         self._profile_editor.profile_updated.connect(self._on_profile_updated)
@@ -308,7 +296,7 @@ class MainWindow(QMainWindow):
         main_layout.addWidget(splitter)
 
     def _create_navigation(self) -> None:
-        """Create the navigation tree."""
+        """Create the navigation tree (simplified)."""
         # Home
         home_item = QTreeWidgetItem(["🏠 Home"])
         home_item.setData(0, Qt.UserRole, 0)
@@ -319,34 +307,14 @@ class MainWindow(QMainWindow):
         gpu_info.setData(0, Qt.UserRole, 1)
         self._nav_tree.addTopLevelItem(gpu_info)
 
-        # Display Settings
-        display = QTreeWidgetItem(["🖥️ Display"])
-        display.setData(0, Qt.UserRole, 2)
-        self._nav_tree.addTopLevelItem(display)
-
-        # 3D Settings
-        settings_3d = QTreeWidgetItem(["🎮 3D Settings"])
-        settings_3d.setData(0, Qt.UserRole, 3)
-        self._nav_tree.addTopLevelItem(settings_3d)
-
-        # Live Metrics Dashboard
-        metrics = QTreeWidgetItem(["📈 Live Metrics"])
-        metrics.setData(0, Qt.UserRole, 4)
-        self._nav_tree.addTopLevelItem(metrics)
-
-        # Virtual Display Driver
-        vdd = QTreeWidgetItem(["🔌 Virtual Display"])
-        vdd.setData(0, Qt.UserRole, 5)
-        self._nav_tree.addTopLevelItem(vdd)
-
         # Profile Editor
         editor = QTreeWidgetItem(["✏️ Profile Editor"])
-        editor.setData(0, Qt.UserRole, 6)
+        editor.setData(0, Qt.UserRole, 2)
         self._nav_tree.addTopLevelItem(editor)
 
         # Verification Checklist
         verification = QTreeWidgetItem(["🔍 Verification"])
-        verification.setData(0, Qt.UserRole, 7)
+        verification.setData(0, Qt.UserRole, 3)
         self._nav_tree.addTopLevelItem(verification)
 
         # Expand all and select home

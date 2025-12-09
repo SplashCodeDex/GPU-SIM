@@ -22,6 +22,7 @@ sys.path.insert(0, str(project_root))
 
 from geforce_experience.gfe_style import get_gfe_stylesheet, GFE_GREEN, GFE_DARK_GRAY
 from geforce_experience.tabs.home_tab import HomeTab
+from geforce_experience.tabs.games_tab import GamesTab
 from geforce_experience.tabs.drivers_tab import DriversTab
 from geforce_experience.tabs.settings_tab import SettingsTab
 from src.core.config_manager import get_config_manager
@@ -94,10 +95,12 @@ class GeForceExperience(QMainWindow):
 
         # Create tabs
         self._home_tab = HomeTab(self._current_profile)
+        self._games_tab = GamesTab(self._current_profile)
         self._drivers_tab = DriversTab(self._current_profile)
         self._settings_tab = SettingsTab(self._current_profile)
 
         self._tab_widget.addTab(self._home_tab, "🏠 HOME")
+        self._tab_widget.addTab(self._games_tab, "🎮 GAMES")
         self._tab_widget.addTab(self._drivers_tab, "🔧 DRIVERS")
         self._tab_widget.addTab(self._settings_tab, "⚙️ SETTINGS")
 

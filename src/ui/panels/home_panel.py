@@ -193,9 +193,19 @@ class HomePanel(QWidget):
 
         layout.addStretch()
 
-        # Footer
-        footer = QLabel("⚠️ Run as Administrator to apply changes to registry")
-        footer.setStyleSheet("color: #f44336; font-size: 11px;")
+        # Footer - show admin status
+        import ctypes
+        try:
+            is_admin = ctypes.windll.shell32.IsUserAnAdmin()
+        except Exception:
+            is_admin = False
+
+        if is_admin:
+            footer = QLabel("✅ Running as Administrator - Full functionality enabled")
+            footer.setStyleSheet("color: #76b900; font-size: 11px;")
+        else:
+            footer = QLabel("⚠️ Run as Administrator to apply changes to registry")
+            footer.setStyleSheet("color: #f44336; font-size: 11px;")
         layout.addWidget(footer)
 
     def set_profile(self, profile: Optional[GPUProfile]) -> None:

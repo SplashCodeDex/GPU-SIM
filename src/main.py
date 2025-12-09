@@ -4,6 +4,8 @@ Main entry point for the application.
 """
 
 import sys
+import os
+import ctypes
 import argparse
 import logging
 from pathlib import Path
@@ -11,6 +13,33 @@ from pathlib import Path
 # Ensure project root is in path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
+
+
+def is_admin() -> bool:
+    """Check if running with Administrator privileges."""
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except Exception:
+        return False
+
+
+def request_admin():
+    """Request Administrator privileges by relaunching with UAC."""
+    if os.name != 'nt':
+        return False
+
+    try:
+        # Re-run the script with admin rights
+        script = sys.argv[0]
+        params = ' '.join(sys.argv[1:])
+
+        # ShellExecuteW returns > 32 on success
+        result = ctypes.windll.shell32.ShellExecuteW(
+            None, "runas", sys.executable, f'"{script}" {params}', None, 1
+        )
+        return result > 32
+    except Exception:
+        return False
 
 
 def parse_args():
@@ -148,6 +177,15 @@ def main():
     if args.cli or args.list or args.wmi or (args.profile and args.apply):
         run_cli(args)
     else:
+        # GUI mode - check for admin privileges
+        if not is_admin():
+            print("    ⚠️  Administrator privileges required for full functionality.")
+            print("    🔄 Requesting elevation...")
+            if request_admin():
+                sys.exit(0)  # Exit this instance, elevated one will run
+            else:
+                print("    ⚠️  Running without admin - some features may not work.")
+
         run_gui()
 
 
