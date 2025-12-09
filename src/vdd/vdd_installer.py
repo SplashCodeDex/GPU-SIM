@@ -245,6 +245,167 @@ class VDDInstaller:
             "manufacturer": self.manufacturer,
         }
 
+    def setup_registry_persistence(self, vram_mb: int = 4096) -> bool:
+        """
+        Set up registry values for DxDiag spoofing.
+        Sets ChipType (with VRAM info), DACType for matching GPU adapters.
+
+        Args:
+            vram_mb: VRAM to display in ChipType field (e.g., 4096 for 4GB)
+
+        Returns:
+            True if successful.
+        """
+        try:
+            import winreg
+
+            reg_path = r"SYSTEM\CurrentControlSet\Control\Class\{4d36e968-e325-11ce-bfc1-08002be10318}"
+
+            # Enumerate all display adapters
+            with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, reg_path, 0, winreg.KEY_READ) as key:
+                i = 0
+                updated_count = 0
+                while True:
+                    try:
+                        subkey_name = winreg.EnumKey(key, i)
+                        i += 1
+
+                        # Skip non-numeric keys like "Configuration"
+                        if not subkey_name.isdigit():
+                            continue
+
+                        subkey_path = f"{reg_path}\\{subkey_name}"
+                        try:
+                            with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, subkey_path, 0,
+                                              winreg.KEY_READ | winreg.KEY_WRITE) as adapter_key:
+                                # Check if this is our spoofed adapter
+                                try:
+                                    driver_desc, _ = winreg.QueryValueEx(adapter_key, "DriverDesc")
+                                    if self.gpu_name in driver_desc:
+                                        # Set ChipType with VRAM info
+                                        chip_value = f"Dedicated Memory(VRAM): {vram_mb} MB"
+                                        winreg.SetValueEx(adapter_key, "HardwareInformation.ChipType",
+                                                         0, winreg.REG_SZ, chip_value)
+
+                                        # Set DACType
+                                        winreg.SetValueEx(adapter_key, "HardwareInformation.DACType",
+                                                         0, winreg.REG_SZ, "Integrated RAMDAC")
+
+                                        updated_count += 1
+                                        print(f"Updated registry for adapter {subkey_name}")
+                                except (FileNotFoundError, OSError):
+                                    pass
+                        except PermissionError:
+                            print(f"Permission denied for adapter {subkey_name}")
+                    except OSError:
+                        break
+
+            print(f"Registry updated for {updated_count} adapter(s)")
+            return updated_count > 0
+
+        except Exception as e:
+            print(f"Error setting up registry: {e}")
+            return False
+
+    def create_startup_task(self, vram_mb: int = 4096) -> bool:
+        """
+        Create a Windows scheduled task to persist registry values after reboot.
+
+        Args:
+            vram_mb: VRAM to display in ChipType field
+
+        Returns:
+            True if task was created successfully.
+        """
+        try:
+            # Build the PowerShell command for the scheduled task
+            gpu_pattern = self.gpu_name.replace("'", "''")
+            ps_script = f'''
+$path = 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Class\\{{4d36e968-e325-11ce-bfc1-08002be10318}}'
+Get-ChildItem $path -ErrorAction SilentlyContinue | ForEach-Object {{
+    try {{
+        $desc = (Get-ItemProperty $_.PSPath -ErrorAction SilentlyContinue).DriverDesc
+        if ($desc -like '*{gpu_pattern}*') {{
+            Set-ItemProperty $_.PSPath -Name 'HardwareInformation.ChipType' -Value 'Dedicated Memory(VRAM): {vram_mb} MB'
+            Set-ItemProperty $_.PSPath -Name 'HardwareInformation.DACType' -Value 'Integrated RAMDAC'
+        }}
+    }} catch {{}}
+}}
+'''
+
+            # Create the scheduled task using PowerShell
+            task_name = "GPU-SIM-VDD-Registry"
+            encoded_script = ps_script.replace('"', '\\"').replace('\n', ' ')
+
+            create_task_cmd = f'''
+$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-NoProfile -WindowStyle Hidden -Command "{encoded_script}"'
+$trigger = New-ScheduledTaskTrigger -AtStartup
+$principal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -RunLevel Highest
+Register-ScheduledTask -TaskName "{task_name}" -Action $action -Trigger $trigger -Principal $principal -Force
+'''
+
+            result = subprocess.run(
+                ['powershell', '-NoProfile', '-Command', create_task_cmd],
+                capture_output=True,
+                text=True
+            )
+
+            if result.returncode == 0:
+                print(f"Startup task '{task_name}' created successfully!")
+                return True
+            else:
+                print(f"Failed to create startup task: {result.stderr}")
+                return False
+
+        except Exception as e:
+            print(f"Error creating startup task: {e}")
+            return False
+
+    def full_install(self, vram_mb: int = 4096) -> bool:
+        """
+        Complete installation: driver + registry + startup task.
+
+        Args:
+            vram_mb: VRAM to display (default 4096 for 4GB)
+
+        Returns:
+            True if all steps succeeded.
+        """
+        print(f"\n{'='*50}")
+        print(f"  GPU-SIM Full Installation")
+        print(f"  GPU: {self.gpu_name}")
+        print(f"  VRAM: {vram_mb} MB")
+        print(f"{'='*50}\n")
+
+        # Step 1: Copy driver files
+        print("[1/4] Copying driver files...")
+        if not self.copy_driver_files():
+            return False
+
+        # Step 2: Create config files
+        print("[2/4] Creating configuration...")
+        if not self.create_config_files():
+            return False
+
+        # Step 3: Install driver
+        print("[3/4] Installing VDD driver...")
+        if not self.install_driver():
+            return False
+
+        # Step 4: Setup registry and startup task
+        print("[4/4] Setting up registry persistence...")
+        self.setup_registry_persistence(vram_mb)
+        self.create_startup_task(vram_mb)
+
+        print(f"\n{'='*50}")
+        print("  Installation Complete!")
+        print("  - VDD driver installed")
+        print("  - Registry values set")
+        print("  - Startup task created for persistence")
+        print(f"{'='*50}\n")
+
+        return True
+
 
 def get_vdd_installer(gpu_name: str = "NVIDIA GeForce GTX 780 Ti") -> VDDInstaller:
     """Factory function to get VDD installer instance."""

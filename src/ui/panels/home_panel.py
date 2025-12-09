@@ -170,6 +170,29 @@ class HomePanel(QWidget):
         self._nvidia_btn.clicked.connect(self._on_nvidia_panel_clicked)
         actions_layout.addWidget(self._nvidia_btn)
 
+        # Install VDD (Virtual Display Driver) button
+        self._vdd_btn = QPushButton("📺 Install Virtual Display")
+        self._vdd_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #9c27b0;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                font-size: 14px;
+                border-radius: 5px;
+            }
+            QPushButton:hover {
+                background-color: #ab47bc;
+            }
+            QPushButton:disabled {
+                background-color: #444;
+                color: #888;
+            }
+        """)
+        self._vdd_btn.setEnabled(False)
+        self._vdd_btn.clicked.connect(self._on_vdd_install_clicked)
+        actions_layout.addWidget(self._vdd_btn)
+
         # Installation Wizard button
         self._wizard_btn = QPushButton("🚀 Run Installation Wizard")
         self._wizard_btn.setStyleSheet("""
@@ -280,6 +303,7 @@ class HomePanel(QWidget):
                     label.setStyleSheet("color: #666;")
 
             self._apply_btn.setEnabled(True)
+            self._vdd_btn.setEnabled(True)
         else:
             self._gpu_name_label.setText("No GPU Selected")
             self._gpu_manufacturer_label.setText("")
@@ -292,6 +316,7 @@ class HomePanel(QWidget):
                 label.setStyleSheet("color: #666;")
 
             self._apply_btn.setEnabled(False)
+            self._vdd_btn.setEnabled(False)
 
     def _on_apply_clicked(self) -> None:
         """Handle apply button click."""
@@ -335,6 +360,107 @@ class HomePanel(QWidget):
                     self,
                     "Error",
                     f"Error applying profile:\n\n{str(e)}"
+                )
+
+    def _on_vdd_install_clicked(self) -> None:
+        """Handle VDD install button - one-click driver installation."""
+        if not self._current_profile:
+            return
+
+        reply = QMessageBox.warning(
+            self,
+            "Install Virtual Display Driver",
+            f"This will install a Virtual Display Driver that shows:\n\n"
+            f"GPU: {self._current_profile.name}\n"
+            f"VRAM: {int(self._current_profile.vram_gb * 1024)} MB\n\n"
+            f"⚠️ Requires Administrator privileges\n"
+            f"⚠️ Requires Test Signing Mode enabled\n\n"
+            f"The driver will appear in DxDiag and Task Manager.\n\n"
+            f"Continue?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+
+        if reply == QMessageBox.Yes:
+            try:
+                from src.vdd.vdd_installer import VDDInstaller, is_admin, is_test_signing_enabled
+
+                if not is_admin():
+                    QMessageBox.critical(
+                        self,
+                        "Administrator Required",
+                        "Please run GPU-SIM as Administrator to install the driver."
+                    )
+                    return
+
+                if not is_test_signing_enabled():
+                    reply = QMessageBox.question(
+                        self,
+                        "Test Signing Required",
+                        "Test signing mode is not enabled.\n\n"
+                        "Would you like to enable it now?\n"
+                        "(Requires a system reboot)",
+                        QMessageBox.Yes | QMessageBox.No
+                    )
+                    if reply == QMessageBox.Yes:
+                        from src.vdd.vdd_installer import enable_test_signing
+                        if enable_test_signing():
+                            QMessageBox.information(
+                                self,
+                                "Test Signing Enabled",
+                                "Test signing has been enabled.\n\n"
+                                "Please restart your computer, then run GPU-SIM again "
+                                "to complete the VDD installation."
+                            )
+                        else:
+                            QMessageBox.critical(
+                                self,
+                                "Error",
+                                "Failed to enable test signing mode."
+                            )
+                    return
+
+                # Calculate VRAM in MB
+                vram_mb = int(self._current_profile.vram_gb * 1024)
+
+                # Create and run installer
+                installer = VDDInstaller(
+                    gpu_name=self._current_profile.name,
+                    manufacturer=self._current_profile.manufacturer
+                )
+
+                QMessageBox.information(
+                    self,
+                    "Installing...",
+                    "Installing Virtual Display Driver...\n\n"
+                    "This may take a moment. Click OK to proceed."
+                )
+
+                success = installer.full_install(vram_mb=vram_mb)
+
+                if success:
+                    QMessageBox.information(
+                        self,
+                        "Installation Complete",
+                        f"Virtual Display Driver installed successfully!\n\n"
+                        f"GPU: {self._current_profile.name}\n"
+                        f"VRAM: {vram_mb} MB (shown in Chip Type field)\n\n"
+                        f"The driver will persist across reboots via startup task.\n\n"
+                        f"Check DxDiag → Display 2 to see the result."
+                    )
+                else:
+                    QMessageBox.critical(
+                        self,
+                        "Installation Failed",
+                        "Failed to install Virtual Display Driver.\n\n"
+                        "Check the console output for details."
+                    )
+
+            except Exception as e:
+                QMessageBox.critical(
+                    self,
+                    "Error",
+                    f"Error installing VDD:\n\n{str(e)}"
                 )
 
     def _on_wmi_clicked(self) -> None:
