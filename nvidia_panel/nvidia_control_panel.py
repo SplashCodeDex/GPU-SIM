@@ -275,6 +275,13 @@ class NVIDIAControlPanel(QMainWindow):
 
         # Help menu
         help_menu = menubar.addMenu("Help")
+
+        gfe_action = QAction("Install GeForce Experience...", self)
+        gfe_action.triggered.connect(self._install_geforce_experience)
+        help_menu.addAction(gfe_action)
+
+        help_menu.addSeparator()
+
         about_action = QAction("About...", self)
         about_action.triggered.connect(self._show_about)
         help_menu.addAction(about_action)
@@ -403,6 +410,63 @@ class NVIDIAControlPanel(QMainWindow):
             f"Version: {self._current_profile.driver_version if self._current_profile else '1.0.0'}\n\n"
             f"© 2024 NVIDIA Corporation"
         )
+
+    def _install_geforce_experience(self) -> None:
+        """Install GeForce Experience from the Help menu."""
+        try:
+            from geforce_experience.gfe_installer import (
+                install_geforce_experience, is_installed, is_admin
+            )
+            from pathlib import Path
+
+            # Check if already installed
+            if is_installed():
+                reply = QMessageBox.question(
+                    self,
+                    "GeForce Experience",
+                    "GeForce Experience is already installed!\n\n"
+                    "Would you like to reinstall it?",
+                    QMessageBox.Yes | QMessageBox.No,
+                    QMessageBox.No
+                )
+                if reply != QMessageBox.Yes:
+                    return
+
+            # Check admin privileges
+            if not is_admin():
+                QMessageBox.warning(
+                    self,
+                    "Administrator Required",
+                    "Installing GeForce Experience requires Administrator privileges.\n\n"
+                    "Please restart NVIDIA Control Panel as Administrator."
+                )
+                return
+
+            # Get geforce_experience source directory
+            source_dir = Path(__file__).parent.parent / "geforce_experience"
+
+            # Perform installation
+            success, message = install_geforce_experience(source_dir)
+
+            if success:
+                QMessageBox.information(
+                    self,
+                    "Installation Complete",
+                    message
+                )
+            else:
+                QMessageBox.critical(
+                    self,
+                    "Installation Failed",
+                    message
+                )
+
+        except Exception as e:
+            QMessageBox.warning(
+                self,
+                "Error",
+                f"Could not install GeForce Experience:\n\n{str(e)}"
+            )
 
 
 def main():

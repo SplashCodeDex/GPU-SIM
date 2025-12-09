@@ -170,6 +170,24 @@ class HomePanel(QWidget):
         self._nvidia_btn.clicked.connect(self._on_nvidia_panel_clicked)
         actions_layout.addWidget(self._nvidia_btn)
 
+        # Installation Wizard button
+        self._wizard_btn = QPushButton("🚀 Run Installation Wizard")
+        self._wizard_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #1976d2;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                font-size: 14px;
+                border-radius: 5px;
+            }
+            QPushButton:hover {
+                background-color: #2196f3;
+            }
+        """)
+        self._wizard_btn.clicked.connect(self._on_wizard_clicked)
+        actions_layout.addWidget(self._wizard_btn)
+
         actions_layout.addStretch()
         layout.addLayout(actions_layout)
 
@@ -365,4 +383,19 @@ class HomePanel(QWidget):
                 self,
                 "Error",
                 f"Could not install NVIDIA Control Panel:\n\n{str(e)}"
+            )
+
+    def _on_wizard_clicked(self) -> None:
+        """Open the installation wizard."""
+        try:
+            from src.ui.installer_wizard import InstallerWizard
+
+            wizard = InstallerWizard(profile=self._current_profile, parent=self)
+            wizard.exec_()
+
+        except Exception as e:
+            QMessageBox.warning(
+                self,
+                "Error",
+                f"Could not open installation wizard:\n\n{str(e)}"
             )

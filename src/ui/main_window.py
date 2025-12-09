@@ -30,6 +30,7 @@ from src.ui.panels.display_panel import DisplayPanel
 from src.ui.panels.metrics_dashboard import MetricsDashboardPanel
 from src.ui.panels.vdd_panel import VDDPanel
 from src.ui.panels.profile_editor import ProfileEditorPanel
+from src.ui.panels.verification_panel import VerificationPanel
 from src.ui.system_tray import SystemTrayManager
 
 logger = logging.getLogger(__name__)
@@ -285,6 +286,7 @@ class MainWindow(QMainWindow):
         self._metrics_panel = MetricsDashboardPanel()
         self._vdd_panel = VDDPanel()
         self._profile_editor = ProfileEditorPanel()
+        self._verification_panel = VerificationPanel()
 
         self._content_stack.addWidget(self._home_panel)     # Index 0
         self._content_stack.addWidget(self._gpu_info_panel) # Index 1
@@ -293,6 +295,7 @@ class MainWindow(QMainWindow):
         self._content_stack.addWidget(self._metrics_panel)  # Index 4
         self._content_stack.addWidget(self._vdd_panel)      # Index 5
         self._content_stack.addWidget(self._profile_editor) # Index 6
+        self._content_stack.addWidget(self._verification_panel) # Index 7
 
         # Connect profile editor updates to refresh all panels
         self._profile_editor.profile_updated.connect(self._on_profile_updated)
@@ -340,6 +343,11 @@ class MainWindow(QMainWindow):
         editor = QTreeWidgetItem(["✏️ Profile Editor"])
         editor.setData(0, Qt.UserRole, 6)
         self._nav_tree.addTopLevelItem(editor)
+
+        # Verification Checklist
+        verification = QTreeWidgetItem(["🔍 Verification"])
+        verification.setData(0, Qt.UserRole, 7)
+        self._nav_tree.addTopLevelItem(verification)
 
         # Expand all and select home
         self._nav_tree.expandAll()

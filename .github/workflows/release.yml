@@ -5,9 +5,19 @@ on:
     tags:
       - 'v*'  # Triggers on version tags like v1.0.0
   workflow_dispatch:  # Manual trigger
+    inputs:
+      create_release:
+        description: 'Create a GitHub release'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  PYTHON_VERSION: '3.11'
 
 jobs:
-  build:
+  build-all:
+    name: Build GPU-SIM Bundle
     runs-on: windows-latest
 
     steps:
@@ -17,46 +27,106 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: ${{ env.PYTHON_VERSION }}
         cache: 'pip'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install pyinstaller
+        pip install pyinstaller pywin32
 
-    - name: Build with PyInstaller
+    # Build GPU-SIM main application
+    - name: Build GPU-SIM
       run: |
         pyinstaller build/gpu_sim.spec --clean --noconfirm
+        echo "[OK] GPU-SIM built successfully"
 
-    - name: Create Release Zip
+    # Build NVIDIA Control Panel
+    - name: Build NVIDIA Control Panel
       run: |
-        Compress-Archive -Path "dist/GPU-SIM/*" -DestinationPath "GPU-SIM-${{ github.ref_name }}-windows.zip"
+        pyinstaller build/nvidia_control_panel.spec --clean --noconfirm
+        echo "[OK] NVIDIA Control Panel built successfully"
 
-    - name: Upload Build Artifact
+    # Build GeForce Experience
+    - name: Build GeForce Experience
+      run: |
+        pyinstaller build/geforce_experience.spec --clean --noconfirm
+        echo "[OK] GeForce Experience built successfully"
+
+    # Bundle all apps together
+    - name: Create Release Bundle
+      run: |
+        # Create bundle directory
+        New-Item -ItemType Directory -Force -Path "bundle/GPU-SIM"
+
+        # Copy all built apps
+        Copy-Item -Recurse "dist/GPU-SIM/*" "bundle/GPU-SIM/" -Force
+
+        # Copy NVIDIA Panel folder into bundle (for installation)
+        if (Test-Path "dist/nvidia_control_panel") {
+          Copy-Item -Recurse "dist/nvidia_control_panel" "bundle/GPU-SIM/nvidia_panel_app" -Force
+        }
+
+        # Copy GeForce Experience folder into bundle
+        if (Test-Path "dist/geforce_experience") {
+          Copy-Item -Recurse "dist/geforce_experience" "bundle/GPU-SIM/geforce_experience_app" -Force
+        }
+
+        # Copy additional files
+        Copy-Item "README.md" "bundle/GPU-SIM/" -Force
+        Copy-Item "LICENSE" "bundle/GPU-SIM/" -Force -ErrorAction SilentlyContinue
+
+        # Create version file
+        $version = "${{ github.ref_name }}".TrimStart('v')
+        Set-Content -Path "bundle/GPU-SIM/version.txt" -Value $version
+
+        # Create the zip archive
+        Compress-Archive -Path "bundle/GPU-SIM" -DestinationPath "GPU-SIM-${{ github.ref_name }}-windows.zip" -Force
+
+    - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: GPU-SIM-Windows
-        path: dist/GPU-SIM/
+        name: GPU-SIM-Bundle-${{ github.ref_name || 'dev' }}
+        path: bundle/GPU-SIM/
         retention-days: 30
 
+    # Create GitHub Release (only on tag push)
     - name: Create GitHub Release
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/') || github.event.inputs.create_release == 'true'
+      uses: softprops/action-gh-release@v2
       with:
         files: |
           GPU-SIM-${{ github.ref_name }}-windows.zip
         generate_release_notes: true
         draft: false
-        prerelease: false
+        prerelease: ${{ contains(github.ref_name, 'beta') || contains(github.ref_name, 'alpha') }}
+        body: |
+          ## GPU-SIM ${{ github.ref_name }}
+
+          ### 📦 What's Included
+          - **GPU-SIM.exe** - Main control panel with one-click installer wizard
+          - **NVIDIA Control Panel** - Authentic replica (installed via wizard)
+          - **GeForce Experience** - Optional companion app (installed via wizard)
+          - **9 GPU Profiles** - GTX 780 Ti, RTX 3080/3090/4070Ti/4080/4090, RX 6800XT/7900XTX, Arc A770
+
+          ### 🚀 Quick Start
+          1. Download `GPU-SIM-${{ github.ref_name }}-windows.zip`
+          2. Extract and run `GPU-SIM.exe` as Administrator
+          3. Click **"Run Installation Wizard"** for one-click setup
+
+          ### ⚠️ Requirements
+          - Windows 10/11
+          - Administrator privileges (for registry changes)
+          - Restart required after applying GPU profile
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # Optional: Create portable single-file exe
-  build-onefile:
+  # Optional: Build single-file portable exe
+  build-portable:
+    name: Build Portable EXE
     runs-on: windows-latest
-    needs: build
+    needs: build-all
 
     steps:
     - name: Checkout code
@@ -65,24 +135,41 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: ${{ env.PYTHON_VERSION }}
         cache: 'pip'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install pyinstaller
+        pip install pyinstaller pywin32
 
     - name: Build Single-File Exe
       run: |
-        pyinstaller --onefile --windowed --name "GPU-SIM-Portable" --icon "assets/icons/gpu_sim.ico" src/main.py --add-data "config/gpu_profiles;config/gpu_profiles" --add-data "assets;assets"
+        pyinstaller --onefile --windowed `
+          --name "GPU-SIM-Portable" `
+          --icon "assets/icons/gpu_sim.ico" `
+          --add-data "config/gpu_profiles;config/gpu_profiles" `
+          --add-data "assets;assets" `
+          --add-data "nvidia_panel;nvidia_panel" `
+          --add-data "geforce_experience;geforce_experience" `
+          --hidden-import "nvidia_panel" `
+          --hidden-import "geforce_experience" `
+          src/main.py
       continue-on-error: true
 
     - name: Upload Portable Exe
       uses: actions/upload-artifact@v4
       with:
-        name: GPU-SIM-Portable
+        name: GPU-SIM-Portable-${{ github.ref_name || 'dev' }}
         path: dist/GPU-SIM-Portable.exe
         retention-days: 30
         if-no-files-found: ignore
+
+    - name: Add Portable to Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v2
+      with:
+        files: dist/GPU-SIM-Portable.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
