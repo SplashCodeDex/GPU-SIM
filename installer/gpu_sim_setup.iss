@@ -66,6 +66,7 @@ Name: "custom"; Description: "Custom installation"; Flags: iscustom
 Name: "main"; Description: "GPU-SIM Core Application"; Types: full
 Name: "nvidia"; Description: "NVIDIA Control Panel Replica"; Types: full nvidia_only
 Name: "geforce"; Description: "GeForce Experience Replica"; Types: full
+Name: "vdd"; Description: "Virtual Display Driver (for DxDiag/Task Manager spoofing)"; Types: full
 Name: "shortcuts"; Description: "Desktop Shortcuts"; Types: full nvidia_only
 Name: "contextmenu"; Description: "Add to Windows Right-Click Menu"; Types: full
 
@@ -74,6 +75,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 6.1; Components: shortcuts
 Name: "startupicon"; Description: "Start NVIDIA Control Panel with Windows"; GroupDescription: "Startup Options"; Flags: unchecked; Components: nvidia
 Name: "contextmenu"; Description: "Add NVIDIA Control Panel to desktop right-click menu"; GroupDescription: "Context Menu Integration"; Flags: unchecked; Components: contextmenu
+Name: "testsigning"; Description: "Enable Test Signing Mode (required for VDD, needs reboot)"; GroupDescription: "Driver Options"; Flags: unchecked; Components: vdd
 
 [Files]
 ; Main GPU-SIM application
@@ -85,6 +87,10 @@ Source: "dist\nvidia_control_panel\*"; DestDir: "{app}\nvidia_panel"; Flags: ign
 
 ; GeForce Experience
 Source: "dist\geforce_experience\*"; DestDir: "{app}\geforce_experience"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: geforce
+
+; Virtual Display Driver (VDD)
+Source: "drivers\vdd\Virtual-Display-Driver\Virtual Display Driver (HDR)\MttVDD\x64\Release\MttVDD\*"; DestDir: "{app}\vdd"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: vdd
+Source: "injector\fakenvapi\build\src\nvapi64.dll"; DestDir: "{app}\bypass"; Flags: ignoreversion; Components: vdd
 
 ; Assets
 Source: "Agenda\512x512.png"; DestDir: "{app}\assets"; Flags: ignoreversion
@@ -126,6 +132,12 @@ Root: HKLM; Subkey: "SOFTWARE\GPU-SIM"; ValueType: string; ValueName: "InstallPa
 Root: HKLM; Subkey: "SOFTWARE\GPU-SIM"; ValueType: string; ValueName: "Version"; ValueData: "{#AppVersion}"
 
 [Run]
+; Enable test signing mode if selected (requires reboot)
+Filename: "bcdedit"; Parameters: "/set testsigning on"; Flags: runhidden; Tasks: testsigning
+
+; Install VDD driver using pnputil
+Filename: "pnputil"; Parameters: "/add-driver ""{app}\vdd\MttVDD.inf"" /install"; Flags: runhidden; Components: vdd
+
 ; Post-installation options
 Filename: "{app}\{#AppExeName}"; Description: "{cm:LaunchProgram,GPU-SIM}"; Flags: nowait postinstall skipifsilent; Components: main
 Filename: "{app}\nvidia_panel\{#NvidiaExeName}"; Description: "{cm:LaunchProgram,NVIDIA Control Panel}"; Flags: nowait postinstall skipifsilent unchecked; Components: nvidia
