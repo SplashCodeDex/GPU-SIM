@@ -237,7 +237,16 @@ class GPURegistry:
             for name, value in profile.registry_entries.items():
                 try:
                     if isinstance(value, int):
-                        winreg.SetValueEx(key, name, 0, winreg.REG_DWORD, value)
+                        # qwMemorySize needs to be QWORD (64-bit) - write as binary
+                        if 'qwMemorySize' in name:
+                            # Convert to 8-byte little-endian binary for QWORD
+                            binary_value = value.to_bytes(8, byteorder='little')
+                            winreg.SetValueEx(key, name, 0, winreg.REG_BINARY, binary_value)
+                        elif value > 0xFFFFFFFF:
+                            # Value too large for DWORD, use QWORD
+                            winreg.SetValueEx(key, name, 0, winreg.REG_QWORD, value)
+                        else:
+                            winreg.SetValueEx(key, name, 0, winreg.REG_DWORD, value)
                     elif isinstance(value, str):
                         # Check if it's a multi-string or binary
                         if name.startswith("HardwareInformation."):

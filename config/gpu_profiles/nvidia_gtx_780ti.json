@@ -25,9 +25,13 @@
         "HardwareInformation.BiosString": "Version 80.04.C3.00.0F",
         "HardwareInformation.ChipType": "GK110B",
         "HardwareInformation.DACType": "Integrated RAMDAC",
-        "HardwareInformation.MemorySize": 3221225472,
+        "HardwareInformation.MemorySize": 4294967296,
+        "HardwareInformation.qwMemorySize": 4294967296,
         "ProviderName": "NVIDIA",
-        "DriverDesc": "NVIDIA GeForce GTX 780 Ti"
+        "DriverDesc": "NVIDIA GeForce GTX 780 Ti",
+        "Device Description": "NVIDIA GeForce GTX 780 Ti",
+        "DriverVersion": "31.0.15.3225",
+        "DriverDate": "10-15-2023"
     },
     "display_modes": [
         {
