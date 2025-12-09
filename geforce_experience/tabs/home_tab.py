@@ -75,7 +75,7 @@ class HomeTab(QWidget):
         subtitle.setStyleSheet(f"color: {GFE_GREEN}; font-size: 16px;")
         left.addWidget(subtitle)
 
-        status = QLabel("✓ All drivers are up to date")
+        status = QLabel("All drivers are up to date")
         status.setStyleSheet(f"color: {GFE_TEXT_SECONDARY}; font-size: 13px; margin-top: 10px;")
         left.addWidget(status)
 
@@ -108,10 +108,10 @@ class HomeTab(QWidget):
         layout.setSpacing(15)
 
         actions = [
-            ("🔄", "Check for Updates", "Scan for driver updates"),
-            ("⚡", "Optimize Games", "Apply optimal settings"),
-            ("📹", "ShadowPlay", "Record gameplay"),
-            ("📸", "Screenshot", "Capture game moments"),
+            ("Update", "Check for Updates", "Scan for driver updates"),
+            ("Optimize", "Optimize Games", "Apply optimal settings"),
+            ("ShadowPlay", "ShadowPlay", "Record gameplay"),
+            ("Capture", "Screenshot", "Capture game moments"),
         ]
 
         for icon, title, desc in actions:

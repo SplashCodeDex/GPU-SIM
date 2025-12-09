@@ -159,7 +159,7 @@ class VerificationPanel(QWidget):
         layout.setSpacing(15)
 
         # Header
-        header = QLabel("🔍 Verification Checklist")
+        header = QLabel("Verification Checklist")
         header.setFont(QFont("Segoe UI", 20, QFont.Bold))
         header.setStyleSheet("color: #76b900;")
         layout.addWidget(header)
@@ -208,7 +208,7 @@ class VerificationPanel(QWidget):
         layout.addStretch()
 
         # Footer with tips
-        tips_group = QGroupBox("💡 Tips")
+        tips_group = QGroupBox("Tips")
         tips_layout = QVBoxLayout(tips_group)
         tips = [
             "• If Task Manager doesn't show GPU, ensure registry changes were applied as Administrator",

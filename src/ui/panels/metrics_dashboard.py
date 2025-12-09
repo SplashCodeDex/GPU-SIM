@@ -199,7 +199,7 @@ class MetricsDashboardPanel(QWidget):
         # Header
         header_layout = QHBoxLayout()
 
-        title = QLabel("📊 Live GPU Metrics")
+        title = QLabel("Live GPU Metrics")
         title.setFont(QFont("Segoe UI", 18, QFont.Bold))
         header_layout.addWidget(title)
 

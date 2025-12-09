@@ -142,9 +142,11 @@ class PhysXPanel(QWidget):
 
         # Update info
         if profile.features.get("cuda", False):
-            self._info_label.setText(f"✓ PhysX acceleration available on {profile.name}")
+            self._info_label.setText(f"PhysX acceleration available on {profile.name}")
+            self._info_label.setStyleSheet(f"color: {self.NVIDIA_GREEN}; font-weight: bold;")
         else:
-            self._info_label.setText("⚠ PhysX acceleration requires NVIDIA GPU with CUDA")
+            self._info_label.setText("PhysX acceleration requires NVIDIA GPU with CUDA")
+            self._info_label.setStyleSheet(f"color: {self.NVIDIA_TEXT};")
 
         # Update system info
         self._physx_gpu.setText(profile.name)

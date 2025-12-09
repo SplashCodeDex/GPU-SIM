@@ -28,6 +28,7 @@ from src.ui.panels.gpu_info_panel import GPUInfoPanel
 from src.ui.panels.profile_editor import ProfileEditorPanel
 from src.ui.panels.verification_panel import VerificationPanel
 from src.ui.system_tray import SystemTrayManager
+from src.ui.theme import Theme
 
 logger = logging.getLogger(__name__)
 
@@ -72,114 +73,120 @@ class MainWindow(QMainWindow):
 
     def _apply_dark_theme(self) -> None:
         """Apply a dark theme to the application."""
-        self.setStyleSheet("""
-            QMainWindow {
-                background-color: #1e1e1e;
-            }
-            QWidget {
-                background-color: #252526;
-                color: #cccccc;
-                font-family: 'Segoe UI', Arial, sans-serif;
-            }
-            QTreeWidget {
-                background-color: #252526;
+        self.setStyleSheet(f"""
+            QMainWindow {{
+                background-color: {Theme.COLOR_BACKGROUND};
+            }}
+            QWidget {{
+                background-color: {Theme.COLOR_SURFACE};
+                color: {Theme.COLOR_TEXT_PRIMARY};
+                font-family: '{Theme.FONT_FAMILY}', Arial, sans-serif;
+                font-size: {Theme.FONT_BODY_SIZE}px;
+            }}
+            QTreeWidget {{
+                background-color: {Theme.COLOR_SURFACE};
                 border: none;
-                color: #cccccc;
-            }
-            QTreeWidget::item {
-                padding: 5px;
-            }
-            QTreeWidget::item:hover {
-                background-color: #2a2d2e;
-            }
-            QTreeWidget::item:selected {
-                background-color: #094771;
-            }
-            QGroupBox {
+                color: {Theme.COLOR_TEXT_PRIMARY};
+            }}
+            QTreeWidget::item {{
+                padding: 8px;
+                border-radius: 4px;
+            }}
+            QTreeWidget::item:hover {{
+                background-color: {Theme.COLOR_SURFACE_HOVER};
+            }}
+            QTreeWidget::item:selected {{
+                background-color: {Theme.COLOR_ACCENT};
+                color: white;
+            }}
+            QGroupBox {{
                 font-weight: bold;
-                border: 1px solid #3d3d3d;
+                border: 1px solid {Theme.COLOR_BORDER};
                 border-radius: 5px;
                 margin-top: 10px;
                 padding-top: 10px;
-            }
-            QGroupBox::title {
+            }}
+            QGroupBox::title {{
                 subcontrol-origin: margin;
                 left: 10px;
                 padding: 0 5px;
-            }
-            QComboBox {
-                background-color: #3c3c3c;
-                border: 1px solid #3d3d3d;
+                color: {Theme.COLOR_ACCENT};
+            }}
+            QComboBox {{
+                background-color: {Theme.COLOR_BACKGROUND};
+                border: 1px solid {Theme.COLOR_BORDER};
                 border-radius: 3px;
                 padding: 5px;
                 min-width: 150px;
-            }
-            QComboBox::drop-down {
+            }}
+            QComboBox::drop-down {{
                 border: none;
-            }
-            QPushButton {
-                background-color: #0e639c;
-                color: white;
-                border: none;
+            }}
+            QPushButton {{
+                background-color: {Theme.COLOR_SURFACE};
+                color: {Theme.COLOR_TEXT_PRIMARY};
+                border: 1px solid {Theme.COLOR_BORDER};
                 padding: 8px 16px;
                 border-radius: 3px;
-            }
-            QPushButton:hover {
-                background-color: #1177bb;
-            }
-            QPushButton:pressed {
-                background-color: #094771;
-            }
-            QPushButton:disabled {
-                background-color: #3c3c3c;
-                color: #666666;
-            }
-            QMenuBar {
-                background-color: #333333;
-                border-bottom: 1px solid #3d3d3d;
-            }
-            QMenuBar::item:selected {
-                background-color: #094771;
-            }
-            QMenu {
-                background-color: #252526;
-                border: 1px solid #3d3d3d;
-            }
-            QMenu::item:selected {
-                background-color: #094771;
-            }
-            QStatusBar {
-                background-color: #007acc;
+            }}
+            QPushButton:hover {{
+                background-color: {Theme.COLOR_SURFACE_HOVER};
+                border-color: {Theme.COLOR_ACCENT};
+            }}
+            QPushButton:pressed {{
+                background-color: {Theme.COLOR_BACKGROUND};
+            }}
+            QPushButton:disabled {{
+                background-color: {Theme.COLOR_SURFACE};
+                color: {Theme.COLOR_TEXT_SECONDARY};
+                border-color: {Theme.COLOR_BORDER};
+            }}
+            QMenuBar {{
+                background-color: {Theme.COLOR_BACKGROUND};
+                border-bottom: 1px solid {Theme.COLOR_BORDER};
+            }}
+            QMenuBar::item:selected {{
+                background-color: {Theme.COLOR_ACCENT};
+            }}
+            QMenu {{
+                background-color: {Theme.COLOR_SURFACE};
+                border: 1px solid {Theme.COLOR_BORDER};
+            }}
+            QMenu::item:selected {{
+                background-color: {Theme.COLOR_ACCENT};
+            }}
+            QStatusBar {{
+                background-color: {Theme.COLOR_ACCENT};
                 color: white;
-            }
-            QTableWidget {
-                background-color: #1e1e1e;
-                gridline-color: #3d3d3d;
-            }
-            QHeaderView::section {
-                background-color: #333333;
+            }}
+            QTableWidget {{
+                background-color: {Theme.COLOR_BACKGROUND};
+                gridline-color: {Theme.COLOR_BORDER};
+            }}
+            QHeaderView::section {{
+                background-color: {Theme.COLOR_SURFACE};
                 padding: 5px;
                 border: none;
-            }
-            QCheckBox {
+            }}
+            QCheckBox {{
                 spacing: 8px;
-            }
-            QSlider::groove:horizontal {
-                background-color: #3c3c3c;
+            }}
+            QSlider::groove:horizontal {{
+                background-color: {Theme.COLOR_BACKGROUND};
                 height: 8px;
                 border-radius: 4px;
-            }
-            QSlider::handle:horizontal {
-                background-color: #0e639c;
+            }}
+            QSlider::handle:horizontal {{
+                background-color: {Theme.COLOR_ACCENT};
                 width: 18px;
                 margin: -5px 0;
                 border-radius: 9px;
-            }
-            QSpinBox {
-                background-color: #3c3c3c;
-                border: 1px solid #3d3d3d;
+            }}
+            QSpinBox {{
+                background-color: {Theme.COLOR_BACKGROUND};
+                border: 1px solid {Theme.COLOR_BORDER};
                 padding: 5px;
-            }
+            }}
         """)
 
     def _create_menus(self) -> None:
@@ -298,22 +305,22 @@ class MainWindow(QMainWindow):
     def _create_navigation(self) -> None:
         """Create the navigation tree (simplified)."""
         # Home
-        home_item = QTreeWidgetItem(["🏠 Home"])
+        home_item = QTreeWidgetItem(["Home"])
         home_item.setData(0, Qt.UserRole, 0)
         self._nav_tree.addTopLevelItem(home_item)
 
         # GPU Information
-        gpu_info = QTreeWidgetItem(["📊 GPU Information"])
+        gpu_info = QTreeWidgetItem(["GPU Information"])
         gpu_info.setData(0, Qt.UserRole, 1)
         self._nav_tree.addTopLevelItem(gpu_info)
 
         # Profile Editor
-        editor = QTreeWidgetItem(["✏️ Profile Editor"])
+        editor = QTreeWidgetItem(["Profile Editor"])
         editor.setData(0, Qt.UserRole, 2)
         self._nav_tree.addTopLevelItem(editor)
 
         # Verification Checklist
-        verification = QTreeWidgetItem(["🔍 Verification"])
+        verification = QTreeWidgetItem(["Verification"])
         verification.setData(0, Qt.UserRole, 3)
         self._nav_tree.addTopLevelItem(verification)
 

@@ -38,7 +38,7 @@ class VDDPanel(QWidget):
         layout.setSpacing(15)
 
         # Header
-        header = QLabel("🖥️ Virtual Display Driver")
+        header = QLabel("Virtual Display Driver")
         header.setFont(QFont("Segoe UI", 18, QFont.Bold))
         layout.addWidget(header)
 
@@ -59,7 +59,7 @@ class VDDPanel(QWidget):
         status_layout.addWidget(self._status_detail)
 
         btn_layout = QHBoxLayout()
-        self._refresh_btn = QPushButton("🔄 Refresh Status")
+        self._refresh_btn = QPushButton("Refresh Status")
         self._refresh_btn.clicked.connect(self._check_vdd_status)
         btn_layout.addWidget(self._refresh_btn)
         btn_layout.addStretch()
@@ -82,7 +82,7 @@ class VDDPanel(QWidget):
         opt1_info.addWidget(opt1_desc)
         opt1_layout.addLayout(opt1_info)
 
-        self._vdd_install_btn = QPushButton("📥 Download")
+        self._vdd_install_btn = QPushButton("Download")
         self._vdd_install_btn.clicked.connect(self._open_vdd_download)
         opt1_layout.addWidget(self._vdd_install_btn)
 
@@ -102,7 +102,7 @@ class VDDPanel(QWidget):
         opt2_info.addWidget(opt2_desc)
         opt2_layout.addLayout(opt2_info)
 
-        self._parsec_install_btn = QPushButton("📥 Download")
+        self._parsec_install_btn = QPushButton("Download")
         self._parsec_install_btn.clicked.connect(self._open_parsec_download)
         opt2_layout.addWidget(self._parsec_install_btn)
 
@@ -137,10 +137,10 @@ class VDDPanel(QWidget):
         info_text = QLabel("""
 <p>Virtual Display Drivers create a <b>real virtual monitor</b> in Windows that:</p>
 <ul>
-<li>✅ Appears in Display Settings</li>
-<li>✅ Shows in Task Manager GPU tab</li>
-<li>✅ Visible in DxDiag</li>
-<li>✅ Works with remote desktop and streaming apps</li>
+<li>Appears in Display Settings</li>
+<li>Shows in Task Manager GPU tab</li>
+<li>Visible in DxDiag</li>
+<li>Works with remote desktop and streaming apps</li>
 </ul>
 <p>After installing a VDD, GPU-SIM can modify its registry entries to display
 your chosen GPU specifications.</p>

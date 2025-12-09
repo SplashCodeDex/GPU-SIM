@@ -15,6 +15,7 @@ import sys
 sys.path.insert(0, str(__file__).rsplit('src', 1)[0])
 
 from src.core.gpu_profile import GPUProfile
+from src.ui.theme import Theme
 
 
 class StatCard(QFrame):
@@ -23,24 +24,24 @@ class StatCard(QFrame):
     def __init__(self, title: str, value: str, parent: Optional[QWidget] = None):
         super().__init__(parent)
         self.setFrameStyle(QFrame.Box | QFrame.Raised)
-        self.setStyleSheet("""
-            StatCard {
-                background-color: #2d2d2d;
+        self.setStyleSheet(f"""
+            StatCard {{
+                background-color: {Theme.COLOR_SURFACE};
                 border-radius: 8px;
-                border: 1px solid #3d3d3d;
-            }
+                border: 1px solid {Theme.COLOR_BORDER};
+            }}
         """)
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(15, 10, 15, 10)
 
         self._title_label = QLabel(title)
-        self._title_label.setStyleSheet("color: #888; font-size: 11px;")
+        self._title_label.setStyleSheet(f"color: {Theme.COLOR_TEXT_SECONDARY}; font-size: {Theme.FONT_SMALL_SIZE}px;")
         layout.addWidget(self._title_label)
 
         self._value_label = QLabel(value)
-        self._value_label.setFont(QFont("Segoe UI", 16, QFont.Bold))
-        self._value_label.setStyleSheet("color: #76b900;")  # NVIDIA green
+        self._value_label.setFont(QFont(Theme.FONT_FAMILY, 16, QFont.Bold))
+        self._value_label.setStyleSheet(f"color: {Theme.COLOR_ACCENT};")
         layout.addWidget(self._value_label)
 
     def set_value(self, value: str) -> None:
@@ -68,12 +69,12 @@ class HomePanel(QWidget):
 
         # Header
         header = QLabel("GPU-SIM Control Panel")
-        header.setFont(QFont("Segoe UI", 24, QFont.Bold))
-        header.setStyleSheet("color: #76b900;")  # NVIDIA green
+        header.setFont(QFont(Theme.FONT_FAMILY, Theme.FONT_HEADER_SIZE, QFont.Bold))
+        header.setStyleSheet(f"color: {Theme.COLOR_ACCENT};")
         layout.addWidget(header)
 
         subtitle = QLabel("Virtual GPU Simulator for Windows")
-        subtitle.setStyleSheet("color: #888; font-size: 14px;")
+        subtitle.setStyleSheet(f"color: {Theme.COLOR_TEXT_SECONDARY}; font-size: {Theme.FONT_BODY_SIZE}px;")
         layout.addWidget(subtitle)
 
         layout.addSpacing(10)
@@ -139,103 +140,62 @@ class HomePanel(QWidget):
             QPushButton:hover {
                 background-color: #8bc34a;
             }
-            QPushButton:disabled {
-                background-color: #444;
-                color: #888;
-            }
         """)
         self._apply_btn.setEnabled(False)
+        self._apply_btn.setStyleSheet(Theme.STYLE_BUTTON_PRIMARY)
         self._apply_btn.clicked.connect(self._on_apply_clicked)
         actions_layout.addWidget(self._apply_btn)
 
-        self._wmi_btn = QPushButton("🔍 View WMI Info")
+        self._wmi_btn = QPushButton("View WMI Info")
+        self._wmi_btn.setStyleSheet(Theme.STYLE_BUTTON_SECONDARY)
         self._wmi_btn.clicked.connect(self._on_wmi_clicked)
         actions_layout.addWidget(self._wmi_btn)
 
         # NVIDIA Control Panel button
-        self._nvidia_btn = QPushButton("🟢 NVIDIA Control Panel")
-        self._nvidia_btn.setStyleSheet("""
-            QPushButton {
-                background-color: #76b900;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                font-size: 14px;
-                border-radius: 5px;
-            }
-            QPushButton:hover {
-                background-color: #8bc34a;
-            }
-        """)
+        self._nvidia_btn = QPushButton("NVIDIA Control Panel")
+        self._nvidia_btn.setStyleSheet(Theme.STYLE_BUTTON_SECONDARY)
         self._nvidia_btn.clicked.connect(self._on_nvidia_panel_clicked)
         actions_layout.addWidget(self._nvidia_btn)
 
         # Install VDD (Virtual Display Driver) button
-        self._vdd_btn = QPushButton("📺 Install Virtual Display")
-        self._vdd_btn.setStyleSheet("""
-            QPushButton {
-                background-color: #9c27b0;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                font-size: 14px;
-                border-radius: 5px;
-            }
-            QPushButton:hover {
-                background-color: #ab47bc;
-            }
-            QPushButton:disabled {
-                background-color: #444;
-                color: #888;
-            }
-        """)
+        self._vdd_btn = QPushButton("Install Virtual Display")
+        # Override color to Purple for VDD to distinguish it, or use Primary.
+        # Professional UI suggests consistency, let's use Primary (Green) or maybe a dedicated color?
+        # Let's use Theme.STYLE_BUTTON_PRIMARY but maybe with a slightly different text to differentiate.
+        # Actually, let's just use PRIMARY.
+        self._vdd_btn.setStyleSheet(Theme.STYLE_BUTTON_PRIMARY)
         self._vdd_btn.setEnabled(False)
         self._vdd_btn.clicked.connect(self._on_vdd_install_clicked)
         actions_layout.addWidget(self._vdd_btn)
 
         # Installation Wizard button
-        self._wizard_btn = QPushButton("🚀 Run Installation Wizard")
-        self._wizard_btn.setStyleSheet("""
-            QPushButton {
-                background-color: #1976d2;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                font-size: 14px;
-                border-radius: 5px;
-            }
-            QPushButton:hover {
-                background-color: #2196f3;
-            }
-        """)
+        self._wizard_btn = QPushButton("Installation Wizard")
+        self._wizard_btn.setStyleSheet(Theme.STYLE_BUTTON_SECONDARY)
         self._wizard_btn.clicked.connect(self._on_wizard_clicked)
         actions_layout.addWidget(self._wizard_btn)
 
         actions_layout.addStretch()
         layout.addLayout(actions_layout)
 
-        # GPU-Z Bypass toggle (v2.0.0 feature)
+        # GPU-Z Bypass toggle
         bypass_layout = QHBoxLayout()
-        self._gpuz_bypass_checkbox = QCheckBox("🛡️ Enable GPU-Z Bypass (requires built DLL)")
-        self._gpuz_bypass_checkbox.setStyleSheet("""
-            QCheckBox {
-                color: #888;
+        self._gpuz_bypass_checkbox = QCheckBox("Enable GPU-Z Bypass")
+        self._gpuz_bypass_checkbox.setStyleSheet(f"""
+            QCheckBox {{
+                color: {Theme.COLOR_TEXT_SECONDARY};
                 font-size: 12px;
-            }
-            QCheckBox::indicator {
+            }}
+            QCheckBox::indicator {{
                 width: 18px;
                 height: 18px;
-            }
-            QCheckBox::indicator:checked {
-                background-color: #76b900;
-                border: 2px solid #76b900;
+                border: 2px solid {Theme.COLOR_BORDER};
                 border-radius: 3px;
-            }
-            QCheckBox::indicator:unchecked {
-                background-color: #333;
-                border: 2px solid #555;
-                border-radius: 3px;
-            }
+                background-color: {Theme.COLOR_SURFACE};
+            }}
+            QCheckBox::indicator:checked {{
+                background-color: {Theme.COLOR_ACCENT};
+                border-color: {Theme.COLOR_ACCENT};
+            }}
         """)
         self._gpuz_bypass_checkbox.setToolTip(
             "When enabled, copies nvapi64.dll to intercept GPU-Z/HWiNFO queries.\n"
@@ -256,11 +216,11 @@ class HomePanel(QWidget):
             is_admin = False
 
         if is_admin:
-            footer = QLabel("✅ Running as Administrator - Full functionality enabled")
-            footer.setStyleSheet("color: #76b900; font-size: 11px;")
+            footer = QLabel("Admin Mode Active - Full Functionality")
+            footer.setStyleSheet(f"color: {Theme.COLOR_ACCENT}; font-size: {Theme.FONT_SMALL_SIZE}px;")
         else:
-            footer = QLabel("⚠️ Run as Administrator to apply changes to registry")
-            footer.setStyleSheet("color: #f44336; font-size: 11px;")
+            footer = QLabel("Restricted Mode - Run as Administrator Required")
+            footer.setStyleSheet(f"color: {Theme.COLOR_DANGER}; font-size: {Theme.FONT_SMALL_SIZE}px;")
         layout.addWidget(footer)
 
     def set_profile(self, profile: Optional[GPUProfile]) -> None:
@@ -296,11 +256,11 @@ class HomePanel(QWidget):
                     enabled = features.get("nvenc", False) or features.get("vce", False)
 
                 if enabled:
-                    label.setText(f"✅ {feature_name}")
-                    label.setStyleSheet("color: #76b900;")
+                    label.setText(f"{feature_name}")
+                    label.setStyleSheet(f"color: {Theme.COLOR_ACCENT}; font-weight: bold;")
                 else:
-                    label.setText(f"❌ {feature_name}")
-                    label.setStyleSheet("color: #666;")
+                    label.setText(f"{feature_name}")
+                    label.setStyleSheet(f"color: {Theme.COLOR_TEXT_SECONDARY}; text-decoration: line-through;")
 
             self._apply_btn.setEnabled(True)
             self._vdd_btn.setEnabled(True)
@@ -313,7 +273,7 @@ class HomePanel(QWidget):
             self._driver_card.set_value("--")
 
             for label in self._feature_labels.values():
-                label.setStyleSheet("color: #666;")
+                label.setStyleSheet(f"color: {Theme.COLOR_TEXT_SECONDARY};")
 
             self._apply_btn.setEnabled(False)
             self._vdd_btn.setEnabled(False)
@@ -328,8 +288,8 @@ class HomePanel(QWidget):
             "Apply GPU Profile",
             f"This will modify Windows registry to simulate:\n\n"
             f"{self._current_profile.name}\n\n"
-            f"⚠️ This requires Administrator privileges!\n"
-            f"⚠️ Create a backup first!\n\n"
+            f"Requires Administrator privileges.\n"
+            f"Create a backup first.\n\n"
             f"Continue?",
             QMessageBox.Yes | QMessageBox.No,
             QMessageBox.No
@@ -373,8 +333,8 @@ class HomePanel(QWidget):
             f"This will install a Virtual Display Driver that shows:\n\n"
             f"GPU: {self._current_profile.name}\n"
             f"VRAM: {int(self._current_profile.vram_gb * 1024)} MB\n\n"
-            f"⚠️ Requires Administrator privileges\n"
-            f"⚠️ Requires Test Signing Mode enabled\n\n"
+            f"Requires Administrator privileges.\n"
+            f"Requires Test Signing Mode enabled.\n\n"
             f"The driver will appear in DxDiag and Task Manager.\n\n"
             f"Continue?",
             QMessageBox.Yes | QMessageBox.No,

@@ -179,7 +179,7 @@ class SettingsTab(QWidget):
         ]
 
         for loc in locations:
-            loc_label = QLabel(f"  📁 {loc}")
+            loc_label = QLabel(f"  {loc}")
             loc_label.setStyleSheet(f"color: {GFE_TEXT_SECONDARY}; font-size: 11px;")
             layout.addWidget(loc_label)
 
@@ -249,7 +249,7 @@ class SettingsTab(QWidget):
         # Account info
         account_row = QHBoxLayout()
 
-        avatar = QLabel("👤")
+        avatar = QLabel("")
         avatar.setFont(QFont("Segoe UI Emoji", 36))
         avatar.setStyleSheet(f"""
             background-color: {GFE_MEDIUM_GRAY};

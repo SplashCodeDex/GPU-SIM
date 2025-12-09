@@ -41,7 +41,7 @@ class ProfileEditorPanel(QWidget):
         layout.setSpacing(15)
 
         # Header
-        header = QLabel("✏️ Profile Editor")
+        header = QLabel("Profile Editor")
         header.setFont(QFont("Segoe UI", 18, QFont.Bold))
         layout.addWidget(header)
 
@@ -80,7 +80,7 @@ class ProfileEditorPanel(QWidget):
         form_layout.addWidget(basic_group)
 
         # Memory Settings (VRAM)
-        memory_group = QGroupBox("⭐ Memory Settings")
+        memory_group = QGroupBox("Memory Settings")
         memory_form = QFormLayout(memory_group)
 
         # VRAM Size - this is the key customizable field
@@ -168,30 +168,30 @@ class ProfileEditorPanel(QWidget):
         # Action buttons
         btn_layout = QHBoxLayout()
 
-        self._save_btn = QPushButton("💾 Save Changes")
+        self._save_btn = QPushButton("Save Changes")
         self._save_btn.clicked.connect(self._save_profile)
         self._save_btn.setEnabled(False)
         btn_layout.addWidget(self._save_btn)
 
-        self._save_as_btn = QPushButton("📋 Save As New")
+        self._save_as_btn = QPushButton("Save As New")
         self._save_as_btn.clicked.connect(self._save_as_new)
         self._save_as_btn.setEnabled(False)
         btn_layout.addWidget(self._save_as_btn)
 
-        self._reset_btn = QPushButton("↩️ Reset")
+        self._reset_btn = QPushButton("Reset")
         self._reset_btn.clicked.connect(self._reset_form)
         btn_layout.addWidget(self._reset_btn)
 
         btn_layout.addStretch()
 
         # Export/Import buttons
-        self._export_btn = QPushButton("📤 Export")
+        self._export_btn = QPushButton("Export")
         self._export_btn.clicked.connect(self._export_profile)
         self._export_btn.setEnabled(False)
         self._export_btn.setToolTip("Export profile to JSON file")
         btn_layout.addWidget(self._export_btn)
 
-        self._import_btn = QPushButton("📥 Import")
+        self._import_btn = QPushButton("Import")
         self._import_btn.clicked.connect(self._import_profile)
         self._import_btn.setToolTip("Import profile from JSON file")
         btn_layout.addWidget(self._import_btn)

@@ -99,10 +99,10 @@ class GeForceExperience(QMainWindow):
         self._drivers_tab = DriversTab(self._current_profile)
         self._settings_tab = SettingsTab(self._current_profile)
 
-        self._tab_widget.addTab(self._home_tab, "🏠 HOME")
-        self._tab_widget.addTab(self._games_tab, "🎮 GAMES")
-        self._tab_widget.addTab(self._drivers_tab, "🔧 DRIVERS")
-        self._tab_widget.addTab(self._settings_tab, "⚙️ SETTINGS")
+        self._tab_widget.addTab(self._home_tab, "HOME")
+        self._tab_widget.addTab(self._games_tab, "GAMES")
+        self._tab_widget.addTab(self._drivers_tab, "DRIVERS")
+        self._tab_widget.addTab(self._settings_tab, "SETTINGS")
 
         main_layout.addWidget(self._tab_widget)
 
@@ -146,7 +146,7 @@ class GeForceExperience(QMainWindow):
 
         # GPU info badge
         if self._current_profile:
-            gpu_badge = QLabel(f"🖥️ {self._current_profile.name}")
+            gpu_badge = QLabel(f"{self._current_profile.name}")
             gpu_badge.setStyleSheet(f"""
                 background-color: rgba(118, 185, 0, 0.2);
                 color: {GFE_GREEN};

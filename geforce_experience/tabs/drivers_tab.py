@@ -100,7 +100,7 @@ class DriversTab(QWidget):
         status_layout = QHBoxLayout(status_frame)
         status_layout.setContentsMargins(15, 8, 15, 8)
 
-        status = QLabel("✓ Up to Date")
+        status = QLabel("Up to Date")
         status.setStyleSheet(f"color: {GFE_GREEN}; font-weight: bold;")
         status_layout.addWidget(status)
 
@@ -152,7 +152,7 @@ class DriversTab(QWidget):
         # Info
         left = QVBoxLayout()
 
-        badge = QLabel("🆕 NEW")
+        badge = QLabel("NEW")
         badge.setStyleSheet(f"""
             background-color: {GFE_ACCENT_YELLOW};
             color: {GFE_DARK_GRAY};

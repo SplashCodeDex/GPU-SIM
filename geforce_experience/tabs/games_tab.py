@@ -35,7 +35,7 @@ GAME_DATABASE = [
         "fps": "60",
         "ray_tracing": True,
         "dlss": "Quality",
-        "icon": "🎮"
+        "icon": "CP"
     },
     {
         "name": "Red Dead Redemption 2",
@@ -46,7 +46,7 @@ GAME_DATABASE = [
         "fps": "60",
         "ray_tracing": False,
         "dlss": "Off",
-        "icon": "🤠"
+        "icon": "RD"
     },
     {
         "name": "Elden Ring",
@@ -57,7 +57,7 @@ GAME_DATABASE = [
         "fps": "60",
         "ray_tracing": False,
         "dlss": "Off",
-        "icon": "⚔️"
+        "icon": "ER"
     },
     {
         "name": "Call of Duty: Warzone",
@@ -68,7 +68,7 @@ GAME_DATABASE = [
         "fps": "120",
         "ray_tracing": False,
         "dlss": "Performance",
-        "icon": "🎯"
+        "icon": "CS"
     },
     {
         "name": "Fortnite",
@@ -79,7 +79,7 @@ GAME_DATABASE = [
         "fps": "144",
         "ray_tracing": True,
         "dlss": "Performance",
-        "icon": "🏗️"
+        "icon": "FN"
     },
     {
         "name": "GTA V",
@@ -90,7 +90,7 @@ GAME_DATABASE = [
         "fps": "60",
         "ray_tracing": False,
         "dlss": "Off",
-        "icon": "🚗"
+        "icon": "FZ"
     },
     {
         "name": "Minecraft RTX",
@@ -101,7 +101,7 @@ GAME_DATABASE = [
         "fps": "60",
         "ray_tracing": True,
         "dlss": "Quality",
-        "icon": "🧱"
+        "icon": "MC"
     },
     {
         "name": "Apex Legends",
@@ -112,7 +112,7 @@ GAME_DATABASE = [
         "fps": "144",
         "ray_tracing": False,
         "dlss": "Off",
-        "icon": "🔫"
+        "icon": "CD"
     },
 ]
 
@@ -273,7 +273,7 @@ class GamesTab(QWidget):
         # Status badge
         status = game["status"]
         status_color = GFE_GREEN if status == "Optimized" else "#f39c12"
-        status_label = QLabel(f"● {status}")
+        status_label = QLabel(f"{status}")
         status_label.setStyleSheet(f"color: {status_color}; font-size: 11px; font-weight: bold;")
         status_label.setAlignment(Qt.AlignRight)
         header.addWidget(status_label)
@@ -310,7 +310,7 @@ class GamesTab(QWidget):
 
         # Ray Tracing indicator
         if game.get("ray_tracing"):
-            rt_label = QLabel("✨ Ray Tracing Enabled")
+            rt_label = QLabel("Ray Tracing Enabled")
             rt_label.setStyleSheet(f"color: {GFE_GREEN}; font-size: 10px; font-weight: bold;")
             layout.addWidget(rt_label)
 

@@ -166,10 +166,10 @@ class DisplayPanel(QWidget):
         # Buttons
         btn_layout = QHBoxLayout()
 
-        self._detect_btn = QPushButton("🔍 Detect Displays")
+        self._detect_btn = QPushButton("Detect Displays")
         btn_layout.addWidget(self._detect_btn)
 
-        self._identify_btn = QPushButton("1️⃣ Identify")
+        self._identify_btn = QPushButton("Identify")
         btn_layout.addWidget(self._identify_btn)
 
         btn_layout.addStretch()
@@ -189,7 +189,7 @@ class DisplayPanel(QWidget):
         layout.addStretch()
 
         # Note
-        note = QLabel("ℹ️ These settings are simulated for demonstration purposes")
+        note = QLabel("Note: These settings are simulated for demonstration purposes")
         note.setStyleSheet("color: #666; font-size: 11px;")
         layout.addWidget(note)
 

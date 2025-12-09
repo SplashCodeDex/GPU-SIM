@@ -169,7 +169,7 @@ class Settings3DPanel(QWidget):
         layout.addStretch()
 
         # Note
-        note = QLabel("ℹ️ These settings are simulated for demonstration purposes")
+        note = QLabel("Note: These settings are simulated for demonstration purposes")
         note.setStyleSheet("color: #666; font-size: 11px;")
         layout.addWidget(note)
 
