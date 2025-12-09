@@ -6,7 +6,6 @@ __pycache__/
 *$py.class
 *.so
 .Python
-build/
 develop-eggs/
 dist/
 downloads/
@@ -22,10 +21,15 @@ wheels/
 .installed.cfg
 *.egg
 
+# Build directory - ignore generated files but keep spec files
+build/**/
+build/**/*
+!build/
+!build/*.spec
+!build/build.bat
+
 # PyInstaller
 *.manifest
-*.spec
-!build/*.spec
 
 # Virtual environments
 .env
