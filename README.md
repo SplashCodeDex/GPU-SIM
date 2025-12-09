@@ -96,6 +96,30 @@ pyinstaller build/gpu_sim.spec --clean
 # Output: dist/GPU-SIM.exe
 ```
 
+### Option 4: Build Virtual Display Driver (Advanced)
+The VDD makes your fake GPU appear in Task Manager's Performance tab.
+
+**Requirements:**
+- Visual Studio 2022 with C++ Desktop Development
+- Windows Driver Kit (WDK) 10.0.26100+
+- Test-signing mode enabled
+
+```powershell
+# 1. Open solution in VS2022
+# drivers/vdd/Virtual-Display-Driver/Virtual Display Driver (HDR)/MttVDD.sln
+
+# 2. Set configuration: Release | x64
+
+# 3. Build (Ctrl+Shift+B)
+# Output: drivers/vdd/Virtual-Display-Driver/Virtual Display Driver (HDR)/x64/Release/MttVDD/
+
+# 4. Enable test-signing (Admin PowerShell, requires reboot)
+bcdedit /set testsigning on
+
+# 5. Install driver (after reboot)
+python src/vdd/vdd_installer.py install
+```
+
 ## ⚠️ Requirements
 
 - **Windows 10/11**
