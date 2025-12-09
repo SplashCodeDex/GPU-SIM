@@ -21,25 +21,32 @@ GPU-SIM simulates a GPU so convincingly that:
 - 🖥️ **9 GPU Profiles** - RTX 4090, 4080, 4070 Ti, 3090, 3080, RX 7900 XTX, RX 6800 XT, Arc A770, GTX 780 Ti
 - 📝 **Registry Spoofing** - Modify Windows registry to simulate GPU presence
 - 🔒 **Backup/Restore** - Safe registry modifications with rollback
+- 🚀 **One-Click Installer Wizard** - 5-step wizard for easy setup (NEW in v1.2.0!)
 
-### NVIDIA Control Panel (NEW!)
+### NVIDIA Control Panel
 - 🟢 **Authentic Replica** - Looks identical to the real NVIDIA Control Panel
 - 📊 **System Information** - Shows GPU name, VRAM, drivers, CUDA cores
 - ⚙️ **3D Settings** - Antialiasing, texture filtering, VSync options
 - 🖵 **Display Settings** - Resolution and refresh rate selection
 - 🌙 **Dark/Light Theme** - Toggle via View menu
 
+### GeForce Experience (NEW in v1.2.0!)
+- 🎮 **Games Tab** - 8 fake games with optimization status
+- 🔧 **Drivers Tab** - Simulated driver updates
+- ⚙️ **Settings Tab** - Account and preferences
+
 ### Live Metrics Dashboard
 - 📈 **Animated Gauges** - GPU/Memory utilization with smooth animations
 - 🌡️ **Temperature** - Fake temps with realistic idle/load curves
 - ⚡ **Power Draw** - Simulated wattage based on load
-- 🔢 **Clock Speeds** - Dynamic GPU/Memory clocks
 
 ### Additional Features
 - 📌 **System Tray** - Quick profile switching, minimize to tray
 - ✏️ **Profile Editor** - Customize VRAM with quick GB buttons
-- 🔌 **VDD Support** - Virtual Display Driver integration
-- 🛡️ **GPU-Z Bypass** - Fake adapter info generation
+- 🔌 **VDD Support** - Virtual Display Driver for Task Manager (v2.0.0)
+- 🛡️ **GPU-Z Bypass** - DXGI hook for GPU-Z/HWiNFO spoofing (v2.0.0)
+- ✅ **Verification Panel** - Checklist to verify spoofing worked (NEW!)
+
 
 ## 📁 Project Structure
 
@@ -49,18 +56,20 @@ GPU-SIM/
 │   ├── core/               # Config, profiles, GPU dataclasses
 │   ├── registry/           # Windows registry manipulation
 │   ├── wmi/                # WMI GPU monitoring
-│   ├── vdd/                # Virtual Display Driver
-│   ├── metrics/            # Fake metrics generator
-│   ├── hooks/              # GPU-Z bypass hooks
+│   ├── vdd/                # Virtual Display Driver installer
 │   └── ui/                 # PyQt5 control panel UI
 ├── nvidia_panel/           # NVIDIA Control Panel replica
 │   ├── panels/             # System Info, 3D Settings, Display
 │   └── installer.py        # Install to Program Files
+├── geforce_experience/     # GeForce Experience replica (NEW!)
+│   └── tabs/               # Games, Drivers, Settings tabs
+├── drivers/vdd/            # Virtual Display Driver (v2.0.0)
+├── injector/fakenvapi/     # GPU-Z bypass DLL (v2.0.0)
 ├── config/gpu_profiles/    # JSON GPU configurations
 ├── build/                  # PyInstaller specs
-├── tests/                  # Unit tests
-└── docs/                   # Documentation
+└── tests/                  # Unit tests
 ```
+
 
 ## 🚀 Quick Start
 

@@ -6,7 +6,7 @@ The main dashboard panel showing current GPU configuration.
 from typing import Optional
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QFrame,
-    QGroupBox, QGridLayout, QPushButton, QMessageBox
+    QGroupBox, QGridLayout, QPushButton, QMessageBox, QCheckBox
 )
 from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtCore import Qt
@@ -190,6 +190,38 @@ class HomePanel(QWidget):
 
         actions_layout.addStretch()
         layout.addLayout(actions_layout)
+
+        # GPU-Z Bypass toggle (v2.0.0 feature)
+        bypass_layout = QHBoxLayout()
+        self._gpuz_bypass_checkbox = QCheckBox("🛡️ Enable GPU-Z Bypass (requires built DLL)")
+        self._gpuz_bypass_checkbox.setStyleSheet("""
+            QCheckBox {
+                color: #888;
+                font-size: 12px;
+            }
+            QCheckBox::indicator {
+                width: 18px;
+                height: 18px;
+            }
+            QCheckBox::indicator:checked {
+                background-color: #76b900;
+                border: 2px solid #76b900;
+                border-radius: 3px;
+            }
+            QCheckBox::indicator:unchecked {
+                background-color: #333;
+                border: 2px solid #555;
+                border-radius: 3px;
+            }
+        """)
+        self._gpuz_bypass_checkbox.setToolTip(
+            "When enabled, copies nvapi64.dll to intercept GPU-Z/HWiNFO queries.\n"
+            "Requires building the DLL from injector/fakenvapi/"
+        )
+        self._gpuz_bypass_checkbox.toggled.connect(self._on_gpuz_bypass_toggled)
+        bypass_layout.addWidget(self._gpuz_bypass_checkbox)
+        bypass_layout.addStretch()
+        layout.addLayout(bypass_layout)
 
         layout.addStretch()
 
@@ -408,4 +440,42 @@ class HomePanel(QWidget):
                 self,
                 "Error",
                 f"Could not open installation wizard:\n\n{str(e)}"
+            )
+
+    def _on_gpuz_bypass_toggled(self, checked: bool) -> None:
+        """Handle GPU-Z bypass toggle."""
+        from pathlib import Path
+        import shutil
+
+        # Path to the built DLL
+        project_root = Path(__file__).parent.parent.parent.parent
+        dll_source = project_root / "injector" / "fakenvapi" / "build" / "nvapi64.dll"
+
+        if checked:
+            if not dll_source.exists():
+                QMessageBox.warning(
+                    self,
+                    "DLL Not Found",
+                    "GPU-Z bypass DLL not found!\n\n"
+                    "Please build it first:\n"
+                    "1. Open VS2022 Developer Command Prompt\n"
+                    "2. cd injector/fakenvapi\n"
+                    "3. meson setup build\n"
+                    "4. meson compile -C build"
+                )
+                self._gpuz_bypass_checkbox.setChecked(False)
+                return
+
+            QMessageBox.information(
+                self,
+                "GPU-Z Bypass Enabled",
+                "GPU-Z bypass is now active.\n\n"
+                "Copy nvapi64.dll next to GPU-Z.exe to spoof GPU info.\n"
+                f"DLL location: {dll_source}"
+            )
+        else:
+            QMessageBox.information(
+                self,
+                "GPU-Z Bypass Disabled",
+                "GPU-Z bypass has been disabled."
             )
