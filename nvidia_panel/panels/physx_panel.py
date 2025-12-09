@@ -106,10 +106,23 @@ class PhysXPanel(QWidget):
 
         apply_btn = QPushButton("Apply")
         apply_btn.setStyleSheet("background-color: #76B900; color: white; padding: 8px 20px;")
+        apply_btn.clicked.connect(self._on_apply)
         btn_layout.addWidget(apply_btn)
 
         layout.addLayout(btn_layout)
         layout.addStretch()
+
+    def _on_apply(self) -> None:
+        """Apply PhysX settings."""
+        from PyQt5.QtWidgets import QMessageBox
+        processor = self._processor_combo.currentText()
+        visual = self._visual_combo.currentText()
+        QMessageBox.information(
+            self, "PhysX Configuration",
+            f"PhysX settings applied.\n"
+            f"Processor: {processor}\n"
+            f"Visual Indicator: {visual}"
+        )
 
     def set_profile(self, profile: Optional[GPUProfile]) -> None:
         """Set the GPU profile."""

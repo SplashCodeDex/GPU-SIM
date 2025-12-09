@@ -165,10 +165,21 @@ class SurroundPanel(QWidget):
 
         apply_btn = QPushButton("Apply")
         apply_btn.setStyleSheet("background-color: #76B900; color: white; padding: 8px 20px;")
+        apply_btn.clicked.connect(self._on_apply)
         btn_layout.addWidget(apply_btn)
 
         layout.addLayout(btn_layout)
         layout.addStretch()
+
+    def _on_apply(self) -> None:
+        """Apply surround settings."""
+        from PyQt5.QtWidgets import QMessageBox
+        QMessageBox.information(
+            self, "Surround Settings",
+            f"Surround settings applied.\n"
+            f"Monitors: {self._monitor_count.value()}\n"
+            f"Bezel correction: {self._bezel_spin.value()}px"
+        )
 
     def _on_surround_changed(self, state: int) -> None:
         self._update_preview()

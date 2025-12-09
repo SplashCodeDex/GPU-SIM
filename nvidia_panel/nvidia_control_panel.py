@@ -222,13 +222,6 @@ class NVIDIAControlPanel(QMainWindow):
         surround.addChild(config_surround)
         self._nav_tree.addTopLevelItem(surround)
 
-        # Video
-        video = QTreeWidgetItem(["Video"])
-        adjust_video = QTreeWidgetItem(["Adjust video color settings"])
-        adjust_video.setData(0, Qt.UserRole, 2)
-        video.addChild(adjust_video)
-        self._nav_tree.addTopLevelItem(video)
-
         # Help
         help_item = QTreeWidgetItem(["Help"])
         sys_info = QTreeWidgetItem(["System Information"])

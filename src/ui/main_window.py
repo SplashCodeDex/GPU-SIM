@@ -342,11 +342,8 @@ class MainWindow(QMainWindow):
         # Update all panels
         self._home_panel.set_profile(profile)
         self._gpu_info_panel.set_profile(profile)
-        self._display_panel.set_profile(profile)
-        self._settings_3d_panel.set_profile(profile)
-        self._metrics_panel.set_profile(profile)
-        self._vdd_panel.set_profile(profile)
         self._profile_editor.set_profile(profile)
+        self._verification_panel.set_profile(profile)
 
         if profile:
             self._update_status(f"Selected: {profile.name}")
@@ -362,10 +359,7 @@ class MainWindow(QMainWindow):
         # Refresh all panels with updated profile
         self._home_panel.set_profile(updated_profile)
         self._gpu_info_panel.set_profile(updated_profile)
-        self._display_panel.set_profile(updated_profile)
-        self._settings_3d_panel.set_profile(updated_profile)
-        self._metrics_panel.set_profile(updated_profile)
-        self._vdd_panel.set_profile(updated_profile)
+        self._verification_panel.set_profile(updated_profile)
         # Don't update profile_editor - it triggered this
 
         # Refresh the GPU selector dropdown to show updated profile
