@@ -67,6 +67,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=str(project_root / 'Agenda' / '512x512.png') if (project_root / 'Agenda' / '512x512.png').exists() else None,
+    icon=str(project_root / 'Agenda' / '512x512.ico') if (project_root / 'Agenda' / '512x512.ico').exists() else None,
     version=None,  # Could add version info later
 )
