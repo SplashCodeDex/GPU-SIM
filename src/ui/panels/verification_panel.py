@@ -143,7 +143,14 @@ class VerificationPanel(QWidget):
 
     def __init__(self, parent: Optional[QWidget] = None):
         super().__init__(parent)
+        self._current_profile = None
         self._setup_ui()
+
+    def set_profile(self, profile) -> None:
+        """Set the current GPU profile (required by MainWindow)."""
+        self._current_profile = profile
+        # VerificationPanel doesn't need to display profile-specific info
+        # but method must exist for MainWindow._on_profile_changed
 
     def _setup_ui(self) -> None:
         """Set up the panel UI."""

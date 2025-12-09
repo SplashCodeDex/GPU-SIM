@@ -443,13 +443,24 @@ class HomePanel(QWidget):
             )
 
     def _on_gpuz_bypass_toggled(self, checked: bool) -> None:
-        """Handle GPU-Z bypass toggle."""
+        """Handle GPU-Z bypass toggle - auto-copies nvapi64.dll to known app folders."""
         from pathlib import Path
         import shutil
+        import os
 
         # Path to the built DLL
         project_root = Path(__file__).parent.parent.parent.parent
-        dll_source = project_root / "injector" / "fakenvapi" / "build" / "nvapi64.dll"
+        dll_source = project_root / "injector" / "fakenvapi" / "build" / "src" / "nvapi64.dll"
+
+        # Common installation paths for GPU monitoring tools
+        target_folders = [
+            Path(os.environ.get('PROGRAMFILES(X86)', 'C:\\Program Files (x86)')) / "GPU-Z",
+            Path(os.environ.get('PROGRAMFILES', 'C:\\Program Files')) / "GPU-Z",
+            Path(os.environ.get('LOCALAPPDATA', '')) / "Programs" / "GPU-Z",
+            Path(os.environ.get('PROGRAMFILES(X86)', 'C:\\Program Files (x86)')) / "CPUID" / "HWMonitor",
+            Path(os.environ.get('PROGRAMFILES', 'C:\\Program Files')) / "HWINFO64",
+            Path(os.environ.get('PROGRAMFILES(X86)', 'C:\\Program Files (x86)')) / "FinalWire" / "AIDA64 Extreme",
+        ]
 
         if checked:
             if not dll_source.exists():
@@ -457,25 +468,65 @@ class HomePanel(QWidget):
                     self,
                     "DLL Not Found",
                     "GPU-Z bypass DLL not found!\n\n"
-                    "Please build it first:\n"
-                    "1. Open VS2022 Developer Command Prompt\n"
-                    "2. cd injector/fakenvapi\n"
-                    "3. meson setup build\n"
-                    "4. meson compile -C build"
+                    f"Expected location:\n{dll_source}\n\n"
+                    "Please build it first using VS2022 Developer Command Prompt:\n"
+                    "cd injector/fakenvapi && meson setup build && ninja -C build"
                 )
                 self._gpuz_bypass_checkbox.setChecked(False)
                 return
 
-            QMessageBox.information(
-                self,
-                "GPU-Z Bypass Enabled",
-                "GPU-Z bypass is now active.\n\n"
-                "Copy nvapi64.dll next to GPU-Z.exe to spoof GPU info.\n"
-                f"DLL location: {dll_source}"
-            )
+            # Copy to all found target folders
+            copied_to = []
+            for folder in target_folders:
+                if folder.exists():
+                    try:
+                        target = folder / "nvapi64.dll"
+                        shutil.copy2(dll_source, target)
+                        copied_to.append(str(folder))
+                    except PermissionError:
+                        pass  # Skip folders we can't write to
+                    except Exception:
+                        pass
+
+            if copied_to:
+                QMessageBox.information(
+                    self,
+                    "GPU-Z Bypass Enabled",
+                    f"nvapi64.dll copied to {len(copied_to)} location(s):\n\n" +
+                    "\n".join(f"• {p}" for p in copied_to) +
+                    "\n\nRestart GPU-Z/HWiNFO to see spoofed GPU info."
+                )
+            else:
+                # No folders found, show manual copy instructions
+                QMessageBox.information(
+                    self,
+                    "GPU-Z Bypass Enabled",
+                    "GPU-Z/HWiNFO not found in default locations.\n\n"
+                    "Manually copy nvapi64.dll to your GPU-Z folder:\n"
+                    f"{dll_source}"
+                )
         else:
-            QMessageBox.information(
-                self,
-                "GPU-Z Bypass Disabled",
-                "GPU-Z bypass has been disabled."
-            )
+            # Remove the DLL from target folders
+            removed_from = []
+            for folder in target_folders:
+                target = folder / "nvapi64.dll"
+                if target.exists():
+                    try:
+                        target.unlink()
+                        removed_from.append(str(folder))
+                    except Exception:
+                        pass
+
+            if removed_from:
+                QMessageBox.information(
+                    self,
+                    "GPU-Z Bypass Disabled",
+                    f"nvapi64.dll removed from {len(removed_from)} location(s).\n\n"
+                    "Restart GPU-Z/HWiNFO to see original GPU info."
+                )
+            else:
+                QMessageBox.information(
+                    self,
+                    "GPU-Z Bypass Disabled",
+                    "GPU-Z bypass has been disabled."
+                )

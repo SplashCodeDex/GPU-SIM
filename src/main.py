@@ -168,10 +168,10 @@ def main():
     setup_logging(args.debug)
 
     print("""
-    ╔═══════════════════════════════════════════╗
-    ║           GPU-SIM Control Panel           ║
-    ║      Virtual GPU Simulator for Windows    ║
-    ╚═══════════════════════════════════════════╝
+    +-------------------------------------------+
+    |           GPU-SIM Control Panel           |
+    |      Virtual GPU Simulator for Windows    |
+    +-------------------------------------------+
     """)
 
     if args.cli or args.list or args.wmi or (args.profile and args.apply):
@@ -179,12 +179,12 @@ def main():
     else:
         # GUI mode - check for admin privileges
         if not is_admin():
-            print("    ⚠️  Administrator privileges required for full functionality.")
-            print("    🔄 Requesting elevation...")
+            print("    [!] Administrator privileges required for full functionality.")
+            print("    [*] Requesting elevation...")
             if request_admin():
                 sys.exit(0)  # Exit this instance, elevated one will run
             else:
-                print("    ⚠️  Running without admin - some features may not work.")
+                print("    [!] Running without admin - some features may not work.")
 
         run_gui()
 
