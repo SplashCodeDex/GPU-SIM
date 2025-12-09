@@ -1,0 +1,76 @@
+{
+    "id": "nvidia_rtx_3060",
+    "name": "NVIDIA GeForce RTX 3060",
+    "manufacturer": "NVIDIA Corporation",
+    "driver_version": "546.65",
+    "driver_date": "2024-01-15",
+    "vram_mb": 12288,
+    "vram_type": "GDDR6",
+    "memory_bus_width": 192,
+    "base_clock_mhz": 1320,
+    "boost_clock_mhz": 1777,
+    "memory_clock_mhz": 15000,
+    "cuda_cores": 3584,
+    "stream_processors": 0,
+    "tdp_watts": 170,
+    "pci_device_id": "10DE-2503",
+    "pci_vendor_id": "10DE",
+    "video_processor": "NVIDIA GeForce RTX 3060",
+    "dac_type": "Integrated RAMDAC",
+    "adapter_compatibility": "NVIDIA",
+    "features": {
+        "ray_tracing": true,
+        "dlss": true,
+        "dlss_version": "2.0",
+        "cuda": true,
+        "nvenc": true,
+        "av1_encode": false,
+        "directx": "12 Ultimate",
+        "opengl": "4.6",
+        "vulkan": "1.2"
+    },
+    "display_modes": [
+        {
+            "width": 3840,
+            "height": 2160,
+            "refresh": 60
+        },
+        {
+            "width": 2560,
+            "height": 1440,
+            "refresh": 144
+        },
+        {
+            "width": 1920,
+            "height": 1080,
+            "refresh": 240
+        }
+    ],
+    "registry_entries": {
+        "HardwareInformation.AdapterString": "NVIDIA GeForce RTX 3060",
+        "HardwareInformation.BiosString": "Version 94.06.16.00.16",
+        "HardwareInformation.ChipType": "GA106",
+        "HardwareInformation.DACType": "Integrated RAMDAC",
+        "HardwareInformation.MemorySize": 12884901888,
+        "ProviderName": "NVIDIA",
+        "DriverDesc": "NVIDIA GeForce RTX 3060"
+    },
+    "wmi_data": {
+        "AdapterRAM": 12884901888,
+        "VideoProcessor": "NVIDIA GeForce RTX 3060",
+        "VideoModeDescription": "2560 x 1440 x 4294967296 colors",
+        "AdapterCompatibility": "NVIDIA",
+        "Status": "OK"
+    },
+    "nvapi_data": {
+        "gpu_type": "DISCRETE",
+        "architecture": "Ampere",
+        "bus_type": "PCI Express x16 Gen4",
+        "thermal_limit_c": 83,
+        "power_limit_percent": 100
+    },
+    "hardware_ids": {
+        "pnp_id": "PCI\\VEN_10DE&DEV_2503&SUBSYS_250310DE&REV_A1",
+        "instance_id": "PCI\\VEN_10DE&DEV_2503&SUBSYS_250310DE&REV_A1\\4&12345678&0&0008"
+    }
+}

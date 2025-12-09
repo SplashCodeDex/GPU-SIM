@@ -18,7 +18,7 @@ GPU-SIM simulates a GPU so convincingly that:
 ## ✨ Features
 
 ### Core Simulation
-- 🖥️ **9 GPU Profiles** - RTX 4090, 4080, 4070 Ti, 3090, 3080, RX 7900 XTX, RX 6800 XT, Arc A770, GTX 780 Ti
+- 🖥️ **12 GPU Profiles** - RTX 4090, 4080, 4070 Ti, 4060, 3090, 3080, 3060, GTX 1080 Ti, GTX 780 Ti, RX 7900 XTX, RX 6800 XT, Arc A770
 - 📝 **Registry Spoofing** - Modify Windows registry to simulate GPU presence
 - 🔒 **Backup/Restore** - Safe registry modifications with rollback
 - 🚀 **One-Click Installer Wizard** - 5-step wizard for easy setup (NEW in v1.2.0!)
