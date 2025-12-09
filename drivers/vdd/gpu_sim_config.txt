@@ -1,0 +1,12 @@
+# GPU-SIM Virtual Display Driver Configuration
+# This file is read by the IddSampleDriver to set the virtual GPU name
+# Location: C:\IddSampleDriver\gpu_sim_config.txt
+
+# GPU Name (appears in Device Manager and system info)
+NVIDIA GeForce GTX 780 Ti
+
+# Manufacturer
+NVIDIA Corporation
+
+# DO NOT EDIT BELOW THIS LINE
+# Resolution config follows in option.txt
