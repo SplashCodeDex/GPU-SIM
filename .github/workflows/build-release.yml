@@ -19,15 +19,16 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        submodules: recursive
+        submodules: 'recursive'
+        fetch-depth: 0
 
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-        cache: 'pip'
 
     - name: Install Python dependencies
+      shell: pwsh
       run: |
         python -m pip install --upgrade pip
         pip install pyinstaller pyqt5 wmi
