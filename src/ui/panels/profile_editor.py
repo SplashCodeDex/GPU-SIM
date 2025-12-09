@@ -7,7 +7,7 @@ from typing import Optional
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QGroupBox,
     QPushButton, QLineEdit, QSpinBox, QComboBox, QFormLayout,
-    QMessageBox, QScrollArea, QFrame
+    QMessageBox, QScrollArea, QFrame, QFileDialog
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt, pyqtSignal
@@ -182,6 +182,20 @@ class ProfileEditorPanel(QWidget):
         self._reset_btn.clicked.connect(self._reset_form)
         btn_layout.addWidget(self._reset_btn)
 
+        btn_layout.addStretch()
+
+        # Export/Import buttons
+        self._export_btn = QPushButton("📤 Export")
+        self._export_btn.clicked.connect(self._export_profile)
+        self._export_btn.setEnabled(False)
+        self._export_btn.setToolTip("Export profile to JSON file")
+        btn_layout.addWidget(self._export_btn)
+
+        self._import_btn = QPushButton("📥 Import")
+        self._import_btn.clicked.connect(self._import_profile)
+        self._import_btn.setToolTip("Import profile from JSON file")
+        btn_layout.addWidget(self._import_btn)
+
         layout.addLayout(btn_layout)
 
     def _update_form_from_profile(self, profile: GPUProfile) -> None:
@@ -214,6 +228,7 @@ class ProfileEditorPanel(QWidget):
 
         self._save_btn.setEnabled(True)
         self._save_as_btn.setEnabled(True)
+        self._export_btn.setEnabled(True)
 
     def _get_profile_from_form(self) -> Optional[GPUProfile]:
         """Create a GPUProfile from form fields."""
@@ -315,6 +330,78 @@ class ProfileEditorPanel(QWidget):
         if self._current_profile:
             self._update_form_from_profile(self._current_profile)
 
+    def _export_profile(self) -> None:
+        """Export current profile to external JSON file."""
+        if not self._current_profile:
+            return
+
+        # Get save file path
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Export GPU Profile",
+            f"{self._current_profile.id}.json",
+            "GPU Profile (*.json);;All Files (*)"
+        )
+
+        if not file_path:
+            return  # User cancelled
+
+        try:
+            from pathlib import Path
+            success = self._config_manager.export_profile(
+                self._current_profile.id,
+                Path(file_path)
+            )
+
+            if success:
+                QMessageBox.information(
+                    self, "Exported",
+                    f"Profile '{self._current_profile.name}' exported successfully!\n\n"
+                    f"File: {file_path}"
+                )
+            else:
+                QMessageBox.warning(self, "Warning", "Export failed. Check logs for details.")
+
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to export: {e}")
+
+    def _import_profile(self) -> None:
+        """Import profile from external JSON file."""
+        # Get file to import
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Import GPU Profile",
+            "",
+            "GPU Profile (*.json);;All Files (*)"
+        )
+
+        if not file_path:
+            return  # User cancelled
+
+        try:
+            from pathlib import Path
+            profile = self._config_manager.import_profile(Path(file_path))
+
+            if profile:
+                # Set as current profile
+                self._current_profile = profile
+                self._update_form_from_profile(profile)
+                self.profile_updated.emit(profile)
+
+                QMessageBox.information(
+                    self, "Imported",
+                    f"Profile '{profile.name}' imported successfully!\n\n"
+                    f"VRAM: {profile.vram_mb // 1024} GB"
+                )
+            else:
+                QMessageBox.warning(
+                    self, "Warning",
+                    "Import failed. File may be invalid or corrupted."
+                )
+
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to import: {e}")
+
     def set_profile(self, profile: Optional[GPUProfile]) -> None:
         """Set the profile to edit."""
         self._current_profile = profile
@@ -324,3 +411,4 @@ class ProfileEditorPanel(QWidget):
         else:
             self._save_btn.setEnabled(False)
             self._save_as_btn.setEnabled(False)
+            self._export_btn.setEnabled(False)

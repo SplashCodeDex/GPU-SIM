@@ -72,6 +72,12 @@ class GPUProfile:
     # Additional features
     features: Dict[str, Any] = field(default_factory=dict)
 
+    # Detection bypass data (for GPU-Z, Speccy, HWiNFO spoofing)
+    wmi_data: Dict[str, Any] = field(default_factory=dict)       # Win32_VideoController overrides
+    nvapi_data: Dict[str, Any] = field(default_factory=dict)     # NVIDIA NVAPI SDK overrides
+    adl_data: Dict[str, Any] = field(default_factory=dict)       # AMD ADL SDK overrides
+    hardware_ids: Dict[str, str] = field(default_factory=dict)   # PNP/SMBIOS device IDs
+
     @property
     def vram_bytes(self) -> int:
         """Get VRAM in bytes."""
@@ -137,6 +143,10 @@ class GPUProfile:
             "registry_entries": self.registry_entries,
             "display_modes": [m.to_dict() for m in self.display_modes],
             "features": self.features,
+            "wmi_data": self.wmi_data,
+            "nvapi_data": self.nvapi_data,
+            "adl_data": self.adl_data,
+            "hardware_ids": self.hardware_ids,
         }
 
     @classmethod
@@ -176,6 +186,10 @@ class GPUProfile:
             registry_entries=data.get("registry_entries", {}),
             display_modes=display_modes,
             features=data.get("features", {}),
+            wmi_data=data.get("wmi_data", {}),
+            nvapi_data=data.get("nvapi_data", {}),
+            adl_data=data.get("adl_data", {}),
+            hardware_ids=data.get("hardware_ids", {}),
         )
 
     def __str__(self) -> str:

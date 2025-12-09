@@ -237,6 +237,103 @@ class TestConfigManager:
 
         assert manager.get_profile("test_profile") is None
 
+    def test_export_profile(self, temp_profiles_dir):
+        """Test exporting a profile to external JSON file."""
+        manager = ConfigManager(profiles_dir=str(temp_profiles_dir))
+        manager.load_profiles()
+
+        export_path = temp_profiles_dir.parent / "exported" / "test_export.json"
+        success = manager.export_profile("test_profile", export_path)
+
+        assert success is True
+        assert export_path.exists()
+
+        # Verify exported content
+        import json
+        with open(export_path, "r") as f:
+            data = json.load(f)
+
+        assert "_export_metadata" in data
+        assert data["_export_metadata"]["source_app"] == "GPU-SIM"
+        assert data["name"] == "Test Profile GPU"
+
+    def test_export_profile_not_found(self, temp_profiles_dir):
+        """Test exporting a non-existent profile."""
+        manager = ConfigManager(profiles_dir=str(temp_profiles_dir))
+        manager.load_profiles()
+
+        export_path = temp_profiles_dir.parent / "exported" / "test_export.json"
+        success = manager.export_profile("nonexistent_profile", export_path)
+
+        assert success is False
+        assert not export_path.exists()
+
+    def test_import_profile(self, temp_profiles_dir):
+        """Test importing a profile from external JSON file."""
+        manager = ConfigManager(profiles_dir=str(temp_profiles_dir))
+        manager.load_profiles()
+
+        # Create external profile file to import
+        import_data = {
+            "_export_metadata": {
+                "export_version": "1.0",
+                "source_app": "GPU-SIM"
+            },
+            "id": "imported_gpu",
+            "name": "Imported GPU",
+            "manufacturer": "Test Manufacturer",
+            "driver_version": "1.0.0"
+        }
+
+        import_path = temp_profiles_dir.parent / "import_test.json"
+        import json
+        with open(import_path, "w") as f:
+            json.dump(import_data, f)
+
+        profile = manager.import_profile(import_path)
+
+        assert profile is not None
+        assert profile.id == "imported_gpu"
+        assert profile.name == "Imported GPU"
+        assert manager.get_profile("imported_gpu") is not None
+
+    def test_import_profile_collision(self, temp_profiles_dir):
+        """Test importing a profile with conflicting ID."""
+        manager = ConfigManager(profiles_dir=str(temp_profiles_dir))
+        manager.load_profiles()
+
+        # Create profile with same ID as existing
+        import_data = {
+            "id": "test_profile",  # Collision with existing
+            "name": "Conflicting GPU",
+            "manufacturer": "Test",
+            "driver_version": "1.0.0"
+        }
+
+        import_path = temp_profiles_dir.parent / "collision_test.json"
+        import json
+        with open(import_path, "w") as f:
+            json.dump(import_data, f)
+
+        profile = manager.import_profile(import_path, overwrite=False)
+
+        assert profile is not None
+        # ID should be modified to avoid collision
+        assert profile.id != "test_profile"
+        assert profile.id.startswith("test_profile_")
+
+    def test_import_invalid_json(self, temp_profiles_dir):
+        """Test importing an invalid JSON file."""
+        manager = ConfigManager(profiles_dir=str(temp_profiles_dir))
+
+        import_path = temp_profiles_dir.parent / "invalid.json"
+        with open(import_path, "w") as f:
+            f.write("{ not valid json }")
+
+        profile = manager.import_profile(import_path)
+
+        assert profile is None
+
 
 # Run tests if executed directly
 if __name__ == "__main__":

@@ -17,6 +17,7 @@
     "pci_vendor_id": "10DE",
     "video_processor": "NVIDIA GeForce RTX 4090",
     "dac_type": "Integrated RAMDAC",
+    "adapter_compatibility": "NVIDIA",
     "features": {
         "ray_tracing": true,
         "dlss": true,
@@ -45,19 +46,9 @@
             "refresh": 144
         },
         {
-            "width": 3840,
-            "height": 2160,
-            "refresh": 120
-        },
-        {
             "width": 2560,
             "height": 1440,
             "refresh": 360
-        },
-        {
-            "width": 2560,
-            "height": 1440,
-            "refresh": 240
         },
         {
             "width": 1920,
@@ -70,7 +61,26 @@
         "HardwareInformation.BiosString": "Version 95.02.3C.00.03",
         "HardwareInformation.ChipType": "AD102",
         "HardwareInformation.DACType": "Integrated RAMDAC",
-        "HardwareInformation.MemorySize": "0x600000000",
+        "HardwareInformation.MemorySize": 25769803776,
+        "ProviderName": "NVIDIA",
         "DriverDesc": "NVIDIA GeForce RTX 4090"
+    },
+    "wmi_data": {
+        "AdapterRAM": 25769803776,
+        "VideoProcessor": "NVIDIA GeForce RTX 4090",
+        "VideoModeDescription": "3840 x 2160 x 4294967296 colors",
+        "AdapterCompatibility": "NVIDIA",
+        "Status": "OK"
+    },
+    "nvapi_data": {
+        "gpu_type": "DISCRETE",
+        "architecture": "Ada Lovelace",
+        "bus_type": "PCI Express x16 Gen4",
+        "thermal_limit_c": 83,
+        "power_limit_percent": 100
+    },
+    "hardware_ids": {
+        "pnp_id": "PCI\\VEN_10DE&DEV_2684&SUBSYS_268410DE&REV_A1",
+        "instance_id": "PCI\\VEN_10DE&DEV_2684&SUBSYS_268410DE&REV_A1\\4&12345678&0&0008"
     }
 }
