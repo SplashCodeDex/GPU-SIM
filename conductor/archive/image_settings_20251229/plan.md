@@ -19,7 +19,7 @@
 - [x] Task: Conductor - User Manual Verification 'Visual Effects (The "WOW" Factor)' (Protocol in workflow.md) [aaa9485]
 
 ## Phase 3: Final Verification
-- [ ] Task: Full UX Walkthrough
-    - [ ] Sub-task: Move slider to Performance, verify logo looks "worse" and spins slower.
-    - [ ] Sub-task: Click Apply, wait for cursor change, restart app, and verify settings persisted.
-- [ ] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)
+- [x] Task: Full UX Walkthrough [7dc4507]
+    - [x] Sub-task: Move slider to Performance, verify logo looks "worse" and spins slower.
+    - [x] Sub-task: Click Apply, wait for cursor change, restart app, and verify settings persisted.
+- [x] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md) [7dc4507]

@@ -11,6 +11,7 @@
 *   **Configuration Management:** `SimulationService` loads static hardware definitions from `config/gpu_config.json`, enabling external control of the spoofed identity.
 *   **System Integration:** `RegistrySpoofService` provides on-demand UAC elevation to write spoofed hardware data into `HKLM` registry keys, ensuring external Windows tools report the simulated values.
 *   **UX Simulation:** `FlickerService` and `ConfirmationService` replicate hardware-level behaviors like screen blackouts and timeout-based confirmation dialogs during display reconfigurations.
+*   **Visual Fidelity:** Dynamic XAML scaling and custom value converters (e.g., `DoubleToDurationConverter`) simulate hardware rendering constraints in the 3D preview without impacting real-time performance.
 
 ## Quality & Standards
 *   **Static Analysis:** 

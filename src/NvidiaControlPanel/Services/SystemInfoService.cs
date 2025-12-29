@@ -4,7 +4,7 @@ using NvidiaControlPanel.Models;
 namespace NvidiaControlPanel.Services
 {
     /// <summary>
-    /// Provdes system information about the simulated hardware.
+    /// Provides system information about the simulated hardware.
     /// </summary>
     public class SystemInfoService : ISystemInfoService
     {

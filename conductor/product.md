@@ -25,6 +25,7 @@ To create a sophisticated simulation environment that mimics the presence of ded
 *   **High-Fidelity UI:** A WPF-based interface that strictly adheres to the visual style of the legacy NVIDIA Control Panel.
 *   **One-Click "Installation":** A hidden trigger in the System Information dialog that applies the spoof system-wide with a UAC elevation prompt.
 *   **Display Simulation:** Authentic "Change Resolution" page supporting elite resolutions (2K) and high refresh rates (144Hz) with simulated hardware mode switching (screen flicker) and confirmation timers.
+*   **Interactive 3D Preview:** High-fidelity "Adjust Image Settings" page featuring a reactive 3D NVIDIA logo that visually demonstrates the impact of "Performance vs. Quality" choices using real-time pixelation and animation speed changes.
 *   **Static Configuration:** Loads hardware definitions from `config/gpu_config.json` for easy manual spoofing.
 
 ## 5. User Flow

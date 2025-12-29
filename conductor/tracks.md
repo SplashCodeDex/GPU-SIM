@@ -1,6 +1,7 @@
----
+# Project Tracks
 
-## [~] Track: Enhance Adjust Image Settings with Visual Fidelity & Persistence
-*Link: [./conductor/tracks/image_settings_20251229/](./conductor/tracks/image_settings_20251229/)*
+This file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.
+
+
 
 
