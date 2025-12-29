@@ -1,0 +1,31 @@
+# Project: NVIDIA Control Panel Clone (WPF/C# .NET 10)
+
+## Core Philosophy
+This project is a high-fidelity clone of the NVIDIA Control Panel. All UI elements must be **pixel-perfect** copies of the real application. The architecture must be clean, testable, and maintainable.
+
+## Architectural Rules (Strict)
+1.  **MVVM Pattern**: You MUST use the Model-View-ViewModel pattern for all UI development.
+    *   **Views (`Views/`)**: XAML files only. **ABSOLUTELY NO LOGIC** in `*.xaml.cs` (Code-Behind) except for standard `InitializeComponent()` and `DataContext` assignment.
+    *   **ViewModels (`ViewModels/`)**: All presentation logic, state, and commands reside here. Inherit from `ViewModelBase`.
+    *   **Services (`Services/`)**: All system interactions (Registry, File System, Process Spoofing) must be behind functionality-specific Interfaces (e.g., `IRegistryService`).
+
+2.  **Data Binding**:
+    *   Use `ICommand` (via `RelayCommand`) for all button clicks and interactions. DO NOT use `Click=""` event handlers in XAML.
+    *   Use `INotifyPropertyChanged` (via `SetProperty`) for all bound properties.
+
+3.  **Dependency Injection**:
+    *   Services should be injected into ViewModels via constructor injection.
+
+## Coding Style
+*   **Language**: C# 12 / .NET 10.
+*   **Formatting**: Allman style braces (newlines).
+*   **Naming**: PascalCase for public members, _camelCase for private fields.
+*   **File Scoped Namespaces**: Use `namespace NvidiaControlPanel.Views;` instead of block-scoped namespaces to save indentation.
+
+## System Integration Rules
+*   **Safety**: When modifying the Registry, ALWAYS wrap in `try/catch` and log/debug-write the error. Never crash the app due to access denied.
+*   **Paths**: Use `AppDomain.CurrentDomain.BaseDirectory` or `Process.GetCurrentProcess().MainModule.FileName` for reliable path resolution.
+
+## AI Behavior
+*   When asked to implementing a feature, **ALWAYS** start by defining the Interface in `Services/` (if data/system needed) and the ViewModel properties/commands, BEFORE touching the XAML.
+*   If you see code in `MainWindow.xaml.cs` that isn't `InitializeComponent` or `DataContext`, **REFACTOR IT** immediately.

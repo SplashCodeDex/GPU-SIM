@@ -1,0 +1,134 @@
+<Window x:Class="NvidiaControlPanel.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="NVIDIA Control Panel" Height="700" Width="1100"
+        Icon="pack://application:,,,/icon.ico"
+        Background="#F0F0F0">
+    <Window.Resources>
+        <!-- Standard Nvidia-ish Style for TreeView -->
+        <Style TargetType="TreeViewItem">
+            <Setter Property="IsExpanded" Value="True"/>
+            <Setter Property="Padding" Value="5,2"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="#333"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Menu -->
+            <RowDefinition Height="Auto"/> <!-- Toolbar -->
+            <RowDefinition Height="*"/>    <!-- Content -->
+            <RowDefinition Height="Auto"/> <!-- Status -->
+        </Grid.RowDefinitions>
+
+        <!-- Menu -->
+        <Menu Grid.Row="0" Background="White" BorderBrush="#E5E5E5" BorderThickness="0,0,0,1" Padding="5">
+            <MenuItem Header="File">
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Edit"/>
+            <MenuItem Header="Desktop">
+               <MenuItem Header="Add Desktop Context Menu"
+                         IsCheckable="True"
+                         IsChecked="{Binding IsContextMenuEnabled}"
+                         Command="{Binding ToggleContextMenuCommand}"/>
+               <MenuItem Header="Show Notification Tray Icon" IsCheckable="True" IsChecked="True"/>
+            </MenuItem>
+            <MenuItem Header="3D Settings"/>
+            <MenuItem Header="Help">
+                <MenuItem Header="System Information..." Command="{Binding ShowSystemInfoCommand}"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- ToolBar Area -->
+        <Border Grid.Row="1" Background="White" Padding="10" BorderBrush="#CCCCCC" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal">
+                 <Button Content="Back" Width="60" IsEnabled="False" Margin="0,0,10,0"/>
+                 <Button Content="Forward" Width="60" IsEnabled="False"/>
+                 <TextBlock Text="Standard Tasks" VerticalAlignment="Center" FontWeight="SemiBold" Margin="10,0,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Body -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Sidebar -->
+            <Border Grid.Column="0" Background="White" BorderBrush="#CCCCCC" BorderThickness="0,0,1,0" Padding="0,10">
+                <TreeView Name="TaskTree" BorderThickness="0">
+                     <TreeViewItem Header="3D Settings">
+                        <TreeViewItem Header="Adjust image settings with preview" FontWeight="Bold" Foreground="#0078D7"/>
+                        <TreeViewItem Header="Manage 3D settings"/>
+                        <TreeViewItem Header="Configure Surround, PhysX"/>
+                    </TreeViewItem>
+                    <TreeViewItem Header="Display">
+                        <TreeViewItem Header="Change resolution"/>
+                        <TreeViewItem Header="Adjust desktop color settings"/>
+                        <TreeViewItem Header="Rotate display"/>
+                        <TreeViewItem Header="View HDCP status"/>
+                        <TreeViewItem Header="Set up digital audio"/>
+                        <TreeViewItem Header="Adjust desktop size and position"/>
+                        <TreeViewItem Header="Set up multiple displays"/>
+                    </TreeViewItem>
+                    <TreeViewItem Header="Video">
+                       <TreeViewItem Header="Adjust video color settings"/>
+                       <TreeViewItem Header="Adjust video image settings"/>
+                    </TreeViewItem>
+                </TreeView>
+            </Border>
+
+            <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="#F0F0F0"/>
+
+            <!-- Right Content -->
+            <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+                <Grid Margin="20">
+                     <StackPanel>
+                        <TextBlock Text="Adjust image settings with preview" FontSize="18" Foreground="#0078D7" Margin="0,0,0,10"/>
+                        <TextBlock Text="Preview your changes on the 3D application." Margin="0,0,0,20" Foreground="#555"/>
+
+                        <!-- Pseudo 3D Preview -->
+                        <Border BorderBrush="Gray" BorderThickness="1" Height="350" Background="#333" Margin="0,0,0,20">
+                             <Grid>
+                                 <TextBlock Text="NVIDIA" Foreground="#76B900"
+                                            FontSize="60" FontWeight="Bold"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Opacity="0.8">
+                                     <TextBlock.Effect>
+                                         <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="5"/>
+                                     </TextBlock.Effect>
+                                 </TextBlock>
+                                 <!-- Spinning functionality would require logic -->
+                                 <TextBlock Text="[Rotating 3D Logo Placeholder]" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10"/>
+                             </Grid>
+                        </Border>
+
+                        <RadioButton GroupName="Settings" Content="Let the 3D application decide" Margin="0,5"/>
+                         <RadioButton GroupName="Settings" Content="Use the advanced 3D image settings" Margin="0,5"/>
+                        <RadioButton GroupName="Settings" Content="Use my preference emphasizing:" IsChecked="True" Margin="0,5"/>
+
+                        <Slider Minimum="0" Maximum="100" Value="50" Margin="20,5,20,5" TickPlacement="BottomRight" TickFrequency="10"/>
+                        <DockPanel Margin="20,0">
+                            <TextBlock Text="Performance" DockPanel.Dock="Left"/>
+                            <TextBlock Text="Quality" DockPanel.Dock="Right"/>
+                            <Border/>
+                        </DockPanel>
+                     </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
+        <!-- Footer -->
+        <StatusBar Grid.Row="3" Background="#F0F0F0">
+            <StatusBarItem>
+                <TextBlock Text="System Information: NVIDIA GeForce GTX 1650"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
