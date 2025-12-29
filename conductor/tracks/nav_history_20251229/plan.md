@@ -14,7 +14,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: ViewModel Integration' (Protocol in workflow.md) 92c37b6
 
 ## Phase 3: UI Enhancement [ ]
-- [ ] Task: Bind toolbar Back/Forward buttons to `MainViewModel` commands in `MainWindow.xaml`.
-- [ ] Task: Update button styles to handle enabled/disabled visual states.
-- [ ] Task: Implement dynamic tooltips for navigation buttons based on history names.
+- [x] Task: Bind toolbar Back/Forward buttons to `MainViewModel` commands in `MainWindow.xaml`. eb8de6f
+- [x] Task: Update button styles to handle enabled/disabled visual states. eb8de6f
+- [x] Task: Implement dynamic tooltips for navigation buttons based on history names. eb8de6f
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: UI Enhancement' (Protocol in workflow.md)
