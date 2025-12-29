@@ -11,7 +11,7 @@
 - [x] Task: Write unit tests for `MainViewModel` navigation commands and button state logic. 4302f01
 - [x] Task: Implement `BackCommand` and `ForwardCommand` in `MainViewModel`. 4302f01
 - [x] Task: Update `ExecuteNavigate` to record history via the service (excluding Home). 4302f01
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: ViewModel Integration' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 2: ViewModel Integration' (Protocol in workflow.md)
 
 ## Phase 3: UI Enhancement [ ]
 - [ ] Task: Bind toolbar Back/Forward buttons to `MainViewModel` commands in `MainWindow.xaml`.
