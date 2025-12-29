@@ -50,10 +50,17 @@
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="Padding" Value="15,8"/>
                 <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    </Setter.Value>
+                </Setter>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}"
+                            <Border x:Name="border"
+                                    Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="4">
@@ -62,9 +69,19 @@
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter Property="Background" Value="{StaticResource NvidiaGreenAltBrush}"/>
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                                        </Setter.Value>
+                                    </Setter>
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="True">
                                     <Setter Property="Opacity" Value="0.8"/>
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                        </Setter.Value>
+                                    </Setter>
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="Background" Value="#CCCCCC"/>
@@ -241,7 +258,16 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <!-- Selection Highlight -->
+                                <!-- Hover Highlight Layer (Animate Opacity) -->
+                                <Border x:Name="HoverBorder"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="2"
+                                        Background="#F5F5F5"
+                                        CornerRadius="4"
+                                        Opacity="0"
+                                        IsHitTestVisible="False"/>
+
+                                <!-- Selection Highlight Layer & Content Container -->
                                 <Border x:Name="Bd"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
@@ -269,22 +295,37 @@
                                 <Trigger Property="IsExpanded" Value="true">
                                     <Setter TargetName="ItemsHost" Property="Visibility" Value="Visible"/>
                                 </Trigger>
+
+                                <!-- Selection State -->
                                 <Trigger Property="IsSelected" Value="true">
                                     <Setter TargetName="Bd" Property="Background" Value="{StaticResource NvidiaGreenBrush}"/>
                                     <Setter Property="Foreground" Value="White"/>
                                     <Setter Property="FontWeight" Value="SemiBold"/>
                                 </Trigger>
+
+                                <!-- MouseOver State (Smooth Fade) -->
                                 <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter TargetName="Bd" Property="Background" Value="#F5F5F5"/>
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="HoverBorder"
+                                                                 Storyboard.TargetProperty="Opacity"
+                                                                 To="1" Duration="0:0:0.2"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="HoverBorder"
+                                                                 Storyboard.TargetProperty="Opacity"
+                                                                 To="0" Duration="0:0:0.2"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
                                 </Trigger>
-                                <MultiTrigger>
-                                    <MultiTrigger.Conditions>
-                                        <Condition Property="IsSelected" Value="true"/>
-                                        <Condition Property="IsMouseOver" Value="true"/>
-                                    </MultiTrigger.Conditions>
-                                    <Setter TargetName="Bd" Property="Background" Value="{StaticResource NvidiaGreenBrush}"/>
-                                    <!-- Keep it green on hover if selected -->
-                                </MultiTrigger>
+
+                                <!-- Disabled State -->
                                 <Trigger Property="IsEnabled" Value="false">
                                     <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                                 </Trigger>
@@ -295,23 +336,23 @@
             </Style>
             <!-- View Mappings -->
             <DataTemplate DataType="{x:Type viewModels:Manage3DSettingsViewModel}">
-                <views:Manage3DSettingsView/>
+                <views:Manage3DSettingsView Style="{StaticResource AnimatedUserControlStyle}"/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewModels:DisplayResolutionViewModel}">
-                <views:DisplayResolutionView/>
+                <views:DisplayResolutionView Style="{StaticResource AnimatedUserControlStyle}"/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewModels:PlaceholderViewModel}">
-                <views:PlaceholderView/>
+                <views:PlaceholderView Style="{StaticResource AnimatedUserControlStyle}"/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
-                <views:HomeView/>
+                <views:HomeView Style="{StaticResource AnimatedUserControlStyle}"/>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewModels:AdjustImageSettingsViewModel}">
-                <views:AdjustImageSettingsView/>
+                <views:AdjustImageSettingsView Style="{StaticResource AnimatedUserControlStyle}"/>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

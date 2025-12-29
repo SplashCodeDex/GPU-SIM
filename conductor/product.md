@@ -24,6 +24,7 @@ To create a sophisticated simulation environment that mimics the presence of ded
 *   **System Hooking/Spoofing:** Mechanisms to inject these values into Windows reporting tools (Task Manager, dxdiag) via registry modification.
 *   **High-Fidelity UI:** A WPF-based interface that strictly adheres to the visual style of the legacy NVIDIA Control Panel.
 *   **One-Click "Installation":** A hidden trigger in the System Information dialog that applies the spoof system-wide with a UAC elevation prompt.
+*   **Display Simulation:** Authentic "Change Resolution" page supporting elite resolutions (2K) and high refresh rates (144Hz) with simulated hardware mode switching (screen flicker) and confirmation timers.
 *   **Static Configuration:** Loads hardware definitions from `config/gpu_config.json` for easy manual spoofing.
 
 ## 5. User Flow

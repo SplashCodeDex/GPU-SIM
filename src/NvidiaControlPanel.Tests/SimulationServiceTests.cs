@@ -1,3 +1,7 @@
+// <copyright file="SimulationServiceTests.cs" company="NvidiaControlPanel">
+// Copyright (c) NvidiaControlPanel. All rights reserved.
+// </copyright>
+
 using System;
 using System.IO;
 using System.Text.Json;
@@ -7,62 +11,38 @@ using Xunit;
 
 namespace NvidiaControlPanel.Tests
 {
-    public class SimulationServiceTests : IDisposable
+    public class SimulationServiceTests
     {
-        private const string ConfigDirectory = "config";
-        private const string ConfigFileName = "gpu_config.json";
-        private static readonly string ConfigPath = Path.Combine(ConfigDirectory, ConfigFileName);
-
-        public SimulationServiceTests()
-        {
-            this.Cleanup();
-        }
-
-        public void Dispose()
-        {
-            this.Cleanup();
-        }
-
-        private void Cleanup()
-        {
-            if (File.Exists(ConfigPath))
-            {
-                File.Delete(ConfigPath);
-            }
-            if (Directory.Exists(ConfigDirectory))
-            {
-                Directory.Delete(ConfigDirectory, true);
-            }
-        }
-
         [Fact]
         public async Task GetConfigAsync_ShouldCreateDefaultFile_WhenMissing()
         {
             // Arrange
-            var service = new SimulationService();
+            string testDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test_missing_" + Guid.NewGuid());
+            var service = new SimulationService(testDir);
+            string configPath = Path.Combine(testDir, "gpu_config.json");
 
-            // Act
-            var config = await service.GetConfigAsync();
+            try
+            {
+                // Act
+                var config = await service.GetConfigAsync();
 
-            // Assert
-            Assert.True(File.Exists(ConfigPath));
-            Assert.Equal("NVIDIA GeForce GTX 1650", config.GpuName);
-            
-            // Verify file content
-            string json = File.ReadAllText(ConfigPath);
-            var savedConfig = JsonSerializer.Deserialize<SimulationConfig>(json);
-            Assert.NotNull(savedConfig);
-            Assert.Equal("NVIDIA GeForce GTX 1650", savedConfig.GpuName);
+                // Assert
+                Assert.True(File.Exists(configPath));
+                Assert.Equal("NVIDIA GeForce GTX 1650", config.GpuName);
+            }
+            finally
+            {
+                Cleanup(testDir);
+            }
         }
 
         [Fact]
         public async Task GetConfigAsync_ShouldReturnDataFromFile_WhenExists()
         {
             // Arrange
-            if (!Directory.Exists(ConfigDirectory))
-            {
-                Directory.CreateDirectory(ConfigDirectory);
-            }
+            string testDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test_exists_" + Guid.NewGuid());
+            Directory.CreateDirectory(testDir);
+            string configPath = Path.Combine(testDir, "gpu_config.json");
 
             var customConfig = new SimulationConfig
             {
@@ -71,24 +51,34 @@ namespace NvidiaControlPanel.Tests
                 VideoMemory = "24 GB"
             };
             string json = JsonSerializer.Serialize(customConfig);
-            File.WriteAllText(ConfigPath, json);
+            File.WriteAllText(configPath, json);
 
-            var service = new SimulationService();
+            var service = new SimulationService(testDir);
 
-            // Act
-            var config = await service.GetConfigAsync();
+            try
+            {
+                // Act
+                var config = await service.GetConfigAsync();
 
-            // Assert
-            Assert.Equal("RTX 4090 Custom", config.GpuName);
-            Assert.Equal("999.99", config.DriverVersion);
-            Assert.Equal("24 GB", config.VideoMemory);
+                // Assert
+                Assert.Equal("RTX 4090 Custom", config.GpuName);
+                Assert.Equal("999.99", config.DriverVersion);
+                Assert.Equal("24 GB", config.VideoMemory);
+            }
+            finally
+            {
+                Cleanup(testDir);
+            }
         }
 
         [Fact]
         public async Task SaveConfigAsync_ShouldPersistDataToFile()
         {
             // Arrange
-            var service = new SimulationService();
+            string testDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test_save_" + Guid.NewGuid());
+            var service = new SimulationService(testDir);
+            string configPath = Path.Combine(testDir, "gpu_config.json");
+
             var newConfig = new SimulationConfig
             {
                 GpuName = "Saved GPU",
@@ -96,16 +86,32 @@ namespace NvidiaControlPanel.Tests
                 SelectedRefreshRate = 60
             };
 
-            // Act
-            await service.SaveConfigAsync(newConfig);
+            try
+            {
+                // Act
+                await service.SaveConfigAsync(newConfig);
 
-            // Assert
-            string json = File.ReadAllText(ConfigPath);
-            var savedConfig = JsonSerializer.Deserialize<SimulationConfig>(json);
-            Assert.NotNull(savedConfig);
-            Assert.Equal("Saved GPU", savedConfig.GpuName);
-            Assert.Equal("3840 x 2160", savedConfig.SelectedResolution);
-            Assert.Equal(60, savedConfig.SelectedRefreshRate);
+                // Assert
+                Assert.True(File.Exists(configPath));
+                string json = File.ReadAllText(configPath);
+                var savedConfig = JsonSerializer.Deserialize<SimulationConfig>(json);
+                Assert.NotNull(savedConfig);
+                Assert.Equal("Saved GPU", savedConfig.GpuName);
+                Assert.Equal("3840 x 2160", savedConfig.SelectedResolution);
+                Assert.Equal(60, savedConfig.SelectedRefreshRate);
+            }
+            finally
+            {
+                Cleanup(testDir);
+            }
+        }
+
+        private static void Cleanup(string dir)
+        {
+            if (Directory.Exists(dir))
+            {
+                Directory.Delete(dir, true);
+            }
         }
     }
 }

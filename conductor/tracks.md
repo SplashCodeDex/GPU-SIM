@@ -1,5 +1,6 @@
 ---
 
-## [~] Track: Display Resolution & Refresh Rate Simulation
-*Link: [./conductor/tracks/display_res_20251229/](./conductor/tracks/display_res_20251229/)*
+## [~] Track: Enhance Adjust Image Settings with Visual Fidelity & Persistence
+*Link: [./conductor/tracks/image_settings_20251229/](./conductor/tracks/image_settings_20251229/)*
+
 

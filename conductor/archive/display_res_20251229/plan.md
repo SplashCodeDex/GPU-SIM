@@ -25,7 +25,7 @@
 - [x] Task: Conductor - User Manual Verification 'UI and UX (The Flicker)' (Protocol in workflow.md) [f0b3b0f]
 
 ## Phase 4: Final Verification
-- [ ] Task: Full UX Walkthrough
-    - [ ] Sub-task: Select 144Hz, click Apply, verify the black screen duration, and confirm the timer dialog appears.
-    - [ ] Sub-task: Verify that "No" or timeout reverts the selection, while "Yes" saves it to `gpu_config.json`.
-- [ ] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)
+- [x] Task: Full UX Walkthrough [27e7861]
+    - [x] Sub-task: Select 144Hz, click Apply, verify the black screen duration, and confirm the timer dialog appears.
+    - [x] Sub-task: Verify that "No" or timeout reverts the selection, while "Yes" saves it to `gpu_config.json`.
+- [x] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md) [27e7861]

@@ -14,16 +14,35 @@ namespace NvidiaControlPanel.Services
     /// </summary>
     public class SimulationService : ISimulationService
     {
-        private const string ConfigDirectory = "config";
+        private const string DefaultConfigDirectory = "config";
         private const string ConfigFileName = "gpu_config.json";
-        private static readonly string ConfigPath = Path.Combine(ConfigDirectory, ConfigFileName);
 
         private static readonly JsonSerializerOptions SerializerOptions = new JsonSerializerOptions
         {
             WriteIndented = true,
         };
 
+        private readonly string _configDirectory;
+        private readonly string _configPath;
         private SimulationConfig? _cachedConfig;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimulationService"/> class.
+        /// </summary>
+        public SimulationService()
+            : this(DefaultConfigDirectory)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimulationService"/> class with a custom config directory.
+        /// </summary>
+        /// <param name="configDirectory">The directory to store configuration in.</param>
+        public SimulationService(string configDirectory)
+        {
+            this._configDirectory = configDirectory;
+            this._configPath = Path.Combine(configDirectory, ConfigFileName);
+        }
 
         /// <summary>
         /// Retrieves the simulation configuration asynchronously.
@@ -38,14 +57,14 @@ namespace NvidiaControlPanel.Services
 
             try
             {
-                if (!Directory.Exists(ConfigDirectory))
+                if (!Directory.Exists(this._configDirectory))
                 {
-                    Directory.CreateDirectory(ConfigDirectory);
+                    Directory.CreateDirectory(this._configDirectory);
                 }
 
-                if (File.Exists(ConfigPath))
+                if (File.Exists(this._configPath))
                 {
-                    string json = await File.ReadAllTextAsync(ConfigPath).ConfigureAwait(false);
+                    string json = await File.ReadAllTextAsync(this._configPath).ConfigureAwait(false);
                     var config = JsonSerializer.Deserialize<SimulationConfig>(json);
                     this._cachedConfig = config ?? CreateDefaultConfig();
                 }
@@ -79,13 +98,13 @@ namespace NvidiaControlPanel.Services
         {
             this._cachedConfig = config;
 
-            if (!Directory.Exists(ConfigDirectory))
+            if (!Directory.Exists(this._configDirectory))
             {
-                Directory.CreateDirectory(ConfigDirectory);
+                Directory.CreateDirectory(this._configDirectory);
             }
 
             string json = JsonSerializer.Serialize(config, SerializerOptions);
-            await File.WriteAllTextAsync(ConfigPath, json).ConfigureAwait(false);
+            await File.WriteAllTextAsync(this._configPath, json).ConfigureAwait(false);
         }
 
         /// <inheritdoc/>

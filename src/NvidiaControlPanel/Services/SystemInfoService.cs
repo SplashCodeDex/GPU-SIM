@@ -44,6 +44,8 @@ namespace NvidiaControlPanel.Services
                 VendorId = config.VendorId,
                 SelectedResolution = config.SelectedResolution,
                 SelectedRefreshRate = config.SelectedRefreshRate,
+                ImageSettingsMode = config.ImageSettingsMode,
+                PreferenceLevel = config.PreferenceLevel,
             };
         }
 
@@ -64,6 +66,8 @@ namespace NvidiaControlPanel.Services
                 VendorId = config.VendorId,
                 SelectedResolution = config.SelectedResolution,
                 SelectedRefreshRate = config.SelectedRefreshRate,
+                ImageSettingsMode = config.ImageSettingsMode,
+                PreferenceLevel = config.PreferenceLevel,
             };
         }
     }

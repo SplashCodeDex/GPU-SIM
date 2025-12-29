@@ -32,5 +32,26 @@ namespace NvidiaControlPanel.Tests
             Assert.False(viewModel.IsQualitySelected);
             Assert.True(viewModel.UseMyPreference);
         }
+
+        [Fact]
+        public void Slider_ShouldSyncWithRadioButtons()
+        {
+            // Arrange
+            var viewModel = new AdjustImageSettingsViewModel();
+
+            // Act: Change Slider to Performance (0)
+            viewModel.PreferenceValue = 0;
+            // Assert
+            Assert.True(viewModel.IsPerformanceSelected);
+            Assert.False(viewModel.IsBalancedSelected);
+            Assert.False(viewModel.IsQualitySelected);
+
+            // Act: Change Radio to Quality
+            viewModel.IsQualitySelected = true;
+            // Assert
+            Assert.Equal(2, viewModel.PreferenceValue);
+            Assert.False(viewModel.IsPerformanceSelected);
+            Assert.False(viewModel.IsBalancedSelected);
+        }
     }
 }

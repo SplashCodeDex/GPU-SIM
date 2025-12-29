@@ -54,5 +54,15 @@ namespace NvidiaControlPanel.Services
         /// Gets or sets the selected refresh rate.
         /// </summary>
         public int SelectedRefreshRate { get; set; } = 60;
+
+        /// <summary>
+        /// Gets or sets the image settings mode.
+        /// </summary>
+        public string ImageSettingsMode { get; set; } = "Decide";
+
+        /// <summary>
+        /// Gets or sets the preference level.
+        /// </summary>
+        public int PreferenceLevel { get; set; } = 1;
     }
 }

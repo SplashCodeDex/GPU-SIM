@@ -54,5 +54,15 @@ namespace NvidiaControlPanel.Models
         /// Gets or sets the selected refresh rate (e.g., 144).
         /// </summary>
         public int SelectedRefreshRate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the image settings mode (e.g., "Decide", "Advanced", "Preference").
+        /// </summary>
+        public string ImageSettingsMode { get; set; } = "Decide";
+
+        /// <summary>
+        /// Gets or sets the preference level (0=Performance, 1=Balanced, 2=Quality).
+        /// </summary>
+        public int PreferenceLevel { get; set; } = 1;
     }
 }
