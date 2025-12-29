@@ -12,8 +12,9 @@ namespace NvidiaControlPanel.ViewModels
     {
         private readonly IRegistryService _registryService;
         private readonly ISystemInfoService _systemInfoService;
-        private object _currentView = new Manage3DSettingsViewModel();
-        private string _currentPath = "3D Settings > Manage 3D settings";
+        private object _currentView;
+        private string _currentPath = "NVIDIA Control Panel";
+        private string _statusBarText = string.Empty;
         private bool _isContextMenuEnabled;
 
         /// <summary>
@@ -39,13 +40,27 @@ namespace NvidiaControlPanel.ViewModels
             this.ExitCommand = new RelayCommand(this.ExecuteExit);
             this.ShowSystemInfoCommand = new RelayCommand(this.ExecuteShowSystemInfo);
             this.ToggleContextMenuCommand = new RelayCommand(this.ExecuteToggleContextMenu);
+            this.ToggleTrayIconCommand = new RelayCommand(this.ExecuteToggleTrayIcon);
             this.NavigateCommand = new RelayCommand(this.ExecuteNavigate);
 
             // Load initial state
             this.IsContextMenuEnabled = this._registryService.IsContextMenuEnabled();
 
+            // Set StatusBar Text
+            var info = this._systemInfoService.GetGpuInformation();
+            this.StatusBarText = $"System Information: {info.GpuName}";
+
             // Default View
-            this.CurrentView = new Manage3DSettingsViewModel();
+            this._currentView = new HomeViewModel(info);
+        }
+
+        /// <summary>
+        /// Gets or sets the text displayed in the status bar.
+        /// </summary>
+        public string StatusBarText
+        {
+            get => this._statusBarText;
+            set => this.SetProperty(ref this._statusBarText, value);
         }
 
         /// <summary>
@@ -97,6 +112,16 @@ namespace NvidiaControlPanel.ViewModels
         public ICommand ToggleContextMenuCommand { get; }
 
         /// <summary>
+        /// Gets the command to toggle the tray icon visibility.
+        /// </summary>
+        public ICommand ToggleTrayIconCommand { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the tray icon is visible.
+        /// </summary>
+        public bool IsTrayIconVisible { get; private set; } = true;
+
+        /// <summary>
         /// Gets the command to navigate to a specific view.
         /// </summary>
         public ICommand NavigateCommand { get; }
@@ -120,6 +145,46 @@ namespace NvidiaControlPanel.ViewModels
                         this.CurrentView = new DisplayResolutionViewModel();
                         this.CurrentPath = "Display > Change resolution";
                         break;
+                    case "AdjustImageSettings":
+                        this.CurrentView = new PlaceholderViewModel("Adjust image settings with preview");
+                        this.CurrentPath = "3D Settings > Adjust image settings with preview";
+                        break;
+                    case "ConfigureSurroundPhysX":
+                        this.CurrentView = new PlaceholderViewModel("Configure Surround, PhysX");
+                        this.CurrentPath = "3D Settings > Configure Surround, PhysX";
+                        break;
+                    case "AdjustDesktopColor":
+                        this.CurrentView = new PlaceholderViewModel("Adjust desktop color settings");
+                        this.CurrentPath = "Display > Adjust desktop color settings";
+                        break;
+                    case "RotateDisplay":
+                        this.CurrentView = new PlaceholderViewModel("Rotate display");
+                        this.CurrentPath = "Display > Rotate display";
+                        break;
+                    case "ViewHDCPStatus":
+                        this.CurrentView = new PlaceholderViewModel("View HDCP status");
+                        this.CurrentPath = "Display > View HDCP status";
+                        break;
+                    case "SetupDigitalAudio":
+                        this.CurrentView = new PlaceholderViewModel("Set up digital audio");
+                        this.CurrentPath = "Display > Set up digital audio";
+                        break;
+                    case "AdjustDesktopSizePosition":
+                        this.CurrentView = new PlaceholderViewModel("Adjust desktop size and position");
+                        this.CurrentPath = "Display > Adjust desktop size and position";
+                        break;
+                    case "SetupMultipleDisplays":
+                        this.CurrentView = new PlaceholderViewModel("Set up multiple displays");
+                        this.CurrentPath = "Display > Set up multiple displays";
+                        break;
+                    case "AdjustVideoColor":
+                        this.CurrentView = new PlaceholderViewModel("Adjust video color settings");
+                        this.CurrentPath = "Video > Adjust video color settings";
+                        break;
+                    case "AdjustVideoImage":
+                        this.CurrentView = new PlaceholderViewModel("Adjust video image settings");
+                        this.CurrentPath = "Video > Adjust video image settings";
+                        break;
                     default:
                         // Placeholder for other pages
                         break;
@@ -130,12 +195,14 @@ namespace NvidiaControlPanel.ViewModels
         private void ExecuteShowSystemInfo(object? obj)
         {
             var info = this._systemInfoService.GetGpuInformation();
-            string message = $"NVIDIA System Information\n\n" +
-                             $"GPU: {info.GpuName}\n" +
-                             $"Driver Version: {info.DriverVersion}\n" +
-                             $"Memory: {info.VideoMemory}\n\n";
+            var vm = new SystemInfoViewModel(info);
+            var view = new Views.SystemInfoView
+            {
+                DataContext = vm,
+                Owner = Application.Current.MainWindow,
+            };
 
-            MessageBox.Show(message, "System Information");
+            view.ShowDialog();
         }
 
         private void ExecuteToggleContextMenu(object? obj)
@@ -148,6 +215,12 @@ namespace NvidiaControlPanel.ViewModels
             {
                 this._registryService.DisableContextMenu();
             }
+        }
+
+        private void ExecuteToggleTrayIcon(object? obj)
+        {
+            this.IsTrayIconVisible = !this.IsTrayIconVisible;
+            this.OnPropertyChanged(nameof(this.IsTrayIconVisible));
         }
     }
 }

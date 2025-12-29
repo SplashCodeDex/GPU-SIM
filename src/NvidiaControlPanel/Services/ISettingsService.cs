@@ -24,5 +24,11 @@ namespace NvidiaControlPanel.Services
         /// </summary>
         /// <param name="settings">The settings to save.</param>
         void Save3DSettings(IEnumerable<FeatureSetting> settings);
+
+        /// <summary>
+        /// Gets the list of available programs for customization.
+        /// </summary>
+        /// <returns>A collection of program names.</returns>
+        Collection<string> GetAvailablePrograms();
     }
 }

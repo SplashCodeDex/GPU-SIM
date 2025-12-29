@@ -63,7 +63,7 @@
 
         <!-- Bottom Actions -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,20">
-            <Button Content="Restore" Width="100" Margin="0,0,10,0"
+            <Button Content="Restore" Command="{Binding RestoreDefaultsCommand}" Width="100" Margin="0,0,10,0"
                     Background="Transparent" Foreground="{StaticResource NvidiaGreenBrush}" BorderBrush="{StaticResource NvidiaGreenBrush}" BorderThickness="1"/>
             <Button Content="Apply" Command="{Binding ApplyCommand}" Width="100"/>
         </StackPanel>

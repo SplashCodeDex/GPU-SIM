@@ -39,7 +39,10 @@
             <TabItem Header="Program Settings" Background="Transparent">
                 <StackPanel Margin="0,15,0,0">
                     <TextBlock Text="Select a program to customize:" Margin="0,0,0,5" Foreground="{StaticResource PrimaryTextBrush}"/>
-                     <ComboBox Width="300" HorizontalAlignment="Left" IsEnabled="False" Text="Loading programs..."/>
+                     <ComboBox Width="300" HorizontalAlignment="Left"
+                               ItemsSource="{Binding Programs}"
+                               SelectedItem="{Binding SelectedProgram}"
+                               IsEnabled="True"/>
                 </StackPanel>
             </TabItem>
         </TabControl>

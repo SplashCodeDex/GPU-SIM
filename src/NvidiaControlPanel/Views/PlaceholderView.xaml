@@ -1,0 +1,40 @@
+<UserControl x:Class="NvidiaControlPanel.Views.PlaceholderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:NvidiaControlPanel.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=viewModels:PlaceholderViewModel}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Text="{Binding Title}"
+                   Foreground="{StaticResource PrimaryTextBrush}"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   Margin="10,15,10,10"/>
+
+        <!-- Content -->
+        <Border Grid.Row="1" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock Text="{Binding Message}"
+                           Foreground="{StaticResource SecondaryTextBrush}"
+                           FontSize="16"
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"/>
+                <TextBlock Text="(Implementation Pending)"
+                           Foreground="#999999"
+                           FontSize="12"
+                           Margin="0,5,0,0"
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

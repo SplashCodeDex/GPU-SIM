@@ -67,5 +67,18 @@ namespace NvidiaControlPanel.Services
                 // Handle or log error
             }
         }
+
+        /// <inheritdoc/>
+        public Collection<string> GetAvailablePrograms()
+        {
+            return new Collection<string>
+            {
+                "3D Builder",
+                "Adobe Photoshop",
+                "Google Chrome",
+                "Microsoft Edge",
+                "VLC Media Player",
+            };
+        }
     }
 }

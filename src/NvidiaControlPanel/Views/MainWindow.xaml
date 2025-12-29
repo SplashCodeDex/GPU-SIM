@@ -6,6 +6,7 @@
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:views="clr-namespace:NvidiaControlPanel.Views"
         xmlns:viewModels="clr-namespace:NvidiaControlPanel.ViewModels"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
         Title="NVIDIA Control Panel" Height="700" Width="1100"
         Icon="pack://application:,,,/icon.ico"
@@ -36,7 +37,10 @@
                               IsCheckable="True"
                               IsChecked="{Binding IsContextMenuEnabled}"
                               Command="{Binding ToggleContextMenuCommand}"/>
-                    <MenuItem Header="Show Notification Tray Icon" IsCheckable="True" IsChecked="True"/>
+                    <MenuItem Header="Show Notification Tray Icon"
+                              IsCheckable="True"
+                              IsChecked="{Binding IsTrayIconVisible}"
+                              Command="{Binding ToggleTrayIconCommand}"/>
                 </MenuItem>
                 <MenuItem Header="_3D Settings"/>
                 <MenuItem Header="_Help">
@@ -48,8 +52,12 @@
             <Border DockPanel.Dock="Top" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="10,5">
                 <Grid>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Button Content="Back" Width="60" Margin="0,0,5,0" IsEnabled="False" Style="{StaticResource BaseControlStyle}" Background="Transparent" Foreground="{StaticResource SecondaryTextBrush}"/>
-                        <Button Content="Forward" Width="80" IsEnabled="False" Style="{StaticResource BaseControlStyle}" Background="Transparent" Foreground="{StaticResource SecondaryTextBrush}"/>
+                        <Button Width="40" Margin="0,0,5,0" IsEnabled="False" Style="{StaticResource BaseControlStyle}" Background="Transparent" Foreground="{StaticResource SecondaryTextBrush}">
+                            <iconPacks:PackIconMaterial Kind="ArrowLeft" Width="16" Height="16"/>
+                        </Button>
+                        <Button Width="40" IsEnabled="False" Style="{StaticResource BaseControlStyle}" Background="Transparent" Foreground="{StaticResource SecondaryTextBrush}">
+                            <iconPacks:PackIconMaterial Kind="ArrowRight" Width="16" Height="16"/>
+                        </Button>
                         <Rectangle Width="1" Fill="{StaticResource BorderBrush}" Margin="5,5"/>
                         <TextBlock Text="{Binding CurrentPath}" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource SecondaryTextBrush}" Margin="5,0"/>
                     </StackPanel>
@@ -59,7 +67,7 @@
             <!-- Status Bar -->
             <StatusBar DockPanel.Dock="Bottom" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Height="30" Padding="10,0">
                 <StatusBarItem>
-                    <TextBlock Text="System Information: NVIDIA GeForce GTX 1650" Foreground="{StaticResource SecondaryTextBrush}" FontSize="12"/>
+                    <TextBlock Text="{Binding StatusBarText}" Foreground="{StaticResource SecondaryTextBrush}" FontSize="12"/>
                 </StatusBarItem>
             </StatusBar>
 
@@ -74,35 +82,185 @@
                 <!-- Left Pane: Navigation Tree -->
                 <Border Grid.Column="0" Background="{StaticResource BackgroundAltBrush}" Margin="10,0,0,10" CornerRadius="4">
                     <TreeView BorderThickness="0" Background="Transparent" Padding="5">
-                        <TreeViewItem Header="3D Settings" IsExpanded="True" FontWeight="Bold">
-                            <TreeViewItem Header="Adjust image settings with preview"/>
-                            <TreeViewItem Header="Manage 3D settings" IsSelected="True">
+                        <TreeViewItem IsExpanded="True" FontWeight="Bold">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="CubeOutline" VerticalAlignment="Center" Margin="0,0,8,0" Width="16" Height="16"/>
+                                    <TextBlock Text="3D Settings" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="Image" VerticalAlignment="Center" Margin="0,0,8,0" Width="14" Height="14"/>
+                                        <TextBlock Text="Adjust image settings with preview" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Selected">
+                                        <b:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="AdjustImageSettings"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </TreeViewItem>
+                            <TreeViewItem IsSelected="True">
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="Cog" VerticalAlignment="Center" Margin="0,0,8,0" Width="14" Height="14"/>
+                                        <TextBlock Text="Manage 3D settings" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
                                  <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Selected">
                                         <b:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="Manage3DSettings"/>
                                     </b:EventTrigger>
                                  </b:Interaction.Triggers>
                             </TreeViewItem>
-                            <TreeViewItem Header="Configure Surround, PhysX"/>
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="VectorCircle" VerticalAlignment="Center" Margin="0,0,8,0" Width="14" Height="14"/>
+                                        <TextBlock Text="Configure Surround, PhysX" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Selected">
+                                        <b:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="ConfigureSurroundPhysX"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </TreeViewItem>
                         </TreeViewItem>
-                        <TreeViewItem Header="Display" IsExpanded="True" FontWeight="Bold">
-                            <TreeViewItem Header="Change resolution">
+                        <TreeViewItem IsExpanded="True" FontWeight="Bold">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Monitor" VerticalAlignment="Center" Margin="0,0,8,0" Width="16" Height="16"/>
+                                    <TextBlock Text="Display" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="MonitorScreenshot" VerticalAlignment="Center" Margin="0,0,8,0" Width="14" Height="14"/>
+                                        <TextBlock Text="Change resolution" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Selected">
                                         <b:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="ChangeResolution"/>
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                             </TreeViewItem>
-                            <TreeViewItem Header="Adjust desktop color settings"/>
-                            <TreeViewItem Header="Rotate display"/>
-                            <TreeViewItem Header="View HDCP status"/>
-                            <TreeViewItem Header="Set up digital audio"/>
-                            <TreeViewItem Header="Adjust desktop size and position"/>
-                            <TreeViewItem Header="Set up multiple displays"/>
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="Palette" VerticalAlignment="Center" Margin="0,0,8,0" Width="14" Height="14"/>
+                                        <TextBlock Text="Adjust desktop color settings" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Selected">
+                                        <b:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="AdjustDesktopColor"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </TreeViewItem>
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="RotateRight" VerticalAlignment="Center" Margin="0,0,8,0" Width="14" Height="14"/>
+                                        <TextBlock Text="Rotate display" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Selected">
+                                        <b:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="RotateDisplay"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </TreeViewItem>
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="LockCheck" VerticalAlignment="Center" Margin="0,0,8,0" Width="14" Height="14"/>
+                                        <TextBlock Text="View HDCP status" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Selected">
+                                        <b:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="ViewHDCPStatus"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </TreeViewItem>
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="Speaker" VerticalAlignment="Center" Margin="0,0,8,0" Width="14" Height="14"/>
+                                        <TextBlock Text="Set up digital audio" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Selected">
+                                        <b:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="SetupDigitalAudio"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </TreeViewItem>
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="Resize" VerticalAlignment="Center" Margin="0,0,8,0" Width="14" Height="14"/>
+                                        <TextBlock Text="Adjust desktop size and position" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Selected">
+                                        <b:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="AdjustDesktopSizePosition"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </TreeViewItem>
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="MonitorMultiple" VerticalAlignment="Center" Margin="0,0,8,0" Width="14" Height="14"/>
+                                        <TextBlock Text="Set up multiple displays" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Selected">
+                                        <b:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="SetupMultipleDisplays"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </TreeViewItem>
                         </TreeViewItem>
-                        <TreeViewItem Header="Video" IsExpanded="True" FontWeight="Bold">
-                            <TreeViewItem Header="Adjust video color settings"/>
-                            <TreeViewItem Header="Adjust video image settings"/>
+                        <TreeViewItem IsExpanded="True" FontWeight="Bold">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Video" VerticalAlignment="Center" Margin="0,0,8,0" Width="16" Height="16"/>
+                                    <TextBlock Text="Video" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="PaletteAdvanced" VerticalAlignment="Center" Margin="0,0,8,0" Width="14" Height="14"/>
+                                        <TextBlock Text="Adjust video color settings" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Selected">
+                                        <b:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="AdjustVideoColor"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </TreeViewItem>
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="ImageEdit" VerticalAlignment="Center" Margin="0,0,8,0" Width="14" Height="14"/>
+                                        <TextBlock Text="Adjust video image settings" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Selected">
+                                        <b:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="AdjustVideoImage"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </TreeViewItem>
                         </TreeViewItem>
                     </TreeView>
                 </Border>

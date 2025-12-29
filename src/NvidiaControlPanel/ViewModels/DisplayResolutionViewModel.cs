@@ -38,6 +38,7 @@ namespace NvidiaControlPanel.ViewModels
             this._displayService = displayService;
             this.Resolutions = this._displayService.GetAvailableResolutions();
             this.ApplyCommand = new RelayCommand(this.ExecuteApply);
+            this.RestoreDefaultsCommand = new RelayCommand(this.ExecuteRestoreDefaults);
 
             // Default selection
             this.SelectedResolution = this.Resolutions.FirstOrDefault();
@@ -87,6 +88,11 @@ namespace NvidiaControlPanel.ViewModels
         /// </summary>
         public ICommand ApplyCommand { get; }
 
+        /// <summary>
+        /// Gets the command to restore default settings.
+        /// </summary>
+        public ICommand RestoreDefaultsCommand { get; }
+
         private void ExecuteApply(object? obj)
         {
             if (this.SelectedResolution != null)
@@ -96,6 +102,18 @@ namespace NvidiaControlPanel.ViewModels
                     "Success",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
+            }
+        }
+
+        private void ExecuteRestoreDefaults(object? obj)
+        {
+            // Restore logic: Select first resolution and its highest refresh rate
+            this.SelectedResolution = this.Resolutions.FirstOrDefault();
+            if (this.SelectedResolution != null)
+            {
+                // Assuming last is highest, or sort it. Typical for game/mock logic.
+                // But for now, let's just pick the first one as "Default".
+                this.SelectedRefreshRate = this.SelectedResolution.RefreshRates.FirstOrDefault();
             }
         }
     }

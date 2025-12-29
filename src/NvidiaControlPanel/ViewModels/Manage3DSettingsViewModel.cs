@@ -41,6 +41,16 @@ namespace NvidiaControlPanel.ViewModels
         public ObservableCollection<FeatureSetting> Settings { get; }
 
         /// <summary>
+        /// Gets the collection of available programs.
+        /// </summary>
+        public ObservableCollection<string> Programs { get; } = new ObservableCollection<string>();
+
+        /// <summary>
+        /// Gets or sets the selected program.
+        /// </summary>
+        public string? SelectedProgram { get; set; }
+
+        /// <summary>
         /// Gets the command to restore default settings.
         /// </summary>
         public System.Windows.Input.ICommand RestoreDefaultsCommand { get; }
@@ -95,6 +105,18 @@ namespace NvidiaControlPanel.ViewModels
             else
             {
                 this.ExecuteRestoreDefaults(null);
+            }
+
+            // Load Programs
+            var programs = this._settingsService.GetAvailablePrograms();
+            foreach (var prog in programs)
+            {
+                this.Programs.Add(prog);
+            }
+
+            if (this.Programs.Count > 0)
+            {
+                this.SelectedProgram = this.Programs[0];
             }
         }
 

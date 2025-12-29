@@ -291,5 +291,13 @@
         <DataTemplate DataType="{x:Type viewModels:DisplayResolutionViewModel}">
             <views:DisplayResolutionView/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:PlaceholderViewModel}">
+            <views:PlaceholderView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
+            <views:HomeView/>
+        </DataTemplate>
     </Application.Resources>
 </Application>
