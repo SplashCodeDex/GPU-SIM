@@ -7,10 +7,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Services' (Protocol in workflow.md) 06a7332
 
 ## Phase 2: ViewModel Integration [ ]
-- [ ] Task: Update `MainViewModel` to inject and use `INavigationService`.
-- [ ] Task: Write unit tests for `MainViewModel` navigation commands and button state logic.
-- [ ] Task: Implement `BackCommand` and `ForwardCommand` in `MainViewModel`.
-- [ ] Task: Update `ExecuteNavigate` to record history via the service (excluding Home).
+- [x] Task: Update `MainViewModel` to inject and use `INavigationService`. 4302f01
+- [x] Task: Write unit tests for `MainViewModel` navigation commands and button state logic. 4302f01
+- [x] Task: Implement `BackCommand` and `ForwardCommand` in `MainViewModel`. 4302f01
+- [x] Task: Update `ExecuteNavigate` to record history via the service (excluding Home). 4302f01
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: ViewModel Integration' (Protocol in workflow.md)
 
 ## Phase 3: UI Enhancement [ ]
