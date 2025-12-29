@@ -4,7 +4,7 @@
 - [x] Task: Create `INavigationService` and `NavigationService` to manage history stacks. 10f5237
 - [x] Task: Write unit tests for `NavigationService` (History tracking, Back/Forward availability, Home exclusion). 10f5237
 - [x] Task: Implement `NavigationService` logic. 10f5237
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Services' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Services' (Protocol in workflow.md)
 
 ## Phase 2: ViewModel Integration [ ]
 - [ ] Task: Update `MainViewModel` to inject and use `INavigationService`.

@@ -29,6 +29,7 @@ To create a sophisticated simulation environment that mimics the presence of ded
 *   **Interactive 3D Preview:** High-fidelity "Adjust Image Settings" page featuring a reactive 3D NVIDIA logo that visually demonstrates the impact of "Performance vs. Quality" choices using real-time pixelation and animation speed changes.
 *   **Desktop Context Menu:** Authentic "NVIDIA Control Panel" entry in the Windows Desktop right-click menu, providing a realistic entry point and matching real driver behavior.
 *   **Persistent Tray Icon:** A green NVIDIA icon in the system notification area that ensures the application remains running in the background and provides quick access via context menu.
+*   **Reality-Shield:** Background persistence mechanism that periodically (every 60s) enforces spoofed registry values and ensures the application auto-starts with Windows, maintaining the illusion across reboots.
 *   **Static Configuration:** Loads hardware definitions from `config/gpu_config.json` for easy manual spoofing.
 
 ## 5. User Flow

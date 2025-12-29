@@ -29,6 +29,7 @@
             <!-- Menu Bar -->
             <Menu DockPanel.Dock="Top" Background="{StaticResource BackgroundBrush}" Padding="5">
                 <MenuItem Header="_File">
+                    <MenuItem Header="_Home" Command="{Binding NavigateCommand}" CommandParameter="Home"/>
                     <MenuItem Header="E_xit" Command="{Binding ExitCommand}"/>
                 </MenuItem>
                 <MenuItem Header="_Edit"/>
@@ -86,6 +87,20 @@
                 <!-- Left Pane: Navigation Tree -->
                 <Border Grid.Column="0" Background="{StaticResource BackgroundAltBrush}" Margin="10,0,0,10" CornerRadius="4">
                     <TreeView BorderThickness="0" Background="Transparent" Padding="5">
+                        <TreeViewItem IsExpanded="True" IsSelected="True" FontWeight="Bold">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Home" VerticalAlignment="Center" Margin="0,0,8,0" Width="16" Height="16"/>
+                                    <TextBlock Text="Home" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Selected">
+                                    <b:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="Home"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </TreeViewItem>
+
                         <TreeViewItem IsExpanded="True" FontWeight="Bold">
                             <TreeViewItem.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -106,7 +121,7 @@
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                             </TreeViewItem>
-                            <TreeViewItem IsSelected="True">
+                            <TreeViewItem>
                                 <TreeViewItem.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <iconPacks:PackIconMaterial Kind="Cog" VerticalAlignment="Center" Margin="0,0,8,0" Width="14" Height="14"/>

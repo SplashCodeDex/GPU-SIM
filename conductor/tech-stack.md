@@ -11,6 +11,7 @@
 *   **Configuration Management:** `SimulationService` loads static hardware definitions from `config/gpu_config.json`, enabling external control of the spoofed identity.
 *   **System Integration:** `RegistrySpoofService` and `ContextMenuService` provide on-demand UAC elevation to manage system-level integration (GPU reporting and desktop entry), ensuring external Windows tools and shell interactions report the simulated values.
 *   **UX Simulation:** `FlickerService`, `ConfirmationService`, and `TrayIconService` replicate hardware-level behaviors and OS-level presence (screen blackouts, confirmation dialogs, and persistent tray icons).
+*   **Persistence Orchestration:** `RealityShieldService` and `AutoStartService` manage long-term simulation integrity by enforcing registry values periodically and managing Windows startup registration.
 *   **Visual Fidelity:** Dynamic XAML scaling and custom value converters (e.g., `DoubleToDurationConverter`) simulate hardware rendering constraints in the 3D preview without impacting real-time performance.
 *   **Defensive Orchestration:** Multi-process execution via `ProcessStartInfo` handles on-demand UAC elevation for "NVIDIA Web Helper" simulations, ensuring that update attempts appear as legitimate system actions.
 

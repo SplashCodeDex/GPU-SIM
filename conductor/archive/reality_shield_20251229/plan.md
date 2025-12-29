@@ -24,7 +24,7 @@
 - [x] Task: Conductor - User Manual Verification 'Admin-Enforced Logic' (Protocol in workflow.md) [2cc0932]
 
 ## Phase 4: Final Verification
-- [ ] Task: Persistence Stress Test
-    - [ ] Sub-task: Enable Auto-Start, restart the computer, and verify the app appears in the tray.
-    - [ ] Sub-task: Use `regedit` to manually change the GPU name to "Fake GPU", wait 60 seconds, and verify it reverts to "GTX 1650".
-- [ ] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)
+- [x] Task: Persistence Stress Test [b68088f]
+    - [x] Sub-task: Enable Auto-Start, restart the computer, and verify the app appears in the tray.
+    - [x] Sub-task: Use `regedit` to manually change the GPU name to "Fake GPU", wait 60 seconds, and verify it reverts to "GTX 1650".
+- [x] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md) [b68088f]

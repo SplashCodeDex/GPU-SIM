@@ -196,6 +196,18 @@ namespace NvidiaControlPanel.ViewModels
             {
                 switch (viewName)
                 {
+                    case "Home":
+                        if (this._gpuInformation != null)
+                        {
+                            this.CurrentView = new HomeViewModel(this._gpuInformation);
+                        }
+                        else
+                        {
+                            this.CurrentView = new PlaceholderViewModel("Home");
+                        }
+
+                        this.CurrentPath = "NVIDIA Control Panel";
+                        break;
                     case "Manage3DSettings":
                         if (this._gpuInformation != null)
                         {
