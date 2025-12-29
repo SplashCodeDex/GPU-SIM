@@ -146,6 +146,38 @@ namespace NvidiaControlPanel.ViewModels
         /// </summary>
         public ICommand ApplyCommand { get; }
 
+        /// <summary>
+        /// Gets the scale factor for pixelation effect (lower = more pixelated).
+        /// </summary>
+        public double PixelationScale
+        {
+            get
+            {
+                return this.PreferenceValue switch
+                {
+                    0 => 0.1, // Performance: Very pixelated
+                    1 => 0.4, // Balanced: Slightly pixelated
+                    _ => 1.0, // Quality: Full resolution
+                };
+            }
+        }
+
+        /// <summary>
+        /// Gets the duration of one full rotation in seconds.
+        /// </summary>
+        public double RotationDuration
+        {
+            get
+            {
+                return this.PreferenceValue switch
+                {
+                    0 => 20.0, // Performance: Slow
+                    1 => 10.0, // Balanced: Normal
+                    _ => 5.0,  // Quality: Fast
+                };
+            }
+        }
+
         private void LoadSettings()
         {
             var config = this._simulationService.GetConfig();
@@ -174,6 +206,8 @@ namespace NvidiaControlPanel.ViewModels
             this.OnPropertyChanged(nameof(this.IsPerformanceSelected));
             this.OnPropertyChanged(nameof(this.IsBalancedSelected));
             this.OnPropertyChanged(nameof(this.IsQualitySelected));
+            this.OnPropertyChanged(nameof(this.PixelationScale));
+            this.OnPropertyChanged(nameof(this.RotationDuration));
         }
 
         private async void ExecuteApply(object? obj)

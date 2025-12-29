@@ -60,23 +60,8 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Text="Performance" Foreground="{StaticResource SecondaryTextBrush}"/>
-                            <Slider Grid.Column="1" Margin="10,0" Minimum="0" Maximum="2" TickFrequency="1" IsSnapToTickEnabled="True">
-                                <Slider.Style>
-                                    <Style TargetType="Slider">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsPerformanceSelected}" Value="True">
-                                                <Setter Property="Value" Value="0"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsBalancedSelected}" Value="True">
-                                                <Setter Property="Value" Value="1"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsQualitySelected}" Value="True">
-                                                <Setter Property="Value" Value="2"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Slider.Style>
-                            </Slider>
+                            <Slider Grid.Column="1" Margin="10,0" Minimum="0" Maximum="2" TickFrequency="1" IsSnapToTickEnabled="True"
+                                    Value="{Binding PreferenceValue}"/>
                             <TextBlock Grid.Column="2" Text="Quality" Foreground="{StaticResource SecondaryTextBrush}"/>
                         </Grid>
 
@@ -91,13 +76,15 @@
                 <TextBlock Text="Description:" FontWeight="Bold" Foreground="{StaticResource PrimaryTextBrush}" Margin="0,10,0,5"/>
                 <TextBlock Text="Moving the slider lets you choose whether you prefer the highest performance or the best quality for your 3D applications."
                            Foreground="{StaticResource SecondaryTextBrush}" TextWrapping="Wrap"/>
+
+                <Button Content="Apply" Command="{Binding ApplyCommand}" Width="100" HorizontalAlignment="Right" Margin="0,20,0,0"/>
             </StackPanel>
 
             <!-- Preview Side (The "WOW" part) -->
             <Border Grid.Column="1" Background="Black" CornerRadius="4" ClipToBounds="True">
-                <Grid>
+                <Grid x:Name="PreviewContainer">
                     <!-- Background Grid/Floor -->
-                    <Canvas Background="#111111">
+                    <Canvas Background="#111111" IsHitTestVisible="False">
                          <Ellipse Width="400" Height="200" Fill="#222222" Canvas.Left="-25" Canvas.Top="250">
                             <Ellipse.Effect>
                                 <BlurEffect Radius="50"/>
@@ -105,55 +92,67 @@
                          </Ellipse>
                     </Canvas>
 
-                    <!-- Animated 3D Logo Simulation -->
-                    <Viewport3D>
-                         <Viewport3D.Camera>
-                            <PerspectiveCamera Position="0,0,5" LookDirection="0,0,-1" UpDirection="0,1,0" FieldOfView="45" />
-                         </Viewport3D.Camera>
+                    <!-- Hidden container for real 3D rendering (at full size or scaled) -->
+                    <Grid x:Name="Real3DHost" Opacity="0">
+                        <Viewport3D>
+                             <Viewport3D.Camera>
+                                <PerspectiveCamera Position="0,0,5" LookDirection="0,0,-1" UpDirection="0,1,0" FieldOfView="45" />
+                             </Viewport3D.Camera>
 
-                         <ModelVisual3D>
-                            <ModelVisual3D.Content>
-                                <Model3DGroup>
-                                    <DirectionalLight Color="White" Direction="-1,-1,-3" />
-                                    <AmbientLight Color="#444444" />
+                             <ModelVisual3D>
+                                <ModelVisual3D.Content>
+                                    <Model3DGroup>
+                                        <DirectionalLight Color="White" Direction="-1,-1,-3" />
+                                        <AmbientLight Color="#444444" />
 
-                                    <!-- The "N" Logo Cube (Simplified) -->
-                                    <GeometryModel3D>
-                                        <GeometryModel3D.Geometry>
-                                            <MeshGeometry3D Positions="-1,-1,0 1,-1,0 1,1,0 -1,1,0"
-                                                            TriangleIndices="0 1 2 0 2 3"
-                                                            TextureCoordinates="0,1 1,1 1,0 0,0"/>
-                                        </GeometryModel3D.Geometry>
-                                        <GeometryModel3D.Material>
-                                            <DiffuseMaterial>
-                                                <DiffuseMaterial.Brush>
-                                                    <VisualBrush>
-                                                        <VisualBrush.Visual>
-                                                                    <Grid Background="Black" Width="512" Height="512">
-                                                                <iconPacks:PackIconSimpleIcons Kind="Nvidia" Foreground="#76b900" Width="400" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                            </Grid>
-                                                        </VisualBrush.Visual>
-                                                    </VisualBrush>
-                                                </DiffuseMaterial.Brush>
-                                            </DiffuseMaterial>
-                                        </GeometryModel3D.Material>
+                                        <!-- The "N" Logo Cube (Simplified) -->
+                                        <GeometryModel3D>
+                                            <GeometryModel3D.Geometry>
+                                                <MeshGeometry3D Positions="-1,-1,0 1,-1,0 1,1,0 -1,1,0"
+                                                                TriangleIndices="0 1 2 0 2 3"
+                                                                TextureCoordinates="0,1 1,1 1,0 0,0"/>
+                                            </GeometryModel3D.Geometry>
+                                            <GeometryModel3D.Material>
+                                                <DiffuseMaterial>
+                                                    <DiffuseMaterial.Brush>
+                                                        <VisualBrush>
+                                                            <VisualBrush.Visual>
+                                                                        <Grid Background="Black" Width="512" Height="512">
+                                                                    <iconPacks:PackIconSimpleIcons Kind="Nvidia" Foreground="#76b900" Width="400" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </Grid>
+                                                            </VisualBrush.Visual>
+                                                        </VisualBrush>
+                                                    </DiffuseMaterial.Brush>
+                                                </DiffuseMaterial>
+                                            </GeometryModel3D.Material>
 
-                                        <GeometryModel3D.Transform>
-                                            <RotateTransform3D>
-                                                <RotateTransform3D.Rotation>
-                                                    <AxisAngleRotation3D x:Name="Rotation" Axis="0,1,0" Angle="0" />
-                                                </RotateTransform3D.Rotation>
-                                            </RotateTransform3D>
-                                        </GeometryModel3D.Transform>
-                                    </GeometryModel3D>
-                                </Model3DGroup>
-                            </ModelVisual3D.Content>
-                         </ModelVisual3D>
-                    </Viewport3D>
+                                            <GeometryModel3D.Transform>
+                                                <RotateTransform3D>
+                                                    <RotateTransform3D.Rotation>
+                                                        <AxisAngleRotation3D x:Name="Rotation" Axis="0,1,0" Angle="0" />
+                                                    </RotateTransform3D.Rotation>
+                                                </RotateTransform3D>
+                                            </GeometryModel3D.Transform>
+                                        </GeometryModel3D>
+                                    </Model3DGroup>
+                                </ModelVisual3D.Content>
+                             </ModelVisual3D>
+                        </Viewport3D>
+                    </Grid>
+
+                    <!-- Pixelated Display (Uses VisualBrush of Real3DHost) -->
+                    <Border RenderOptions.BitmapScalingMode="NearestNeighbor">
+                        <Border.Background>
+                            <VisualBrush Visual="{Binding ElementName=Real3DHost}"/>
+                        </Border.Background>
+                        <Border.LayoutTransform>
+                            <ScaleTransform ScaleX="{Binding PixelationScale}" ScaleY="{Binding PixelationScale}"/>
+                        </Border.LayoutTransform>
+                    </Border>
 
                     <!-- Text Overlay -->
                     <TextBlock Text="PREVIEW" Foreground="#3376b900" FontSize="40" FontWeight="Black"
-                               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20"/>
+                               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20" IsHitTestVisible="False"/>
                 </Grid>
 
                 <Border.Triggers>
@@ -162,7 +161,8 @@
                             <Storyboard>
                                 <DoubleAnimation Storyboard.TargetName="Rotation"
                                                  Storyboard.TargetProperty="Angle"
-                                                 From="0" To="360" Duration="0:0:10"
+                                                 From="0" To="360" 
+                                                 Duration="{Binding RotationDuration, Converter={StaticResource DoubleToDurationConverter}, FallbackValue='0:0:10'}"
                                                  RepeatBehavior="Forever" />
                             </Storyboard>
                         </BeginStoryboard>

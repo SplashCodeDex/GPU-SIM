@@ -13,6 +13,7 @@
 
             <!-- Converters -->
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+            <converters:DoubleToDurationConverter x:Key="DoubleToDurationConverter"/>
 
             <!-- NVIDIA Brand Colors -->
             <Color x:Key="Color_NvidiaGreen">#76b900</Color>

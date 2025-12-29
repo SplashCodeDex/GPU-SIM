@@ -11,12 +11,12 @@
 - [x] Task: Conductor - User Manual Verification 'Persistence and Logic' (Protocol in workflow.md) [27e7861]
 
 ## Phase 2: Visual Effects (The "WOW" Factor)
-- [ ] Task: Implement Pixelation Shader/Effect
-    - [ ] Sub-task: Create a simple WPF `ShaderEffect` or use a `VisualBrush` scaling trick to simulate pixelation.
-- [ ] Task: Bind Effects to ViewModel
-    - [ ] Sub-task: Expose `PixelationAmount` and `RotationDuration` properties in the ViewModel.
-    - [ ] Sub-task: Update `AdjustImageSettingsView.xaml` to bind the 3D logo's effect and animation duration to these properties.
-- [ ] Task: Conductor - User Manual Verification 'Visual Effects (The "WOW" Factor)' (Protocol in workflow.md)
+- [x] Task: Implement Pixelation Shader/Effect [aaa9485]
+    - [x] Sub-task: Create a simple WPF `ShaderEffect` or use a `VisualBrush` scaling trick to simulate pixelation.
+- [x] Task: Bind Effects to ViewModel [aaa9485]
+    - [x] Sub-task: Expose `PixelationAmount` and `RotationDuration` properties in the ViewModel.
+    - [x] Sub-task: Update `AdjustImageSettingsView.xaml` to bind the 3D logo's effect and animation duration to these properties.
+- [x] Task: Conductor - User Manual Verification 'Visual Effects (The "WOW" Factor)' (Protocol in workflow.md) [aaa9485]
 
 ## Phase 3: Final Verification
 - [ ] Task: Full UX Walkthrough
