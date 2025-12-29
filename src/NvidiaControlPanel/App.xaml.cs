@@ -1,3 +1,7 @@
+// <copyright file="App.xaml.cs" company="NvidiaControlPanel">
+// Copyright (c) NvidiaControlPanel. All rights reserved.
+// </copyright>
+
 using System;
 using System.Linq;
 using System.Windows;
@@ -71,6 +75,16 @@ namespace NvidiaControlPanel
 
             var systemInfo = new SystemInfoService();
             var registrySpoof = new RegistrySpoofService();
+            var autoStart = new AutoStartService();
+
+            // Automatic Elevation Flow for Reality-Shield
+            if (!registrySpoof.IsElevated() && autoStart.IsEnabled())
+            {
+                // Trigger self-elevation
+                ElevateSelf(e.Args);
+                this.Shutdown(0);
+                return;
+            }
 
             this._trayIconService = new TrayIconService();
             this._trayIconService.Show();
@@ -81,7 +95,6 @@ namespace NvidiaControlPanel
             if (e.Args.Contains("--silent"))
             {
                 // Ensure main window doesn't show initially
-                // StartupUri is handled by WPF, so we might need to clear it or handle MainWindow specifically
                 this.StartupUri = null;
             }
         }
@@ -109,6 +122,26 @@ namespace NvidiaControlPanel
             catch (Exception)
             {
                 // Silent fail for child process
+            }
+        }
+
+        private static void ElevateSelf(string[] args)
+        {
+            var startInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName,
+                UseShellExecute = true,
+                Verb = "runas",
+                Arguments = string.Join(" ", args),
+            };
+
+            try
+            {
+                System.Diagnostics.Process.Start(startInfo);
+            }
+            catch
+            {
+                // User cancelled UAC
             }
         }
     }

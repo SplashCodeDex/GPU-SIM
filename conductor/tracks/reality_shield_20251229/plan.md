@@ -10,18 +10,18 @@
 - [x] Task: Conductor - User Manual Verification 'Startup Persistence Logic' (Protocol in workflow.md) [2549bc9]
 
 ## Phase 2: Periodic Enforcement (The Shield)
-- [x] Task: Implement `RealityShieldService` [2549bc9]
+- [x] Task: Implement `RealityShieldService` [2cc0932]
     - [x] Sub-task: Create a service that uses a `System.Timers.Timer` set to 60 seconds.
     - [x] Sub-task: On each tick, call `RegistrySpoofService.ApplySpoof` with the current configuration.
-- [x] Task: Integrate Shield with App Lifecycle [2549bc9]
+- [x] Task: Integrate Shield with App Lifecycle [2cc0932]
     - [x] Sub-task: Start the `RealityShieldService` in `App.xaml.cs` upon successful startup.
     - [x] Sub-task: Handle the `--silent` argument in `App.xaml.cs` to prevent the main window from showing.
-- [x] Task: Conductor - User Manual Verification 'Periodic Enforcement (The Shield)' (Protocol in workflow.md) [2549bc9]
+- [x] Task: Conductor - User Manual Verification 'Periodic Enforcement (The Shield)' (Protocol in workflow.md) [2cc0932]
 
 ## Phase 3: Admin-Enforced Logic
-- [ ] Task: Automatic Elevation Flow
-    - [ ] Sub-task: If the app starts and is NOT elevated, and `IsAutoStartEnabled` is true, trigger the self-elevation logic immediately.
-- [ ] Task: Conductor - User Manual Verification 'Admin-Enforced Logic' (Protocol in workflow.md)
+- [x] Task: Automatic Elevation Flow [2cc0932]
+    - [x] Sub-task: If the app starts and is NOT elevated, and `IsAutoStartEnabled` is true, trigger the self-elevation logic immediately.
+- [x] Task: Conductor - User Manual Verification 'Admin-Enforced Logic' (Protocol in workflow.md) [2cc0932]
 
 ## Phase 4: Final Verification
 - [ ] Task: Persistence Stress Test
