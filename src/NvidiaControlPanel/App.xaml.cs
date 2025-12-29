@@ -1,4 +1,7 @@
+using System;
+using System.Linq;
 using System.Windows;
+using NvidiaControlPanel.Services;
 
 namespace NvidiaControlPanel
 {
@@ -7,5 +10,34 @@ namespace NvidiaControlPanel
     /// </summary>
     public partial class App : Application
     {
+        /// <inheritdoc/>
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            ArgumentNullException.ThrowIfNull(e);
+
+            if (e.Args.Contains("--apply-spoof"))
+            {
+                HandleRegistrySpoof();
+                this.Shutdown(0);
+                return;
+            }
+
+            base.OnStartup(e);
+        }
+
+        private static void HandleRegistrySpoof()
+        {
+            try
+            {
+                var systemInfo = new SystemInfoService();
+                var registrySpoof = new RegistrySpoofService();
+                var info = systemInfo.GetGpuInformation();
+                registrySpoof.ApplySpoof(info);
+            }
+            catch (Exception)
+            {
+                // Silent fail for child process
+            }
+        }
     }
 }

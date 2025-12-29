@@ -1,0 +1,10 @@
+{
+  "GpuName": "NVIDIA GeForce GTX 1650",
+  "DriverVersion": "536.23",
+  "VideoMemory": "4096 MB GDDR5",
+  "BusSupport": "PCI Express x16 Gen 3",
+  "BiosVersion": "90.06.33.00.70",
+  "DirectXSupport": "12 Ultimate",
+  "DeviceId": "1F82",
+  "VendorId": "10DE"
+}

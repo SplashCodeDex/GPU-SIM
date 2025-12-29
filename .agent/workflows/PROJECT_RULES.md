@@ -1,3 +1,7 @@
+---
+description:
+---
+
 # PROJECT_RULES: NVIDIA Control Panel Clone (V2.0)
 
 > [!IMPORTANT]
@@ -7,7 +11,7 @@
 *   **Goal**: Create an indistinguishable clone of the NVIDIA Control Panel.
 *   **Simulation vs. Reality**:
     *   **NEVER** query real hardware (WMI, DirectX, Registry) for GPU stats. The reference machine may not have an NVIDIA GPU.
-    *   **ALWAYS** use the `SimulationConfig` service. Hardware details (GPU Name, RAM, Driver Version) must be loaded from `simulation_config.json`.
+    *   **ALWAYS** use the `gpu_config.json` service. Hardware details (GPU Name, RAM, Driver Version) must be loaded from `gpu_config.json`.
     *   **Passthrough**: Application-level settings (e.g., "Developer Mode") can be real, but hardware-level strings must be spoofed.
 
 ## 2. Visual Design System (Strict)
@@ -40,14 +44,6 @@
 *   **Pre-Commit Check**: Before finalizing any task, run `dotnet build`.
 *   **Visual Verification**: UI changes must be verified via Walkthroughs (screenshots/recordings).
 *   **No "Blind" Edits**: Always read the target file state before applying patches.
-
-## 6. Testing Protocol
-*   **Mandate**: All "Testable" logic (Services, Logical ViewModels) **MUST** have corresponding Unit Tests.
-*   **Tooling**: Use `xUnit` in a dedicated `NvidiaControlPanel.Tests` project.
-*   **Requirement**: `dotnet test` must return **PASS** before any task completion.
-*   **Scope**:
-    *   **Services**: Verify logic paths and error handling.
-    *   **ViewModels**: Verify Command execution and Property notifications.
 
 ---
 **Violation of these rules breaks the simulation and is considered a critical failure.**

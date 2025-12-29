@@ -7,7 +7,7 @@ namespace NvidiaControlPanel.Tests
     public class SystemInfoServiceTests
     {
         [Fact]
-        public void GetGpuInformation_ShouldReturnDataFromSimulationService()
+        public async Task GetGpuInformation_ShouldReturnDataFromSimulationService()
         {
             // Arrange
             var mockSimulation = new Mock<ISimulationService>();
@@ -23,12 +23,12 @@ namespace NvidiaControlPanel.Tests
                 VendorId = "Test Vendor"
             };
 
-            mockSimulation.Setup(s => s.GetConfig()).Returns(expectedConfig);
+            mockSimulation.Setup(s => s.GetConfigAsync()).ReturnsAsync(expectedConfig);
 
             var service = new SystemInfoService(mockSimulation.Object);
 
             // Act
-            var info = service.GetGpuInformation();
+            var info = await service.GetGpuInformationAsync();
 
             // Assert
             Assert.Equal("Test GPU", info.GpuName);

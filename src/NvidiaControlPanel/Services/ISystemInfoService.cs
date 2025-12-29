@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using NvidiaControlPanel.Models;
 
 namespace NvidiaControlPanel.Services
@@ -7,6 +8,12 @@ namespace NvidiaControlPanel.Services
     /// </summary>
     public interface ISystemInfoService
     {
+        /// <summary>
+        /// Gets the current GPU information asynchronously.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see cref="GpuInformation"/> object.</returns>
+        Task<GpuInformation> GetGpuInformationAsync();
+
         /// <summary>
         /// Gets the current GPU information.
         /// </summary>

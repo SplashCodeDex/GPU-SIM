@@ -8,12 +8,14 @@ namespace NvidiaControlPanel.Tests
     public class MainViewModelTests
     {
         [Fact]
-        public void Constructor_ShouldInitializeGpuNameFromService()
+        public async Task Constructor_ShouldInitializeGpuNameFromService()
         {
             // Arrange
             var mockRegistry = new Mock<IRegistryService>();
             var mockSystemInfo = new Mock<ISystemInfoService>();
-            mockSystemInfo.Setup(s => s.GetGpuInformation()).Returns(new Models.GpuInformation
+            var tcs = new TaskCompletionSource<Models.GpuInformation>();
+
+            mockSystemInfo.Setup(s => s.GetGpuInformationAsync()).ReturnsAsync(new Models.GpuInformation
             {
                 GpuName = "Test GPU",
                 DriverVersion = "1.2.3",
@@ -22,6 +24,10 @@ namespace NvidiaControlPanel.Tests
 
             // Act
             var viewModel = new MainViewModel(mockRegistry.Object, mockSystemInfo.Object);
+
+            // Wait for async init (poor man's sync for fire-and-forget)
+            // Ideally MainViewModel should expose a Task or IsInitialized property
+            await Task.Delay(100);
 
             // Assert
             Assert.Equal("System Information: Test GPU", viewModel.StatusBarText);

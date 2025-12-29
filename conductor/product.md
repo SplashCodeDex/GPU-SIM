@@ -20,10 +20,11 @@ To create a sophisticated simulation environment that mimics the presence of ded
 *   **Seamless Deployment:** Automated GitHub Actions pipeline to build and release a standalone, portable `.exe` for quick deployment.
 
 ## 4. Key Features
-*   **GPU Profile Manager:** Configure the "virtual" GPU's details (Name, VRAM size, Driver Version).
+*   **GPU Profile Manager:** Configure the "virtual" GPU's details (Name, VRAM size, Driver Version, Bus Support, BIOS Version, DirectX Support, Device/Vendor IDs).
 *   **System Hooking/Spoofing:** (Future/Advanced) Mechanisms to inject these values into Windows reporting tools.
 *   **High-Fidelity UI:** A WPF-based interface that strictly adheres to the visual style of the legacy NVIDIA Control Panel.
 *   **One-Click "Installation":** A setup routine that registers the spoofed values and places the Control Panel app appropriately.
+*   **Static Configuration:** Loads hardware definitions from `config/gpu_config.json` for easy manual spoofing.
 
 ## 5. User Flow
 1.  **Build:** Developer pushes a tag to GitHub.

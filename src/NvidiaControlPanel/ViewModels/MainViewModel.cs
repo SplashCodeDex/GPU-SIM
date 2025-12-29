@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using NvidiaControlPanel.Services;
@@ -17,6 +18,7 @@ namespace NvidiaControlPanel.ViewModels
         private string _statusBarText = string.Empty;
         private bool _isContextMenuEnabled;
         private bool _isTrayIconVisible = true;
+        private NvidiaControlPanel.Models.GpuInformation? _gpuInformation;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
@@ -47,12 +49,11 @@ namespace NvidiaControlPanel.ViewModels
             // Load initial state
             this.IsContextMenuEnabled = this._registryService.IsContextMenuEnabled();
 
-            // Set StatusBar Text
-            var info = this._systemInfoService.GetGpuInformation();
-            this.StatusBarText = $"System Information: {info.GpuName}";
+            // Default valid value to satisfy non-nullable requirement
+            this._currentView = new PlaceholderViewModel("Loading...");
 
-            // Default View
-            this._currentView = new HomeViewModel(info);
+            // Initialize Async
+            _ = this.InitializeAsync();
         }
 
         /// <summary>
@@ -131,6 +132,23 @@ namespace NvidiaControlPanel.ViewModels
         /// </summary>
         public ICommand NavigateCommand { get; }
 
+        private async Task InitializeAsync()
+        {
+            try
+            {
+                var info = await this._systemInfoService.GetGpuInformationAsync().ConfigureAwait(true);
+                this._gpuInformation = info;
+                this.StatusBarText = $"System Information: {info.GpuName}";
+
+                // Default View
+                this.CurrentView = new HomeViewModel(info);
+            }
+            catch
+            {
+                this.StatusBarText = "Failed to load system information.";
+            }
+        }
+
         private void ExecuteExit(object? obj)
         {
             Application.Current.Shutdown();
@@ -143,7 +161,16 @@ namespace NvidiaControlPanel.ViewModels
                 switch (viewName)
                 {
                     case "Manage3DSettings":
-                        this.CurrentView = new Manage3DSettingsViewModel();
+                        if (this._gpuInformation != null)
+                        {
+                            this.CurrentView = new Manage3DSettingsViewModel(new JsonSettingsService(), this._gpuInformation);
+                        }
+                        else
+                        {
+                            // Output a default if not yet loaded
+                            this.CurrentView = new Manage3DSettingsViewModel();
+                        }
+
                         this.CurrentPath = "3D Settings > Manage 3D settings";
                         break;
                     case "ChangeResolution":
@@ -197,9 +224,9 @@ namespace NvidiaControlPanel.ViewModels
             }
         }
 
-        private void ExecuteShowSystemInfo(object? obj)
+        private async void ExecuteShowSystemInfo(object? obj)
         {
-            var info = this._systemInfoService.GetGpuInformation();
+            var info = await this._systemInfoService.GetGpuInformationAsync().ConfigureAwait(true);
             var vm = new SystemInfoViewModel(info);
             var view = new Views.SystemInfoView
             {

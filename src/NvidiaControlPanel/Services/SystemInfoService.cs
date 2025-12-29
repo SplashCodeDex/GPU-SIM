@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using NvidiaControlPanel.Models;
 
 namespace NvidiaControlPanel.Services
@@ -24,6 +25,24 @@ namespace NvidiaControlPanel.Services
         public SystemInfoService(ISimulationService simulationService)
         {
             this._simulationService = simulationService;
+        }
+
+        /// <inheritdoc/>
+        public async Task<GpuInformation> GetGpuInformationAsync()
+        {
+            var config = await this._simulationService.GetConfigAsync().ConfigureAwait(false);
+
+            return new GpuInformation
+            {
+                GpuName = config.GpuName,
+                DriverVersion = config.DriverVersion,
+                VideoMemory = config.VideoMemory,
+                BusSupport = config.BusSupport,
+                BiosVersion = config.BiosVersion,
+                DirectXSupport = config.DirectXSupport,
+                DeviceId = config.DeviceId,
+                VendorId = config.VendorId,
+            };
         }
 
         /// <inheritdoc/>

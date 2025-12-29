@@ -12,12 +12,13 @@ namespace NvidiaControlPanel.ViewModels
     public class Manage3DSettingsViewModel : ViewModelBase
     {
         private readonly ISettingsService _settingsService;
+        private readonly GpuInformation _gpuInformation;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Manage3DSettingsViewModel"/> class.
         /// </summary>
         public Manage3DSettingsViewModel()
-            : this(new JsonSettingsService())
+            : this(new JsonSettingsService(), new GpuInformation { GpuName = "NVIDIA GeForce GTX 1650 (Design)" })
         {
         }
 
@@ -25,9 +26,11 @@ namespace NvidiaControlPanel.ViewModels
         /// Initializes a new instance of the <see cref="Manage3DSettingsViewModel"/> class with dependencies.
         /// </summary>
         /// <param name="settingsService">The settings service.</param>
-        public Manage3DSettingsViewModel(ISettingsService settingsService)
+        /// <param name="gpuInformation">The GPU information.</param>
+        public Manage3DSettingsViewModel(ISettingsService settingsService, GpuInformation gpuInformation)
         {
             this._settingsService = settingsService;
+            this._gpuInformation = gpuInformation;
             this.Settings = new ObservableCollection<FeatureSetting>();
             this.RestoreDefaultsCommand = new RelayCommand(this.ExecuteRestoreDefaults);
             this.ApplyCommand = new RelayCommand(this.ExecuteApply);
@@ -60,7 +63,7 @@ namespace NvidiaControlPanel.ViewModels
         /// </summary>
         public System.Windows.Input.ICommand ApplyCommand { get; }
 
-        private static Collection<FeatureSetting> GetDefaultSettings()
+        private Collection<FeatureSetting> GetDefaultSettings()
         {
             return new Collection<FeatureSetting>
             {
@@ -77,7 +80,7 @@ namespace NvidiaControlPanel.ViewModels
                 new FeatureSetting { Name = "Max Frame Rate", Value = "Off", Options = { "Off", "On" } },
                 new FeatureSetting { Name = "Monitor Technology", Value = "G-SYNC Compatible", Options = { "Fixed Refresh", "G-SYNC Compatible" } },
                 new FeatureSetting { Name = "Multi-Frame Sampled AA (MFAA)", Value = "Off", Options = { "Off", "On" } },
-                new FeatureSetting { Name = "OpenGL rendering GPU", Value = "Auto-select", Options = { "Auto-select", "NVIDIA GeForce GTX 1650" } },
+                new FeatureSetting { Name = "OpenGL rendering GPU", Value = "Auto-select", Options = { "Auto-select", this._gpuInformation?.GpuName ?? "NVIDIA GPU" } },
                 new FeatureSetting { Name = "Power management mode", Value = "Normal", Options = { "Normal", "Prefer maximum performance" } },
                 new FeatureSetting { Name = "Preferred refresh rate", Value = "Highest available", Options = { "Application-controlled", "Highest available" } },
                 new FeatureSetting { Name = "Shader Cache Size", Value = "Driver Default", Options = { "Driver Default", "Disabled", "Unlimited", "10 GB", "100 GB" } },
@@ -128,7 +131,7 @@ namespace NvidiaControlPanel.ViewModels
         private void ExecuteRestoreDefaults(object? obj)
         {
             this.Settings.Clear();
-            var defaults = GetDefaultSettings();
+            var defaults = this.GetDefaultSettings();
             foreach (var setting in defaults)
             {
                 this.Settings.Add(setting);

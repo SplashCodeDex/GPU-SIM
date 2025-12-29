@@ -37,7 +37,12 @@
                        Grid.Column="0"
                        Width="150"
                        VerticalAlignment="Center"
-                       RenderOptions.BitmapScalingMode="HighQuality"/>
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       Cursor="Arrow">
+                    <Image.InputBindings>
+                        <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding ApplyRegistrySpoofCommand}"/>
+                    </Image.InputBindings>
+                </Image>
 
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="20,0,0,0">
                     <TextBlock Text="System Information" FontSize="20" FontWeight="SemiBold" Foreground="#333333"/>
