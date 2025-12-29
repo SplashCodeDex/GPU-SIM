@@ -34,6 +34,21 @@
             <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource Color_Border}"/>
             <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource Color_White}"/>
 
+            <!-- Noise Texture Brush -->
+            <VisualBrush x:Key="NoiseBrush" TileMode="Tile" Viewport="0,0,128,128" ViewportUnits="Absolute">
+                <VisualBrush.Visual>
+                    <Canvas Width="128" Height="128" Background="Transparent">
+                        <Path Data="M0,0 L128,128" Stroke="#11000000" StrokeThickness="0.5" Opacity="0.05"/>
+                        <Path Data="M128,0 L0,128" Stroke="#11000000" StrokeThickness="0.5" Opacity="0.05"/>
+                        <!-- Simple procedural noise approximation -->
+                        <Rectangle Width="1" Height="1" Fill="#22000000" Canvas.Left="10" Canvas.Top="20" Opacity="0.03"/>
+                        <Rectangle Width="1" Height="1" Fill="#22000000" Canvas.Left="50" Canvas.Top="80" Opacity="0.03"/>
+                        <Rectangle Width="1" Height="1" Fill="#22000000" Canvas.Left="100" Canvas.Top="40" Opacity="0.03"/>
+                        <Rectangle Width="1" Height="1" Fill="#22000000" Canvas.Left="30" Canvas.Top="110" Opacity="0.03"/>
+                    </Canvas>
+                </VisualBrush.Visual>
+            </VisualBrush>
+
             <!-- Global Font Settings -->
             <Style TargetType="{x:Type Control}" x:Key="BaseControlStyle">
                 <Setter Property="FontFamily" Value="Segoe UI"/>

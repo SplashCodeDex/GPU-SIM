@@ -23,6 +23,7 @@ namespace NvidiaControlPanel.ViewModels
         private bool _isTrayIconVisible = true;
         private bool _isAutoStartEnabled;
         private NvidiaControlPanel.Models.GpuInformation? _gpuInformation;
+        private System.Collections.ObjectModel.ObservableCollection<string> _currentPathSegments = new ();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
@@ -101,6 +102,15 @@ namespace NvidiaControlPanel.ViewModels
         {
             get => this._currentPath;
             set => this.SetProperty(ref this._currentPath, value);
+        }
+
+        /// <summary>
+        /// Gets the current path segments for breadcrumbs.
+        /// </summary>
+        public System.Collections.ObjectModel.ObservableCollection<string> CurrentPathSegments
+        {
+            get => this._currentPathSegments;
+            private set => this.SetProperty(ref this._currentPathSegments, value);
         }
 
         /// <summary>
@@ -204,6 +214,7 @@ namespace NvidiaControlPanel.ViewModels
 
                 // Default View
                 this.CurrentView = new HomeViewModel(info);
+                this.UpdatePathSegments();
             }
             catch
             {
@@ -334,6 +345,25 @@ namespace NvidiaControlPanel.ViewModels
                         // Placeholder for other pages
                         break;
                 }
+
+            this.UpdatePathSegments();
+        }
+
+        private void UpdatePathSegments()
+        {
+            this.CurrentPathSegments.Clear();
+            var parts = this.CurrentPath.Split(" > ", System.StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < parts.Length; i++)
+            {
+                if (i > 0)
+                {
+                    this.CurrentPathSegments.Add("> " + parts[i]);
+                }
+                else
+                {
+                    this.CurrentPathSegments.Add(parts[i]);
+                }
+            }
         }
 
         private async void ExecuteShowSystemInfo(object? obj)

@@ -68,11 +68,24 @@
                                             <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="False">
                                                 <Setter Property="Foreground" Value="{StaticResource SecondaryTextBrush}"/>
                                                 <Setter Property="Opacity" Value="0.5"/>
+                                                <Setter Property="Effect" Value="{x:Null}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
                                                 <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
                                                 <Setter Property="Opacity" Value="1.0"/>
                                             </DataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="True"/>
+                                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="{StaticResource Color_NvidiaGreen}" BlurRadius="8" ShadowDepth="0" Opacity="0.8"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="Foreground" Value="{StaticResource NvidiaGreenBrush}"/>
+                                            </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </iconPacks:PackIconMaterial.Style>
@@ -89,18 +102,63 @@
                                             <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="False">
                                                 <Setter Property="Foreground" Value="{StaticResource SecondaryTextBrush}"/>
                                                 <Setter Property="Opacity" Value="0.5"/>
+                                                <Setter Property="Effect" Value="{x:Null}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
                                                 <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
                                                 <Setter Property="Opacity" Value="1.0"/>
                                             </DataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="True"/>
+                                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Button}}" Value="True"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="{StaticResource Color_NvidiaGreen}" BlurRadius="8" ShadowDepth="0" Opacity="0.8"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter Property="Foreground" Value="{StaticResource NvidiaGreenBrush}"/>
+                                            </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </iconPacks:PackIconMaterial.Style>
                             </iconPacks:PackIconMaterial>
                         </Button>
                         <Rectangle Width="1" Fill="{StaticResource BorderBrush}" Margin="5,5"/>
-                        <TextBlock Text="{Binding CurrentPath}" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource SecondaryTextBrush}" Margin="5,0"/>
+                        
+                        <!-- Dynamic Breadcrumbs -->
+                        <ItemsControl ItemsSource="{Binding CurrentPathSegments}" VerticalAlignment="Center" Margin="5,0">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource PrimaryTextBrush}" Margin="0,0,5,0">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <EventTrigger RoutedEvent="Loaded">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.3"/>
+                                                                <ThicknessAnimation Storyboard.TargetProperty="Margin" From="10,0,5,0" To="0,0,5,0" Duration="0:0:0.3">
+                                                                    <ThicknessAnimation.EasingFunction>
+                                                                        <PowerEase EasingMode="EaseOut"/>
+                                                                    </ThicknessAnimation.EasingFunction>
+                                                                </ThicknessAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -122,7 +180,10 @@
 
                 <!-- Left Pane: Navigation Tree -->
                 <Border Grid.Column="0" Background="{StaticResource BackgroundAltBrush}" Margin="10,0,0,10" CornerRadius="4">
-                    <TreeView BorderThickness="0" Background="Transparent" Padding="5">
+                    <Grid>
+                        <!-- Background Noise for TreeView -->
+                        <Rectangle Fill="{StaticResource NoiseBrush}" Opacity="0.5" IsHitTestVisible="False"/>
+                        <TreeView BorderThickness="0" Background="Transparent" Padding="5">
                         <TreeViewItem IsExpanded="True" IsSelected="True" FontWeight="Bold">
                             <TreeViewItem.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -318,6 +379,7 @@
                             </TreeViewItem>
                         </TreeViewItem>
                     </TreeView>
+                    </Grid>
                 </Border>
 
                 <!-- Splitter -->
@@ -326,6 +388,9 @@
                 <!-- Right Pane: Content -->
                 <Border Grid.Column="2" Background="{StaticResource BackgroundBrush}" Margin="0,0,10,10">
                     <Grid>
+                        <!-- Background Noise -->
+                        <Rectangle Fill="{StaticResource NoiseBrush}" Opacity="0.3" IsHitTestVisible="False"/>
+                        
                         <!-- Background Watermark -->
                         <Image Source="pack://application:,,,/Resources/Images/nvidia_logo_2.png"
                                Opacity="0.15"
