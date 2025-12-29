@@ -10,31 +10,24 @@
         Title="NVIDIA Control Panel" Height="700" Width="1100"
         Icon="pack://application:,,,/icon.ico"
         Background="#F0F0F0">
+<!-- Standard Nvidia-ish Style for TreeView is now GLOBAL in App.xaml -->
     <Window.Resources>
-        <!-- Standard Nvidia-ish Style for TreeView -->
-        <Style TargetType="TreeViewItem">
-            <Setter Property="IsExpanded" Value="True"/>
-            <Setter Property="Padding" Value="5,2"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{StaticResource NvidiaDarkGreyBrush}"/>
-            <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Foreground" Value="{StaticResource NvidiaGreenBrush}"/>
-                    <Setter Property="FontWeight" Value="Bold"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
         <!-- View Mapping -->
         <DataTemplate DataType="{x:Type viewModels:Manage3DSettingsViewModel}">
             <views:Manage3DSettingsView/>
         </DataTemplate>
+
+        <!-- Menu Style -->
+        <Style TargetType="MenuItem">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+        </Style>
     </Window.Resources>
 
-    <DockPanel>
+    <DockPanel Background="{StaticResource BackgroundBrush}">
         <!-- Menu Bar -->
-        <Menu DockPanel.Dock="Top" Background="{StaticResource NvidiaWhiteBrush}" BorderBrush="{StaticResource NvidiaDarkGreyBrush}" BorderThickness="0,0,0,1">
+        <Menu DockPanel.Dock="Top" Background="{StaticResource BackgroundBrush}" Padding="5">
             <MenuItem Header="_File">
                 <MenuItem Header="E_xit" Command="{Binding ExitCommand}"/>
             </MenuItem>
@@ -52,25 +45,25 @@
             </MenuItem>
         </Menu>
 
-        <!-- Tool Bar -->
-        <ToolBarTray DockPanel.Dock="Top" Background="{StaticResource NvidiaWhiteBrush}">
-            <ToolBar Background="{StaticResource NvidiaWhiteBrush}" Band="1" BandIndex="1">
-                <Button Content="Back" Width="50" IsEnabled="False"/>
-                <Button Content="Forward" Width="60" IsEnabled="False"/>
-                <Separator/>
-                <Label Content="Standard Tasks" FontWeight="Bold"/>
-            </ToolBar>
-        </ToolBarTray>
+        <!-- Tool Bar (Modernized) -->
+        <Border DockPanel.Dock="Top" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="10,5">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Back" Width="60" Margin="0,0,5,0" IsEnabled="False" Style="{StaticResource BaseControlStyle}" Background="Transparent" Foreground="{StaticResource SecondaryTextBrush}"/>
+                <Button Content="Forward" Width="80" IsEnabled="False" Style="{StaticResource BaseControlStyle}" Background="Transparent" Foreground="{StaticResource SecondaryTextBrush}"/>
+                <Rectangle Width="1" Fill="{StaticResource BorderBrush}" Margin="10,2"/>
+                <TextBlock Text="Standard Tasks" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource SecondaryTextBrush}"/>
+            </StackPanel>
+        </Border>
 
         <!-- Status Bar -->
-        <StatusBar DockPanel.Dock="Bottom" Background="{StaticResource NvidiaWhiteBrush}" BorderBrush="{StaticResource NvidiaDarkGreyBrush}" BorderThickness="0,1,0,0" Height="25">
+        <StatusBar DockPanel.Dock="Bottom" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0" Height="30" Padding="10,0">
             <StatusBarItem>
-                <TextBlock Text="System Information: NVIDIA GeForce GTX 1650" Foreground="{StaticResource NvidiaDarkGreyBrush}"/>
+                <TextBlock Text="System Information: NVIDIA GeForce GTX 1650" Foreground="{StaticResource SecondaryTextBrush}" FontSize="12"/>
             </StatusBarItem>
         </StatusBar>
 
         <!-- Main Content (Split View) -->
-        <Grid>
+        <Grid Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="280"/>
                 <ColumnDefinition Width="Auto"/>
@@ -78,7 +71,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Left Pane: Navigation Tree -->
-            <Border Grid.Column="0" BorderBrush="#FFD0D0D0" BorderThickness="0,0,1,0" Background="White">
+            <Border Grid.Column="0" Background="{StaticResource BackgroundAltBrush}" Margin="10,0,0,10" CornerRadius="4">
                 <TreeView BorderThickness="0" Background="Transparent" Padding="5">
                     <TreeViewItem Header="3D Settings" IsExpanded="True" FontWeight="Bold">
                         <TreeViewItem Header="Adjust image settings with preview"/>
@@ -108,10 +101,12 @@
             </Border>
 
             <!-- Splitter -->
-            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center" Background="#FFF0F0F0"/>
+            <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Center" Background="Transparent" Margin="5,0"/>
 
             <!-- Right Pane: Content -->
-            <ContentControl Grid.Column="2" Content="{Binding CurrentView}" Margin="10"/>
+            <Border Grid.Column="2" Background="{StaticResource BackgroundBrush}" Margin="0,0,10,10">
+                <ContentControl Content="{Binding CurrentView}"/>
+            </Border>
         </Grid>
     </DockPanel>
 </Window>

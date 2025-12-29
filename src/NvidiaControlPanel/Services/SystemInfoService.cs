@@ -16,7 +16,7 @@ namespace NvidiaControlPanel.Services
             {
                 GpuName = "NVIDIA GeForce GTX 1650",
                 DriverVersion = "560.94",
-                VideoMemory = "4096 MB GDDR6",
+                VideoMemory = "4096 MB GDDR5",
             };
         }
     }

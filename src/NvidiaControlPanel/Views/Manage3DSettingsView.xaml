@@ -7,18 +7,7 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=viewModels:Manage3DSettingsViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <Style TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="#008080"/> <!-- NVIDIA Teal-ish -->
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="BorderThickness" Value="0,0,1,1"/>
-            <Setter Property="BorderBrush" Value="#FFAAAAAA"/>
-        </Style>
-    </UserControl.Resources>
-
-    <Grid Background="White">
+    <Grid Background="{StaticResource BackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -29,44 +18,59 @@
 
         <!-- Header -->
         <TextBlock Text="I would like to use the following 3D settings:"
-                   Foreground="#003399"
-                   FontSize="14"
-                   Margin="10,10,10,5"/>
+                   Foreground="{StaticResource PrimaryTextBrush}"
+                   FontSize="16"
+                   FontWeight="SemiBold"
+                   Margin="10,15,10,10"/>
 
         <!-- Tabs (Global vs Program) -->
-        <TabControl Grid.Row="1" Margin="10,0,10,10" BorderThickness="0">
-            <TabItem Header="Global Settings" IsSelected="True">
-                <StackPanel Margin="0,10,0,0">
-                    <TextBlock Text="Global Presets:" Margin="0,0,0,5"/>
-                    <ComboBox SelectedIndex="0" Width="250" HorizontalAlignment="Left">
+        <TabControl Grid.Row="1" Margin="10,0,10,10" BorderThickness="0" Background="Transparent">
+            <!-- Note: Standard TabItem style will be used. For a clearer look, we might want a custom style later. -->
+            <TabItem Header="Global Settings" IsSelected="True" Background="Transparent">
+                <StackPanel Margin="0,15,0,0">
+                    <TextBlock Text="Global Presets:" Margin="0,0,0,5" Foreground="{StaticResource PrimaryTextBrush}"/>
+                    <ComboBox SelectedIndex="0" Width="300" HorizontalAlignment="Left" Style="{StaticResource {x:Type ComboBox}}">
                         <ComboBoxItem Content="Base profile"/>
+                        <ComboBoxItem Content="High Performance"/>
+                        <ComboBoxItem Content="Workstation App - Dynamic Streaming"/>
                     </ComboBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Program Settings">
-                <TextBlock Text="(Coming Soon)" Margin="10"/>
+            <TabItem Header="Program Settings" Background="Transparent">
+                <StackPanel Margin="0,15,0,0">
+                    <TextBlock Text="Select a program to customize:" Margin="0,0,0,5" Foreground="{StaticResource PrimaryTextBrush}"/>
+                     <ComboBox Width="300" HorizontalAlignment="Left" IsEnabled="False" Text="Loading programs..."/>
+                </StackPanel>
             </TabItem>
         </TabControl>
 
         <!-- Settings List -->
+        <!-- Style is now implicit from App.xaml -->
         <DataGrid Grid.Row="2"
                   ItemsSource="{Binding Settings}"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   HeadersVisibility="Column"
                   GridLinesVisibility="Horizontal"
-                  HorizontalGridLinesBrush="#FFEEEEEE"
-                  VerticalGridLinesBrush="Transparent"
                   BorderThickness="1"
-                  BorderBrush="#FFCCCCCC"
+                  BorderBrush="{StaticResource BorderBrush}"
                   Margin="10,0,10,10">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Feature" Binding="{Binding Name}" Width="2*" IsReadOnly="True" FontWeight="Bold"/>
+                <DataGridTextColumn Header="Feature" Binding="{Binding Name}" Width="2*" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+                            <Setter Property="Padding" Value="5,0"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
 
                 <DataGridTemplateColumn Header="Setting" Width="1.5*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Value}" VerticalAlignment="Center" Padding="2,0"/>
+                            <TextBlock Text="{Binding Value}" VerticalAlignment="Center" Padding="5,0" Foreground="{StaticResource SecondaryTextBrush}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -82,18 +86,20 @@
         </DataGrid>
 
         <!-- Bottom Description Area -->
-        <Border Grid.Row="3" BorderBrush="#FFCCCCCC" BorderThickness="1" Margin="10,0,10,10" Height="80">
+        <Border Grid.Row="3" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Margin="10,0,10,10" Height="80" CornerRadius="4" Background="{StaticResource BackgroundAltBrush}">
             <ScrollViewer>
                 <TextBlock Text="Description of the selected feature (coming soon)."
                            TextWrapping="Wrap"
-                           Padding="5"/>
+                           Padding="10"
+                           Foreground="{StaticResource SecondaryTextBrush}"/>
             </ScrollViewer>
         </Border>
 
         <!-- Buttons -->
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,10">
-            <Button Content="Restore" Command="{Binding RestoreDefaultsCommand}" Width="75" Margin="0,0,10,0"/>
-            <Button Content="Apply" Command="{Binding ApplyCommand}" Width="75"/>
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,20">
+            <Button Content="Restore" Command="{Binding RestoreDefaultsCommand}" Width="100" Margin="0,0,10,0"
+                    Background="Transparent" Foreground="{StaticResource NvidiaGreenBrush}" BorderBrush="{StaticResource NvidiaGreenBrush}" BorderThickness="1"/>
+            <Button Content="Apply" Command="{Binding ApplyCommand}" Width="100"/>
         </StackPanel>
     </Grid>
 </UserControl>

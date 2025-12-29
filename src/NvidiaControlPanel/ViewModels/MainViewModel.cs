@@ -118,8 +118,7 @@ namespace NvidiaControlPanel.ViewModels
             string message = $"NVIDIA System Information\n\n" +
                              $"GPU: {info.GpuName}\n" +
                              $"Driver Version: {info.DriverVersion}\n" +
-                             $"Memory: {info.VideoMemory}\n\n" +
-                             $"(This is a simulated dialog)";
+                             $"Memory: {info.VideoMemory}\n\n";
 
             MessageBox.Show(message, "System Information");
         }
