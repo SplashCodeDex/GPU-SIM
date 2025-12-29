@@ -41,5 +41,13 @@
 *   **Visual Verification**: UI changes must be verified via Walkthroughs (screenshots/recordings).
 *   **No "Blind" Edits**: Always read the target file state before applying patches.
 
+## 6. Testing Protocol
+*   **Mandate**: All "Testable" logic (Services, Logical ViewModels) **MUST** have corresponding Unit Tests.
+*   **Tooling**: Use `xUnit` in a dedicated `NvidiaControlPanel.Tests` project.
+*   **Requirement**: `dotnet test` must return **PASS** before any task completion.
+*   **Scope**:
+    *   **Services**: Verify logic paths and error handling.
+    *   **ViewModels**: Verify Command execution and Property notifications.
+
 ---
 **Violation of these rules breaks the simulation and is considered a critical failure.**

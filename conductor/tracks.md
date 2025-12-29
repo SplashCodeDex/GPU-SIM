@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Build the core 'Display Information' feature to correctly show spoofed GPU details (e.g., GTX 1650, 4GB VRAM) within the main settings view.
-*Link: [./conductor/tracks/display_info_20251229/](./conductor/tracks/display_info_20251229/)*
+## [~] Track: Implement File-Based GPU Configuration for Static Spoofing
+*Link: [./conductor/tracks/gpu_config_20251229/](./conductor/tracks/gpu_config_20251229/)*

@@ -1,3 +1,4 @@
+using Moq;
 using NvidiaControlPanel.Services;
 using Xunit;
 
@@ -6,18 +7,38 @@ namespace NvidiaControlPanel.Tests
     public class SystemInfoServiceTests
     {
         [Fact]
-        public void GetGpuInformation_ShouldReturnSpoofedData()
+        public void GetGpuInformation_ShouldReturnDataFromSimulationService()
         {
             // Arrange
-            var service = new SystemInfoService();
+            var mockSimulation = new Mock<ISimulationService>();
+            var expectedConfig = new SimulationConfig
+            {
+                GpuName = "Test GPU",
+                DriverVersion = "Test Driver",
+                VideoMemory = "Test Memory",
+                BusSupport = "Test Bus",
+                BiosVersion = "Test BIOS",
+                DirectXSupport = "Test DX",
+                DeviceId = "Test ID",
+                VendorId = "Test Vendor"
+            };
+
+            mockSimulation.Setup(s => s.GetConfig()).Returns(expectedConfig);
+
+            var service = new SystemInfoService(mockSimulation.Object);
 
             // Act
             var info = service.GetGpuInformation();
 
             // Assert
-            Assert.Equal("NVIDIA GeForce GTX 1650", info.GpuName);
-            Assert.Equal("560.94", info.DriverVersion);
-            Assert.Equal("4096 MB GDDR5", info.VideoMemory);
+            Assert.Equal("Test GPU", info.GpuName);
+            Assert.Equal("Test Driver", info.DriverVersion);
+            Assert.Equal("Test Memory", info.VideoMemory);
+            Assert.Equal("Test Bus", info.BusSupport);
+            Assert.Equal("Test BIOS", info.BiosVersion);
+            Assert.Equal("Test DX", info.DirectXSupport);
+            Assert.Equal("Test ID", info.DeviceId);
+            Assert.Equal("Test Vendor", info.VendorId);
         }
     }
 }

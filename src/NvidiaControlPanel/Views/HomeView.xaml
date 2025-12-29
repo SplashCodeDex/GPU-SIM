@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="20">
         <StackPanel>
-            <TextBlock Text="Welcome to NVIDIA Control Panel"
+            <TextBlock Text="NVIDIA Control Panel"
                        FontSize="24"
                        FontWeight="Bold"
                        Foreground="{StaticResource PrimaryTextBrush}"
@@ -20,7 +20,7 @@
                     <TextBlock Text="Graphics Card Information"
                                FontSize="18"
                                FontWeight="SemiBold"
-                               Foreground="{StaticResource AccentBrush}"
+                               Foreground="{StaticResource NvidiaGreenBrush}"
                                Margin="0,0,0,15"/>
 
                     <Grid>

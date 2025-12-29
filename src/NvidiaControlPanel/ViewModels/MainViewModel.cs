@@ -16,6 +16,7 @@ namespace NvidiaControlPanel.ViewModels
         private string _currentPath = "NVIDIA Control Panel";
         private string _statusBarText = string.Empty;
         private bool _isContextMenuEnabled;
+        private bool _isTrayIconVisible = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
@@ -117,9 +118,13 @@ namespace NvidiaControlPanel.ViewModels
         public ICommand ToggleTrayIconCommand { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the tray icon is visible.
+        /// Gets or sets a value indicating whether the tray icon is visible.
         /// </summary>
-        public bool IsTrayIconVisible { get; private set; } = true;
+        public bool IsTrayIconVisible
+        {
+            get => this._isTrayIconVisible;
+            set => this.SetProperty(ref this._isTrayIconVisible, value);
+        }
 
         /// <summary>
         /// Gets the command to navigate to a specific view.
@@ -146,7 +151,7 @@ namespace NvidiaControlPanel.ViewModels
                         this.CurrentPath = "Display > Change resolution";
                         break;
                     case "AdjustImageSettings":
-                        this.CurrentView = new PlaceholderViewModel("Adjust image settings with preview");
+                        this.CurrentView = new AdjustImageSettingsViewModel();
                         this.CurrentPath = "3D Settings > Adjust image settings with preview";
                         break;
                     case "ConfigureSurroundPhysX":
@@ -220,7 +225,6 @@ namespace NvidiaControlPanel.ViewModels
         private void ExecuteToggleTrayIcon(object? obj)
         {
             this.IsTrayIconVisible = !this.IsTrayIconVisible;
-            this.OnPropertyChanged(nameof(this.IsTrayIconVisible));
         }
     }
 }

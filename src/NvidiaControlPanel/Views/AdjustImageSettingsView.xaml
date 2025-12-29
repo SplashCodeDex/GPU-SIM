@@ -1,0 +1,174 @@
+<UserControl x:Class="NvidiaControlPanel.Views.AdjustImageSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="SectionBorder" TargetType="Border">
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Adjust image settings with preview"
+                       FontSize="20" FontWeight="Bold" Foreground="{StaticResource PrimaryTextBrush}"/>
+            <TextBlock Text="These settings allow you to adjust the image and rendering quality of your 3D applications."
+                       Foreground="{StaticResource SecondaryTextBrush}" Margin="0,5,0,0" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="350"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Settings Side -->
+            <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                <RadioButton Content="Let the 3D application decide" Margin="0,5"
+                             IsChecked="{Binding !UseAdvancedSettings, Converter={StaticResource InverseBooleanConverter}, FallbackValue=False}"/>
+
+                <RadioButton Content="Use the advanced 3D image settings" Margin="0,5"
+                             IsChecked="{Binding UseAdvancedSettings}"/>
+
+                <RadioButton Content="Use my preference emphasizing:" Margin="0,5,0,10"
+                             IsChecked="{Binding UseMyPreference}"/>
+
+                <!-- Preference Slider Area -->
+                <Border Style="{StaticResource SectionBorder}" IsEnabled="{Binding UseMyPreference}">
+                    <StackPanel>
+                        <Grid Margin="0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Performance" Foreground="{StaticResource SecondaryTextBrush}"/>
+                            <Slider Grid.Column="1" Margin="10,0" Minimum="0" Maximum="2" TickFrequency="1" IsSnapToTickEnabled="True">
+                                <Slider.Style>
+                                    <Style TargetType="Slider">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsPerformanceSelected}" Value="True">
+                                                <Setter Property="Value" Value="0"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsBalancedSelected}" Value="True">
+                                                <Setter Property="Value" Value="1"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsQualitySelected}" Value="True">
+                                                <Setter Property="Value" Value="2"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Slider.Style>
+                            </Slider>
+                            <TextBlock Grid.Column="2" Text="Quality" Foreground="{StaticResource SecondaryTextBrush}"/>
+                        </Grid>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+                            <RadioButton Content="Performance" IsChecked="{Binding IsPerformanceSelected}" Margin="10,0"/>
+                            <RadioButton Content="Balanced" IsChecked="{Binding IsBalancedSelected}" Margin="10,0"/>
+                            <RadioButton Content="Quality" IsChecked="{Binding IsQualitySelected}" Margin="10,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="Description:" FontWeight="Bold" Foreground="{StaticResource PrimaryTextBrush}" Margin="0,10,0,5"/>
+                <TextBlock Text="Moving the slider lets you choose whether you prefer the highest performance or the best quality for your 3D applications."
+                           Foreground="{StaticResource SecondaryTextBrush}" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <!-- Preview Side (The "WOW" part) -->
+            <Border Grid.Column="1" Background="Black" CornerRadius="4" ClipToBounds="True">
+                <Grid>
+                    <!-- Background Grid/Floor -->
+                    <Canvas Background="#111111">
+                         <Ellipse Width="400" Height="200" Fill="#222222" Canvas.Left="-25" Canvas.Top="250">
+                            <Ellipse.Effect>
+                                <BlurEffect Radius="50"/>
+                            </Ellipse.Effect>
+                         </Ellipse>
+                    </Canvas>
+
+                    <!-- Animated 3D Logo Simulation -->
+                    <Viewport3D>
+                         <Viewport3D.Camera>
+                            <PerspectiveCamera Position="0,0,5" LookDirection="0,0,-1" UpDirection="0,1,0" FieldOfView="45" />
+                         </Viewport3D.Camera>
+
+                         <ModelVisual3D>
+                            <ModelVisual3D.Content>
+                                <Model3DGroup>
+                                    <DirectionalLight Color="White" Direction="-1,-1,-3" />
+                                    <AmbientLight Color="#444444" />
+
+                                    <!-- The "N" Logo Cube (Simplified) -->
+                                    <GeometryModel3D>
+                                        <GeometryModel3D.Geometry>
+                                            <MeshGeometry3D Positions="-1,-1,0 1,-1,0 1,1,0 -1,1,0"
+                                                            TriangleIndices="0 1 2 0 2 3"
+                                                            TextureCoordinates="0,1 1,1 1,0 0,0"/>
+                                        </GeometryModel3D.Geometry>
+                                        <GeometryModel3D.Material>
+                                            <DiffuseMaterial>
+                                                <DiffuseMaterial.Brush>
+                                                    <VisualBrush>
+                                                        <VisualBrush.Visual>
+                                                                    <Grid Background="Black" Width="512" Height="512">
+                                                                <iconPacks:PackIconSimpleIcons Kind="Nvidia" Foreground="#76b900" Width="400" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            </Grid>
+                                                        </VisualBrush.Visual>
+                                                    </VisualBrush>
+                                                </DiffuseMaterial.Brush>
+                                            </DiffuseMaterial>
+                                        </GeometryModel3D.Material>
+
+                                        <GeometryModel3D.Transform>
+                                            <RotateTransform3D>
+                                                <RotateTransform3D.Rotation>
+                                                    <AxisAngleRotation3D x:Name="Rotation" Axis="0,1,0" Angle="0" />
+                                                </RotateTransform3D.Rotation>
+                                            </RotateTransform3D>
+                                        </GeometryModel3D.Transform>
+                                    </GeometryModel3D>
+                                </Model3DGroup>
+                            </ModelVisual3D.Content>
+                         </ModelVisual3D>
+                    </Viewport3D>
+
+                    <!-- Text Overlay -->
+                    <TextBlock Text="PREVIEW" Foreground="#3376b900" FontSize="40" FontWeight="Black"
+                               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20"/>
+                </Grid>
+
+                <Border.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="Rotation"
+                                                 Storyboard.TargetProperty="Angle"
+                                                 From="0" To="360" Duration="0:0:10"
+                                                 RepeatBehavior="Forever" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Border.Triggers>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

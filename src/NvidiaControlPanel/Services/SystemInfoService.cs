@@ -3,20 +3,44 @@ using NvidiaControlPanel.Models;
 namespace NvidiaControlPanel.Services
 {
     /// <summary>
-    /// Service that provides (spoofed) system information.
+    /// Provdes system information about the simulated hardware.
     /// </summary>
     public class SystemInfoService : ISystemInfoService
     {
+        private readonly ISimulationService _simulationService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SystemInfoService"/> class.
+        /// </summary>
+        public SystemInfoService()
+            : this(new SimulationService())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SystemInfoService"/> class.
+        /// </summary>
+        /// <param name="simulationService">The simulation service to use.</param>
+        public SystemInfoService(ISimulationService simulationService)
+        {
+            this._simulationService = simulationService;
+        }
+
         /// <inheritdoc/>
         public GpuInformation GetGpuInformation()
         {
-            // In the future, this could load from a JSON config file.
-            // For now, we return the hardcoded "Simulated" values.
+            var config = this._simulationService.GetConfig();
+
             return new GpuInformation
             {
-                GpuName = "NVIDIA GeForce GTX 1650",
-                DriverVersion = "560.94",
-                VideoMemory = "4096 MB GDDR5",
+                GpuName = config.GpuName,
+                DriverVersion = config.DriverVersion,
+                VideoMemory = config.VideoMemory,
+                BusSupport = config.BusSupport,
+                BiosVersion = config.BiosVersion,
+                DirectXSupport = config.DirectXSupport,
+                DeviceId = config.DeviceId,
+                VendorId = config.VendorId,
             };
         }
     }

@@ -6,15 +6,8 @@ Imagine i convinced my friend that my PC has Nvidia Dedicated GPU (1650 (4GB VRA
 
 I want to simulate real GPU and This Control Panel will be the main standalone app that will be installed to trick and convince my friend that it is the real Nvidia Control Panel and its values should match the spoofed values that is showing up in
 
-Future Enhancement(don't worry about it now): will show in task manager, dxdiag and settings on windows by which this project is already doing (can be enhanced)
+Future Enhancement(don't worry about it now): will show in task manager, dxdiag and settings on windows.
 
-
-
-
-
-
-
-The idea is that, this project should be able to build the NvidiaControlPanel.exe version tagged on Github so before i present my PC to my friend for verification, I will head to the github repo release and download the latest NvidiaControlPanel.exe, install and open it. I then configure it according to the profile i want, make it reflect in windows settings, dxdiag and Task manager. Then i click a button to install the control panel, optional GeForce Experience, and then present my PC to my friend.
 
 # The Flow
 1. Push changes with tag to github
