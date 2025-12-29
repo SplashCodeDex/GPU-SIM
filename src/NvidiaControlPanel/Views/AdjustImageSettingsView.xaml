@@ -129,7 +129,7 @@
                                             <GeometryModel3D.Transform>
                                                 <RotateTransform3D>
                                                     <RotateTransform3D.Rotation>
-                                                        <AxisAngleRotation3D x:Name="Rotation" Axis="0,1,0" Angle="0" />
+                                                        <AxisAngleRotation3D x:Name="Rotation" Axis="0,1,0" Angle="{Binding RotationAngle}" />
                                                     </RotateTransform3D.Rotation>
                                                 </RotateTransform3D>
                                             </GeometryModel3D.Transform>
@@ -154,20 +154,6 @@
                     <TextBlock Text="PREVIEW" Foreground="#3376b900" FontSize="40" FontWeight="Black"
                                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20" IsHitTestVisible="False"/>
                 </Grid>
-
-                <Border.Triggers>
-                    <EventTrigger RoutedEvent="Loaded">
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetName="Rotation"
-                                                 Storyboard.TargetProperty="Angle"
-                                                 From="0" To="360" 
-                                                 Duration="{Binding RotationDuration, Converter={StaticResource DoubleToDurationConverter}, FallbackValue='0:0:10'}"
-                                                 RepeatBehavior="Forever" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger>
-                </Border.Triggers>
             </Border>
         </Grid>
     </Grid>

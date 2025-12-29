@@ -13,7 +13,7 @@ namespace NvidiaControlPanel.ViewModels
     /// <summary>
     /// ViewModel for the Adjust Image Settings with Preview page.
     /// </summary>
-    public class AdjustImageSettingsViewModel : ViewModelBase
+    public class AdjustImageSettingsViewModel : ViewModelBase, System.IDisposable
     {
         private readonly ISimulationService _simulationService;
         private bool _isPerformanceSelected;
@@ -24,6 +24,8 @@ namespace NvidiaControlPanel.ViewModels
         private bool _letApplicationDecide;
         private int _preferenceValue = 1;
         private bool _isApplying;
+        private double _rotationAngle;
+        private long _lastTicks;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdjustImageSettingsViewModel"/> class.
@@ -43,6 +45,18 @@ namespace NvidiaControlPanel.ViewModels
             this.ApplyCommand = new RelayCommand(this.ExecuteApply);
 
             this.LoadSettings();
+
+            this._lastTicks = System.DateTime.UtcNow.Ticks;
+            System.Windows.Media.CompositionTarget.Rendering += this.OnRendering;
+        }
+
+        /// <summary>
+        /// Gets the rotation angle for the 3D preview.
+        /// </summary>
+        public double RotationAngle
+        {
+            get => this._rotationAngle;
+            private set => this.SetProperty(ref this._rotationAngle, value);
         }
 
         /// <summary>
@@ -176,6 +190,36 @@ namespace NvidiaControlPanel.ViewModels
                     _ => 5.0,  // Quality: Fast
                 };
             }
+        }
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            System.GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases resources used by the <see cref="AdjustImageSettingsViewModel"/> class.
+        /// </summary>
+        /// <param name="disposing">True if called from Dispose method.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                System.Windows.Media.CompositionTarget.Rendering -= this.OnRendering;
+            }
+        }
+
+        private void OnRendering(object? sender, System.EventArgs e)
+        {
+            long currentTicks = System.DateTime.UtcNow.Ticks;
+            double elapsedSeconds = (currentTicks - this._lastTicks) / (double)System.TimeSpan.TicksPerSecond;
+            this._lastTicks = currentTicks;
+
+            // Rotation speed (degrees per second)
+            double degreesPerSecond = 360.0 / this.RotationDuration;
+            this.RotationAngle = (this.RotationAngle + (degreesPerSecond * elapsedSeconds)) % 360;
         }
 
         private void LoadSettings()
