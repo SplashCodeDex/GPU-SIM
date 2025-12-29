@@ -3,6 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
-         <!-- Global styles will go here -->
+        <!-- NVIDIA Color Palette -->
+        <SolidColorBrush x:Key="NvidiaGreenBrush" Color="#76b900" />
+        <SolidColorBrush x:Key="NvidiaGreenAltBrush" Color="#6ab900" />
+        <SolidColorBrush x:Key="NvidiaDarkGreyBrush" Color="#333333" />
+        <SolidColorBrush x:Key="NvidiaBlackBrush" Color="#000000" />
+        <SolidColorBrush x:Key="NvidiaWhiteBrush" Color="#ffffff" />
     </Application.Resources>
 </Application>

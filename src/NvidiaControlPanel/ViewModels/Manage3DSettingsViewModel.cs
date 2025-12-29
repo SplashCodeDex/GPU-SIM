@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using NvidiaControlPanel.Models;
+using NvidiaControlPanel.Services;
 using NvidiaControlPanel.ViewModels.Core;
 
 namespace NvidiaControlPanel.ViewModels
@@ -9,12 +11,48 @@ namespace NvidiaControlPanel.ViewModels
     /// </summary>
     public class Manage3DSettingsViewModel : ViewModelBase
     {
+        private readonly ISettingsService _settingsService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Manage3DSettingsViewModel"/> class.
         /// </summary>
         public Manage3DSettingsViewModel()
+            : this(new JsonSettingsService())
         {
-            this.Settings = new ObservableCollection<FeatureSetting>
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Manage3DSettingsViewModel"/> class with dependencies.
+        /// </summary>
+        /// <param name="settingsService">The settings service.</param>
+        public Manage3DSettingsViewModel(ISettingsService settingsService)
+        {
+            this._settingsService = settingsService;
+            this.Settings = new ObservableCollection<FeatureSetting>();
+            this.RestoreDefaultsCommand = new RelayCommand(this.ExecuteRestoreDefaults);
+            this.ApplyCommand = new RelayCommand(this.ExecuteApply);
+
+            this.LoadSettings();
+        }
+
+        /// <summary>
+        /// Gets the collection of 3D settings.
+        /// </summary>
+        public ObservableCollection<FeatureSetting> Settings { get; }
+
+        /// <summary>
+        /// Gets the command to restore default settings.
+        /// </summary>
+        public System.Windows.Input.ICommand RestoreDefaultsCommand { get; }
+
+        /// <summary>
+        /// Gets the command to save and apply settings.
+        /// </summary>
+        public System.Windows.Input.ICommand ApplyCommand { get; }
+
+        private static Collection<FeatureSetting> GetDefaultSettings()
+        {
+            return new Collection<FeatureSetting>
             {
                 new FeatureSetting { Name = "Image Sharpening", Value = "Off", Options = { "Off", "On" } },
                 new FeatureSetting { Name = "Ambient Occlusion", Value = "Performance", Options = { "Off", "Performance", "Quality" } },
@@ -44,9 +82,35 @@ namespace NvidiaControlPanel.ViewModels
             };
         }
 
-        /// <summary>
-        /// Gets the collection of 3D settings.
-        /// </summary>
-        public ObservableCollection<FeatureSetting> Settings { get; }
+        private void LoadSettings()
+        {
+            var loaded = this._settingsService.Load3DSettings();
+            if (loaded != null && loaded.Count > 0)
+            {
+                foreach (var setting in loaded)
+                {
+                    this.Settings.Add(setting);
+                }
+            }
+            else
+            {
+                this.ExecuteRestoreDefaults(null);
+            }
+        }
+
+        private void ExecuteApply(object? obj)
+        {
+            this._settingsService.Save3DSettings(this.Settings);
+        }
+
+        private void ExecuteRestoreDefaults(object? obj)
+        {
+            this.Settings.Clear();
+            var defaults = GetDefaultSettings();
+            foreach (var setting in defaults)
+            {
+                this.Settings.Add(setting);
+            }
+        }
     }
 }

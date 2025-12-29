@@ -38,3 +38,20 @@ We enforce code quality strictly, similar to `eslint` + `prettier` + `jest`.
 *   `src/NvidiaControlPanel/Models`: POCOs (C#)
 
 **Violation of these rules results in broken features and unmaintainable code.**
+
+## 5. Design System & Theming
+The application must adhere to the specific NVIDIA-like color palette defined below. Reuse these resources universally.
+
+### Color Palette
+| Name | Hex | XAML Resource Key | Usage |
+| :--- | :--- | :--- | :--- |
+| **NvidiaGreen** | `#76b900` | `NvidiaGreenBrush` | Primary Accents, Active States, Logo |
+| **NvidiaGreenAlt** | `#6ab900` | `NvidiaGreenAltBrush` | Secondary Accents, Gradient Start |
+| **NvidiaDarkGrey** | `#333333` | `NvidiaDarkGreyBrush` | Sidebar Background, Headers |
+| **NvidiaBlack** | `#000000` | `NvidiaBlackBrush` | Window Background (High Contrast) |
+| **NvidiaWhite** | `#ffffff` | `NvidiaWhiteBrush` | Primary Text, Content Background |
+
+### Implementation Rules
+- **NEVER** hardcode hex values in XAML views. Use `StaticResource` (e.g., `{StaticResource NvidiaGreenBrush}`).
+- Define all colors in `App.xaml` as `SolidColorBrush`.
+- Maintain correct contrast ratios (White text on Dark Grey/Green).

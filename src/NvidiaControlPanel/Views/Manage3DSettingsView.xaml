@@ -24,6 +24,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Header -->
@@ -62,8 +63,21 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Feature" Binding="{Binding Name}" Width="2*" IsReadOnly="True" FontWeight="Bold"/>
 
-                <!-- Simple Text Column for now, will upgrade to ComboBox later if needed for 'editing' illusion -->
-                <DataGridTextColumn Header="Setting" Binding="{Binding Value}" Width="1*" IsReadOnly="True" Foreground="Black"/>
+                <DataGridTemplateColumn Header="Setting" Width="1.5*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Value}" VerticalAlignment="Center" Padding="2,0"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Options}"
+                                      SelectedItem="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                      IsEditable="False"
+                                      BorderThickness="0"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 
@@ -75,5 +89,11 @@
                            Padding="5"/>
             </ScrollViewer>
         </Border>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,10">
+            <Button Content="Restore" Command="{Binding RestoreDefaultsCommand}" Width="75" Margin="0,0,10,0"/>
+            <Button Content="Apply" Command="{Binding ApplyCommand}" Width="75"/>
+        </StackPanel>
     </Grid>
 </UserControl>

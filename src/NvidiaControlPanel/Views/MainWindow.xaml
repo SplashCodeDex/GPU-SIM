@@ -16,7 +16,14 @@
             <Setter Property="IsExpanded" Value="True"/>
             <Setter Property="Padding" Value="5,2"/>
             <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource NvidiaDarkGreyBrush}"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource NvidiaGreenBrush}"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <!-- View Mapping -->
@@ -27,7 +34,7 @@
 
     <DockPanel>
         <!-- Menu Bar -->
-        <Menu DockPanel.Dock="Top" Background="White" BorderBrush="#FFD0D0D0" BorderThickness="0,0,0,1">
+        <Menu DockPanel.Dock="Top" Background="{StaticResource NvidiaWhiteBrush}" BorderBrush="{StaticResource NvidiaDarkGreyBrush}" BorderThickness="0,0,0,1">
             <MenuItem Header="_File">
                 <MenuItem Header="E_xit" Command="{Binding ExitCommand}"/>
             </MenuItem>
@@ -46,8 +53,8 @@
         </Menu>
 
         <!-- Tool Bar -->
-        <ToolBarTray DockPanel.Dock="Top" Background="White">
-            <ToolBar Background="White" Band="1" BandIndex="1">
+        <ToolBarTray DockPanel.Dock="Top" Background="{StaticResource NvidiaWhiteBrush}">
+            <ToolBar Background="{StaticResource NvidiaWhiteBrush}" Band="1" BandIndex="1">
                 <Button Content="Back" Width="50" IsEnabled="False"/>
                 <Button Content="Forward" Width="60" IsEnabled="False"/>
                 <Separator/>
@@ -56,9 +63,9 @@
         </ToolBarTray>
 
         <!-- Status Bar -->
-        <StatusBar DockPanel.Dock="Bottom" Background="#FFF0F0F0" Height="25">
+        <StatusBar DockPanel.Dock="Bottom" Background="{StaticResource NvidiaWhiteBrush}" BorderBrush="{StaticResource NvidiaDarkGreyBrush}" BorderThickness="0,1,0,0" Height="25">
             <StatusBarItem>
-                <TextBlock Text="System Information: NVIDIA GeForce GTX 1650"/>
+                <TextBlock Text="System Information: NVIDIA GeForce GTX 1650" Foreground="{StaticResource NvidiaDarkGreyBrush}"/>
             </StatusBarItem>
         </StatusBar>
 
