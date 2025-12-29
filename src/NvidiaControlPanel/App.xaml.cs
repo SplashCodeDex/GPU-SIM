@@ -11,6 +11,7 @@ namespace NvidiaControlPanel
     public partial class App : Application, IDisposable
     {
         private TrayIconService? _trayIconService;
+        private RealityShieldService? _realityShieldService;
 
         /// <inheritdoc/>
         public void Dispose()
@@ -28,6 +29,7 @@ namespace NvidiaControlPanel
             if (disposing)
             {
                 this._trayIconService?.Dispose();
+                this._realityShieldService?.Dispose();
             }
         }
 
@@ -67,8 +69,21 @@ namespace NvidiaControlPanel
 
             base.OnStartup(e);
 
+            var systemInfo = new SystemInfoService();
+            var registrySpoof = new RegistrySpoofService();
+
             this._trayIconService = new TrayIconService();
             this._trayIconService.Show();
+
+            this._realityShieldService = new RealityShieldService(systemInfo, registrySpoof);
+            this._realityShieldService.Start();
+
+            if (e.Args.Contains("--silent"))
+            {
+                // Ensure main window doesn't show initially
+                // StartupUri is handled by WPF, so we might need to clear it or handle MainWindow specifically
+                this.StartupUri = null;
+            }
         }
 
         /// <inheritdoc/>

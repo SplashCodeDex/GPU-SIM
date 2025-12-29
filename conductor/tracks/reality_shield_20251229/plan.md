@@ -1,22 +1,22 @@
 # Plan: Reality-Shield: Registry Persistence Service
 
 ## Phase 1: Startup Persistence Logic
-- [x] Task: Implement `AutoStartService` [bcb4b40]
+- [x] Task: Implement `AutoStartService` [2549bc9]
     - [x] Sub-task: Write logic to add/remove the application from `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`.
     - [x] Sub-task: Ensure the startup command includes a `--silent` flag to launch minimized to tray.
-- [x] Task: Update `MainViewModel.cs` [bcb4b40]
+- [x] Task: Update `MainViewModel.cs` [2549bc9]
     - [x] Sub-task: Add `IsAutoStartEnabled` property and bind it to a new menu item in "Desktop".
     - [x] Sub-task: Initialize property state by checking the registry key.
-- [x] Task: Conductor - User Manual Verification 'Startup Persistence Logic' (Protocol in workflow.md) [bcb4b40]
+- [x] Task: Conductor - User Manual Verification 'Startup Persistence Logic' (Protocol in workflow.md) [2549bc9]
 
 ## Phase 2: Periodic Enforcement (The Shield)
-- [ ] Task: Implement `RealityShieldService`
-    - [ ] Sub-task: Create a service that uses a `System.Timers.Timer` set to 60 seconds.
-    - [ ] Sub-task: On each tick, call `RegistrySpoofService.ApplySpoof` with the current configuration.
-- [ ] Task: Integrate Shield with App Lifecycle
-    - [ ] Sub-task: Start the `RealityShieldService` in `App.xaml.cs` upon successful startup.
-    - [ ] Sub-task: Handle the `--silent` argument in `App.xaml.cs` to prevent the main window from showing.
-- [ ] Task: Conductor - User Manual Verification 'Periodic Enforcement (The Shield)' (Protocol in workflow.md)
+- [x] Task: Implement `RealityShieldService` [2549bc9]
+    - [x] Sub-task: Create a service that uses a `System.Timers.Timer` set to 60 seconds.
+    - [x] Sub-task: On each tick, call `RegistrySpoofService.ApplySpoof` with the current configuration.
+- [x] Task: Integrate Shield with App Lifecycle [2549bc9]
+    - [x] Sub-task: Start the `RealityShieldService` in `App.xaml.cs` upon successful startup.
+    - [x] Sub-task: Handle the `--silent` argument in `App.xaml.cs` to prevent the main window from showing.
+- [x] Task: Conductor - User Manual Verification 'Periodic Enforcement (The Shield)' (Protocol in workflow.md) [2549bc9]
 
 ## Phase 3: Admin-Enforced Logic
 - [ ] Task: Automatic Elevation Flow
