@@ -32,6 +32,9 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="GPU:" Grid.Row="0" Grid.Column="0" Margin="0,5" FontWeight="SemiBold"/>
@@ -42,6 +45,15 @@
 
                         <TextBlock Text="Dedicated Video Memory:" Grid.Row="2" Grid.Column="0" Margin="0,5" FontWeight="SemiBold"/>
                         <TextBlock Text="{Binding VideoMemory}" Grid.Row="2" Grid.Column="1" Margin="0,5"/>
+
+                        <TextBlock Text="Bus Support:" Grid.Row="3" Grid.Column="0" Margin="0,5" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding BusSupport}" Grid.Row="3" Grid.Column="1" Margin="0,5"/>
+
+                        <TextBlock Text="BIOS Version:" Grid.Row="4" Grid.Column="0" Margin="0,5" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding BiosVersion}" Grid.Row="4" Grid.Column="1" Margin="0,5"/>
+
+                        <TextBlock Text="DirectX Support:" Grid.Row="5" Grid.Column="0" Margin="0,5" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding DirectXSupport}" Grid.Row="5" Grid.Column="1" Margin="0,5"/>
                     </Grid>
                 </StackPanel>
             </Border>

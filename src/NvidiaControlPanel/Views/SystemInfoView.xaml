@@ -97,14 +97,14 @@
                             </Grid>
                             <Separator Background="#EEEEEE"/>
 
-                            <!-- Fake Details for Illusion -->
+                            <!-- Extended Details -->
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="DirectX runtime version" Padding="10"/>
-                                <TextBlock Grid.Column="1" Text="12.0" Padding="10"/>
+                                <TextBlock Grid.Column="1" Text="{Binding DirectXSupport}" Padding="10"/>
                             </Grid>
                             <Separator Background="#EEEEEE"/>
 
@@ -114,7 +114,37 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Bus" Padding="10"/>
-                                <TextBlock Grid.Column="1" Text="PCI Express x16 Gen3" Padding="10"/>
+                                <TextBlock Grid.Column="1" Text="{Binding BusSupport}" Padding="10"/>
+                            </Grid>
+                            <Separator Background="#EEEEEE"/>
+
+                            <Grid>
+                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Video BIOS version" Padding="10"/>
+                                <TextBlock Grid.Column="1" Text="{Binding BiosVersion}" Padding="10"/>
+                            </Grid>
+                            <Separator Background="#EEEEEE"/>
+
+                            <Grid>
+                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Device ID" Padding="10"/>
+                                <TextBlock Grid.Column="1" Text="{Binding DeviceId}" Padding="10"/>
+                            </Grid>
+                            <Separator Background="#EEEEEE"/>
+
+                            <Grid>
+                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Vendor ID" Padding="10"/>
+                                <TextBlock Grid.Column="1" Text="{Binding VendorId}" Padding="10"/>
                             </Grid>
 
                         </StackPanel>

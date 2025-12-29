@@ -37,5 +37,20 @@ namespace NvidiaControlPanel.ViewModels
         /// Gets the Video Memory.
         /// </summary>
         public string VideoMemory => this._gpuInfo.VideoMemory;
+
+        /// <summary>
+        /// Gets the Bus Support.
+        /// </summary>
+        public string BusSupport => this._gpuInfo.BusSupport;
+
+        /// <summary>
+        /// Gets the BIOS Version.
+        /// </summary>
+        public string BiosVersion => this._gpuInfo.BiosVersion;
+
+        /// <summary>
+        /// Gets the DirectX Support level.
+        /// </summary>
+        public string DirectXSupport => this._gpuInfo.DirectXSupport;
     }
 }

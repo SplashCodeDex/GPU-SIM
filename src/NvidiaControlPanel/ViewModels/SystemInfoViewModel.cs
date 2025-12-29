@@ -42,6 +42,31 @@ namespace NvidiaControlPanel.ViewModels
         public string VideoMemory => this._gpuInfo.VideoMemory;
 
         /// <summary>
+        /// Gets the Bus Support.
+        /// </summary>
+        public string BusSupport => this._gpuInfo.BusSupport;
+
+        /// <summary>
+        /// Gets the BIOS Version.
+        /// </summary>
+        public string BiosVersion => this._gpuInfo.BiosVersion;
+
+        /// <summary>
+        /// Gets the DirectX Support level.
+        /// </summary>
+        public string DirectXSupport => this._gpuInfo.DirectXSupport;
+
+        /// <summary>
+        /// Gets the Device ID.
+        /// </summary>
+        public string DeviceId => this._gpuInfo.DeviceId;
+
+        /// <summary>
+        /// Gets the Vendor ID.
+        /// </summary>
+        public string VendorId => this._gpuInfo.VendorId;
+
+        /// <summary>
         /// Gets the command to close the window.
         /// </summary>
         public ICommand CloseCommand { get; }
