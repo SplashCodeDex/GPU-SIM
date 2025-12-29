@@ -8,8 +8,29 @@ namespace NvidiaControlPanel
     /// <summary>
     /// Interaction logic for App.xaml.
     /// </summary>
-    public partial class App : Application
+    public partial class App : Application, IDisposable
     {
+        private TrayIconService? _trayIconService;
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases resources used by the <see cref="App"/> class.
+        /// </summary>
+        /// <param name="disposing">True if called from Dispose method.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this._trayIconService?.Dispose();
+            }
+        }
+
         /// <inheritdoc/>
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -37,6 +58,20 @@ namespace NvidiaControlPanel
             }
 
             base.OnStartup(e);
+
+            this._trayIconService = new TrayIconService();
+            this._trayIconService.Show();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnExit(ExitEventArgs e)
+        {
+            if (this._trayIconService is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
+
+            base.OnExit(e);
         }
 
         private static void HandleRegistrySpoof()

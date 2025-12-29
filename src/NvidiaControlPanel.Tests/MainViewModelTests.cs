@@ -13,6 +13,7 @@ namespace NvidiaControlPanel.Tests
             // Arrange
             var mockContextMenu = new Mock<IContextMenuService>();
             var mockSystemInfo = new Mock<ISystemInfoService>();
+            var mockTrayIcon = new Mock<ITrayIconService>();
             var tcs = new TaskCompletionSource<Models.GpuInformation>();
 
             mockSystemInfo.Setup(s => s.GetGpuInformationAsync()).ReturnsAsync(new Models.GpuInformation
@@ -23,10 +24,7 @@ namespace NvidiaControlPanel.Tests
             });
 
             // Act
-            // Act
-            IContextMenuService contextMenuService = mockContextMenu.Object;
-            ISystemInfoService systemInfoService = mockSystemInfo.Object;
-            var viewModel = new MainViewModel(contextMenuService, systemInfoService);
+            var viewModel = new MainViewModel(mockContextMenu.Object, mockSystemInfo.Object, mockTrayIcon.Object);
 
             // Wait for async init (poor man's sync for fire-and-forget)
             // Ideally MainViewModel should expose a Task or IsInitialized property

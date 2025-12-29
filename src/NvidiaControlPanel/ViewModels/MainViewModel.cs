@@ -13,6 +13,7 @@ namespace NvidiaControlPanel.ViewModels
     {
         private readonly IContextMenuService _contextMenuService;
         private readonly ISystemInfoService _systemInfoService;
+        private readonly ITrayIconService _trayIconService;
         private object _currentView;
         private string _currentPath = "NVIDIA Control Panel";
         private string _statusBarText = string.Empty;
@@ -23,8 +24,9 @@ namespace NvidiaControlPanel.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Service lifecycle is managed by the application.")]
         public MainViewModel()
-            : this(new ContextMenuService(), new SystemInfoService())
+            : this(new ContextMenuService(), new SystemInfoService(), new TrayIconService())
         {
             // Default constructor for design-time data if needed
         }
@@ -34,10 +36,15 @@ namespace NvidiaControlPanel.ViewModels
         /// </summary>
         /// <param name="contextMenuService">The context menu service.</param>
         /// <param name="systemInfoService">The system info service.</param>
-        public MainViewModel(IContextMenuService contextMenuService, ISystemInfoService systemInfoService)
+        /// <param name="trayIconService">The tray icon service.</param>
+        public MainViewModel(
+            IContextMenuService contextMenuService,
+            ISystemInfoService systemInfoService,
+            ITrayIconService trayIconService)
         {
             this._contextMenuService = contextMenuService;
             this._systemInfoService = systemInfoService;
+            this._trayIconService = trayIconService;
 
             // Initialize Command
             this.ExitCommand = new RelayCommand(this.ExecuteExit);
@@ -139,6 +146,8 @@ namespace NvidiaControlPanel.ViewModels
                 var info = await this._systemInfoService.GetGpuInformationAsync().ConfigureAwait(true);
                 this._gpuInformation = info;
                 this.StatusBarText = $"System Information: {info.GpuName}";
+                this.IsTrayIconVisible = info.IsTrayIconVisible;
+                this._trayIconService.SetVisibility(this.IsTrayIconVisible);
 
                 // Default View
                 this.CurrentView = new HomeViewModel(info);
@@ -186,7 +195,7 @@ namespace NvidiaControlPanel.ViewModels
                         this.CurrentPath = "3D Settings > Adjust image settings with preview";
                         break;
                     case "ConfigureSurroundPhysX":
-                        this.CurrentView = new ConfigureSurroundPhysXViewModel(this._systemInfoService);
+                        this.CurrentView = new PlaceholderViewModel("Configure Surround, PhysX");
                         this.CurrentPath = "3D Settings > Configure Surround, PhysX";
                         break;
                     case "AdjustDesktopColor":
@@ -256,6 +265,7 @@ namespace NvidiaControlPanel.ViewModels
         private void ExecuteToggleTrayIcon(object? obj)
         {
             this.IsTrayIconVisible = !this.IsTrayIconVisible;
+            this._trayIconService.SetVisibility(this.IsTrayIconVisible);
         }
     }
 }

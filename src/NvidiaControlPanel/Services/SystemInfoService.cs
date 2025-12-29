@@ -47,6 +47,7 @@ namespace NvidiaControlPanel.Services
                 ImageSettingsMode = config.ImageSettingsMode,
                 PreferenceLevel = config.PreferenceLevel,
                 IsContextMenuEnabled = config.IsContextMenuEnabled,
+                IsTrayIconVisible = config.IsTrayIconVisible,
             };
         }
 
@@ -70,6 +71,7 @@ namespace NvidiaControlPanel.Services
                 ImageSettingsMode = config.ImageSettingsMode,
                 PreferenceLevel = config.PreferenceLevel,
                 IsContextMenuEnabled = config.IsContextMenuEnabled,
+                IsTrayIconVisible = config.IsTrayIconVisible,
             };
         }
     }

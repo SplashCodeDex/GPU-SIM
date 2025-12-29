@@ -69,5 +69,10 @@ namespace NvidiaControlPanel.Models
         /// Gets or sets a value indicating whether the context menu is enabled.
         /// </summary>
         public bool IsContextMenuEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the tray icon is visible.
+        /// </summary>
+        public bool IsTrayIconVisible { get; set; } = true;
     }
 }
