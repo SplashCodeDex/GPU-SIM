@@ -9,11 +9,11 @@
 - [x] Task: Conductor - User Manual Verification 'Data Model and Storage' (Protocol in workflow.md) [eb8521d]
 
 ## Phase 2: ViewModels and Logic
-- [ ] Task: Update `DisplayResolutionViewModel.cs`
-    - [ ] Sub-task: Implement `ApplyCommand` logic to trigger the flicker and then the confirmation dialog.
-    - [ ] Sub-task: Implement the 15-second countdown timer logic with a `Revert` action.
-    - [ ] Sub-task: Inject `ISimulationService` to save the "confirmed" settings.
-- [ ] Task: Conductor - User Manual Verification 'ViewModels and Logic' (Protocol in workflow.md)
+- [x] Task: Update `DisplayResolutionViewModel.cs` [82e7ab2]
+    - [x] Sub-task: Implement `ApplyCommand` logic to trigger the flicker and then the confirmation dialog.
+    - [x] Sub-task: Implement the 15-second countdown timer logic with a `Revert` action.
+    - [x] Sub-task: Inject `ISimulationService` to save the "confirmed" settings.
+- [x] Task: Conductor - User Manual Verification 'ViewModels and Logic' (Protocol in workflow.md) [82e7ab2]
 
 ## Phase 3: UI and UX (The Flicker)
 - [ ] Task: Implement `FlickerService`

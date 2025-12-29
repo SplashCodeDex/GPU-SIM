@@ -18,34 +18,53 @@ namespace NvidiaControlPanel.ViewModels
     public class DisplayResolutionViewModel : ViewModelBase
     {
         private readonly IDisplayService _displayService;
+        private readonly ISimulationService _simulationService;
+        private readonly IFlickerService _flickerService;
+        private readonly IConfirmationService _confirmationService;
+
         private Resolution? _selectedResolution;
         private int _selectedRefreshRate;
+        private string? _appliedResolution;
+        private int _appliedRefreshRate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DisplayResolutionViewModel"/> class.
         /// </summary>
         public DisplayResolutionViewModel()
-            : this(new MockDisplayService())
+            : this(new MockDisplayService(), new SimulationService(), null!, null!)
         {
+            // Note: Services will be properly injected or handled in a real composition root.
+            // For this simulation, we'll implement the concrete versions in Phase 3.
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DisplayResolutionViewModel"/> class with dependencies.
         /// </summary>
         /// <param name="displayService">The display service.</param>
-        public DisplayResolutionViewModel(IDisplayService displayService)
+        /// <param name="simulationService">The simulation service.</param>
+        /// <param name="flickerService">The flicker service.</param>
+        /// <param name="confirmationService">The confirmation service.</param>
+        public DisplayResolutionViewModel(
+            IDisplayService displayService,
+            ISimulationService simulationService,
+            IFlickerService flickerService,
+            IConfirmationService confirmationService)
         {
             this._displayService = displayService;
+            this._simulationService = simulationService;
+            this._flickerService = flickerService;
+            this._confirmationService = confirmationService;
+
             this.Resolutions = this._displayService.GetAvailableResolutions();
             this.ApplyCommand = new RelayCommand(this.ExecuteApply);
             this.RestoreDefaultsCommand = new RelayCommand(this.ExecuteRestoreDefaults);
 
-            // Default selection
-            this.SelectedResolution = this.Resolutions.FirstOrDefault();
-            if (this.SelectedResolution != null)
-            {
-                this.SelectedRefreshRate = this.SelectedResolution.RefreshRates.FirstOrDefault();
-            }
+            // Load saved settings
+            var config = this._simulationService.GetConfig();
+            this._appliedResolution = config.SelectedResolution;
+            this._appliedRefreshRate = config.SelectedRefreshRate;
+
+            this.InitializeSelection();
         }
 
         /// <summary>
@@ -93,26 +112,77 @@ namespace NvidiaControlPanel.ViewModels
         /// </summary>
         public ICommand RestoreDefaultsCommand { get; }
 
-        private void ExecuteApply(object? obj)
+        private void InitializeSelection()
         {
-            if (this.SelectedResolution != null)
+            if (!string.IsNullOrEmpty(this._appliedResolution))
             {
-                MessageBox.Show(
-                    $"Resolution changed to {this.SelectedResolution.DisplayName} at {this.SelectedRefreshRate}Hz",
-                    "Success",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
+                this.SelectedResolution = this.Resolutions.FirstOrDefault(r => r.DisplayName == this._appliedResolution);
+                this.SelectedRefreshRate = this._appliedRefreshRate;
+            }
+
+            if (this.SelectedResolution == null)
+            {
+                this.SelectedResolution = this.Resolutions.FirstOrDefault();
+                if (this.SelectedResolution != null)
+                {
+                    this.SelectedRefreshRate = this.SelectedResolution.RefreshRates.FirstOrDefault();
+                }
+            }
+        }
+
+        private async void ExecuteApply(object? obj)
+        {
+            if (this.SelectedResolution == null)
+            {
+                return;
+            }
+
+            string targetRes = this.SelectedResolution.DisplayName;
+            int targetRate = this.SelectedRefreshRate;
+
+            // 1. Trigger Flicker
+            if (this._flickerService != null)
+            {
+                await this._flickerService.FlickerAsync(1500).ConfigureAwait(true);
+            }
+
+            // 2. Show Confirmation
+            bool confirmed = false;
+            if (this._confirmationService != null)
+            {
+                confirmed = await this._confirmationService.ShowConfirmationAsync(
+                    "Your desktop has been reconfigured. Do you want to keep these changes?",
+                    15).ConfigureAwait(true);
+            }
+            else
+            {
+                // Fallback for simulation if service not yet implemented
+                confirmed = true;
+            }
+
+            if (confirmed)
+            {
+                this._appliedResolution = targetRes;
+                this._appliedRefreshRate = targetRate;
+
+                // 3. Save to Simulation Config
+                var config = this._simulationService.GetConfig();
+                config.SelectedResolution = targetRes;
+                config.SelectedRefreshRate = targetRate;
+                this._simulationService.SaveConfig(config);
+            }
+            else
+            {
+                // 4. Revert UI
+                this.InitializeSelection();
             }
         }
 
         private void ExecuteRestoreDefaults(object? obj)
         {
-            // Restore logic: Select first resolution and its highest refresh rate
             this.SelectedResolution = this.Resolutions.FirstOrDefault();
             if (this.SelectedResolution != null)
             {
-                // Assuming last is highest, or sort it. Typical for game/mock logic.
-                // But for now, let's just pick the first one as "Default".
                 this.SelectedRefreshRate = this.SelectedResolution.RefreshRates.FirstOrDefault();
             }
         }
