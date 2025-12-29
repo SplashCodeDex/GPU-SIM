@@ -29,7 +29,7 @@
 - [x] Task: Conductor - User Manual Verification 'UI Styling & Wiring' (Protocol in workflow.md) [e4f59fe]
 
 ## Phase 4: Final Verification
-- [ ] Task: Defensive Walkthrough
-    - [ ] Sub-task: Try to select 144Hz, confirm UAC "NVIDIA Web Helper" appears.
-    - [ ] Sub-task: Verify the progress bar stalls at 19% and shows the "Connection Timed Out" error with manual instructions.
-- [ ] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)
+- [x] Task: Defensive Walkthrough [29c4cce]
+    - [x] Sub-task: Try to select 144Hz, confirm UAC "NVIDIA Web Helper" appears.
+    - [x] Sub-task: Verify the progress bar stalls at 19% and shows the "Connection Timed Out" error with manual instructions.
+- [x] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md) [29c4cce]

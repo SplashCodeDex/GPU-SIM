@@ -25,6 +25,7 @@ To create a sophisticated simulation environment that mimics the presence of ded
 *   **High-Fidelity UI:** A WPF-based interface that strictly adheres to the visual style of the legacy NVIDIA Control Panel.
 *   **One-Click "Installation":** A hidden trigger in the System Information dialog that applies the spoof system-wide with a UAC elevation prompt.
 *   **Display Simulation:** Authentic "Change Resolution" page supporting elite resolutions (2K) and high refresh rates (144Hz) with simulated hardware mode switching (screen flicker) and confirmation timers.
+*   **Defensive Spoofing:** Intelligent UI strategy that shows high-end "Elite" settings (like 144Hz) but keeps them dimmed and unselectable, redirecting attempts to a convincing but failing "NVIDIA Software Update" flow to maintain the hardware illusion.
 *   **Interactive 3D Preview:** High-fidelity "Adjust Image Settings" page featuring a reactive 3D NVIDIA logo that visually demonstrates the impact of "Performance vs. Quality" choices using real-time pixelation and animation speed changes.
 *   **Desktop Context Menu:** Authentic "NVIDIA Control Panel" entry in the Windows Desktop right-click menu, providing a realistic entry point and matching real driver behavior.
 *   **Persistent Tray Icon:** A green NVIDIA icon in the system notification area that ensures the application remains running in the background and provides quick access via context menu.

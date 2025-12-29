@@ -37,10 +37,14 @@
                               IsCheckable="True"
                               IsChecked="{Binding IsContextMenuEnabled}"
                               Command="{Binding ToggleContextMenuCommand}"/>
-                    <MenuItem Header="Show Notification Tray Icon"
-                              IsCheckable="True"
+                    <MenuItem Header="Show Notification Tray Icon" 
+                              IsCheckable="True" 
                               IsChecked="{Binding IsTrayIconVisible}"
                               Command="{Binding ToggleTrayIconCommand}"/>
+                    <MenuItem Header="Enable Persistence (Auto-Start with Windows)" 
+                              IsCheckable="True" 
+                              IsChecked="{Binding IsAutoStartEnabled}"
+                              Command="{Binding ToggleAutoStartCommand}"/>
                 </MenuItem>
                 <MenuItem Header="_3D Settings"/>
                 <MenuItem Header="_Help">

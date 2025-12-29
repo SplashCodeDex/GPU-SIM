@@ -14,11 +14,13 @@ namespace NvidiaControlPanel.ViewModels
         private readonly IContextMenuService _contextMenuService;
         private readonly ISystemInfoService _systemInfoService;
         private readonly ITrayIconService _trayIconService;
+        private readonly IAutoStartService _autoStartService;
         private object _currentView;
         private string _currentPath = "NVIDIA Control Panel";
         private string _statusBarText = string.Empty;
         private bool _isContextMenuEnabled;
         private bool _isTrayIconVisible = true;
+        private bool _isAutoStartEnabled;
         private NvidiaControlPanel.Models.GpuInformation? _gpuInformation;
 
         /// <summary>
@@ -26,7 +28,7 @@ namespace NvidiaControlPanel.ViewModels
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Service lifecycle is managed by the application.")]
         public MainViewModel()
-            : this(new ContextMenuService(), new SystemInfoService(), new TrayIconService())
+            : this(new ContextMenuService(), new SystemInfoService(), new TrayIconService(), new AutoStartService())
         {
             // Default constructor for design-time data if needed
         }
@@ -37,24 +39,29 @@ namespace NvidiaControlPanel.ViewModels
         /// <param name="contextMenuService">The context menu service.</param>
         /// <param name="systemInfoService">The system info service.</param>
         /// <param name="trayIconService">The tray icon service.</param>
+        /// <param name="autoStartService">The auto-start service.</param>
         public MainViewModel(
             IContextMenuService contextMenuService,
             ISystemInfoService systemInfoService,
-            ITrayIconService trayIconService)
+            ITrayIconService trayIconService,
+            IAutoStartService autoStartService)
         {
             this._contextMenuService = contextMenuService;
             this._systemInfoService = systemInfoService;
             this._trayIconService = trayIconService;
+            this._autoStartService = autoStartService;
 
             // Initialize Command
             this.ExitCommand = new RelayCommand(this.ExecuteExit);
             this.ShowSystemInfoCommand = new RelayCommand(this.ExecuteShowSystemInfo);
             this.ToggleContextMenuCommand = new RelayCommand(this.ExecuteToggleContextMenu);
             this.ToggleTrayIconCommand = new RelayCommand(this.ExecuteToggleTrayIcon);
+            this.ToggleAutoStartCommand = new RelayCommand(this.ExecuteToggleAutoStart);
             this.NavigateCommand = new RelayCommand(this.ExecuteNavigate);
 
             // Load initial state
             this.IsContextMenuEnabled = this._contextMenuService.IsEnabled();
+            this.IsAutoStartEnabled = this._autoStartService.IsEnabled();
 
             // Default valid value to satisfy non-nullable requirement
             this._currentView = new PlaceholderViewModel("Loading...");
@@ -106,6 +113,21 @@ namespace NvidiaControlPanel.ViewModels
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether auto-start is enabled.
+        /// </summary>
+        public bool IsAutoStartEnabled
+        {
+            get => this._isAutoStartEnabled;
+            set
+            {
+                if (this.SetProperty(ref this._isAutoStartEnabled, value))
+                {
+                    // Logic is handled in the Command
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the command to exit the application.
         /// </summary>
         public ICommand ExitCommand { get; }
@@ -124,6 +146,11 @@ namespace NvidiaControlPanel.ViewModels
         /// Gets the command to toggle the tray icon visibility.
         /// </summary>
         public ICommand ToggleTrayIconCommand { get; }
+
+        /// <summary>
+        /// Gets the command to toggle auto-start.
+        /// </summary>
+        public ICommand ToggleAutoStartCommand { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the tray icon is visible.
@@ -259,6 +286,18 @@ namespace NvidiaControlPanel.ViewModels
             else
             {
                 this._contextMenuService.Disable();
+            }
+        }
+
+        private void ExecuteToggleAutoStart(object? obj)
+        {
+            if (this.IsAutoStartEnabled)
+            {
+                this._autoStartService.Enable();
+            }
+            else
+            {
+                this._autoStartService.Disable();
             }
         }
 
