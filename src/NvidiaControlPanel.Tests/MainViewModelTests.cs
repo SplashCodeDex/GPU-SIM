@@ -85,9 +85,14 @@ namespace NvidiaControlPanel.Tests
         }
 
         [Fact]
-        public void NavigateCommand_ShouldRecordNavigationInService()
+        public void Tooltips_ShouldUpdateBasedOnNavigationService()
         {
             // Arrange
+            this._mockNavigation.Setup(n => n.CanGoBack).Returns(true);
+            this._mockNavigation.Setup(n => n.PreviousViewName).Returns("Manage 3D settings");
+            this._mockNavigation.Setup(n => n.CanGoForward).Returns(true);
+            this._mockNavigation.Setup(n => n.NextViewName).Returns("Change resolution");
+            
             var viewModel = new MainViewModel(
                 this._mockContextMenu.Object,
                 this._mockSystemInfo.Object,
@@ -95,11 +100,9 @@ namespace NvidiaControlPanel.Tests
                 this._mockAutoStart.Object,
                 this._mockNavigation.Object);
 
-            // Act
-            viewModel.NavigateCommand.Execute("Manage3DSettings");
-
             // Assert
-            this._mockNavigation.Verify(n => n.RecordNavigation("Manage3DSettings"), Times.Once);
+            Assert.Equal("Back to Manage 3D settings", viewModel.BackTooltip);
+            Assert.Equal("Forward to Change resolution", viewModel.ForwardTooltip);
         }
     }
 }

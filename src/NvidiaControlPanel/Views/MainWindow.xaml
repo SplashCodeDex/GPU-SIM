@@ -57,11 +57,47 @@
             <Border DockPanel.Dock="Top" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="10,5">
                 <Grid>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Button Width="40" Margin="0,0,5,0" IsEnabled="False" Style="{StaticResource BaseControlStyle}" Background="Transparent" Foreground="{StaticResource SecondaryTextBrush}">
-                            <iconPacks:PackIconMaterial Kind="ArrowLeft" Width="16" Height="16"/>
+                        <Button Width="40" Margin="0,0,5,0" 
+                                Command="{Binding BackCommand}"
+                                ToolTip="{Binding BackTooltip}"
+                                Style="{StaticResource BaseControlStyle}" Background="Transparent">
+                            <iconPacks:PackIconMaterial Kind="ArrowLeft" Width="16" Height="16">
+                                <iconPacks:PackIconMaterial.Style>
+                                    <Style TargetType="iconPacks:PackIconMaterial">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="False">
+                                                <Setter Property="Foreground" Value="{StaticResource SecondaryTextBrush}"/>
+                                                <Setter Property="Opacity" Value="0.5"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                                <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+                                                <Setter Property="Opacity" Value="1.0"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </iconPacks:PackIconMaterial.Style>
+                            </iconPacks:PackIconMaterial>
                         </Button>
-                        <Button Width="40" IsEnabled="False" Style="{StaticResource BaseControlStyle}" Background="Transparent" Foreground="{StaticResource SecondaryTextBrush}">
-                            <iconPacks:PackIconMaterial Kind="ArrowRight" Width="16" Height="16"/>
+                        <Button Width="40" 
+                                Command="{Binding ForwardCommand}"
+                                ToolTip="{Binding ForwardTooltip}"
+                                Style="{StaticResource BaseControlStyle}" Background="Transparent">
+                            <iconPacks:PackIconMaterial Kind="ArrowRight" Width="16" Height="16">
+                                <iconPacks:PackIconMaterial.Style>
+                                    <Style TargetType="iconPacks:PackIconMaterial">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="False">
+                                                <Setter Property="Foreground" Value="{StaticResource SecondaryTextBrush}"/>
+                                                <Setter Property="Opacity" Value="0.5"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
+                                                <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
+                                                <Setter Property="Opacity" Value="1.0"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </iconPacks:PackIconMaterial.Style>
+                            </iconPacks:PackIconMaterial>
                         </Button>
                         <Rectangle Width="1" Fill="{StaticResource BorderBrush}" Margin="5,5"/>
                         <TextBlock Text="{Binding CurrentPath}" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource SecondaryTextBrush}" Margin="5,0"/>

@@ -182,6 +182,16 @@ namespace NvidiaControlPanel.ViewModels
         /// </summary>
         public ICommand ForwardCommand { get; }
 
+        /// <summary>
+        /// Gets the tooltip for the Back button.
+        /// </summary>
+        public string BackTooltip => this._navigationService.CanGoBack ? $"Back to {this._navigationService.PreviousViewName}" : "Back";
+
+        /// <summary>
+        /// Gets the tooltip for the Forward button.
+        /// </summary>
+        public string ForwardTooltip => this._navigationService.CanGoForward ? $"Forward to {this._navigationService.NextViewName}" : "Forward";
+
         private async Task InitializeAsync()
         {
             try
@@ -212,7 +222,7 @@ namespace NvidiaControlPanel.ViewModels
             {
                 this._navigationService.RecordNavigation(viewName);
                 this.NavigateToView(viewName);
-                CommandManager.InvalidateRequerySuggested();
+                this.NotifyNavigationPropertiesChanged();
             }
         }
 
@@ -222,7 +232,7 @@ namespace NvidiaControlPanel.ViewModels
             if (viewName != null)
             {
                 this.NavigateToView(viewName);
-                CommandManager.InvalidateRequerySuggested();
+                this.NotifyNavigationPropertiesChanged();
             }
         }
 
@@ -232,8 +242,15 @@ namespace NvidiaControlPanel.ViewModels
             if (viewName != null)
             {
                 this.NavigateToView(viewName);
-                CommandManager.InvalidateRequerySuggested();
+                this.NotifyNavigationPropertiesChanged();
             }
+        }
+
+        private void NotifyNavigationPropertiesChanged()
+        {
+            this.OnPropertyChanged(nameof(this.BackTooltip));
+            this.OnPropertyChanged(nameof(this.ForwardTooltip));
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void NavigateToView(string viewName)
