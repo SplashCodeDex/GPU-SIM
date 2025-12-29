@@ -1,10 +1,10 @@
 # Plan: Navigation History (Back/Forward)
 
-## Phase 1: Foundation & Services [ ]
+## Phase 1: Foundation & Services [checkpoint: 06a7332]
 - [x] Task: Create `INavigationService` and `NavigationService` to manage history stacks. 10f5237
 - [x] Task: Write unit tests for `NavigationService` (History tracking, Back/Forward availability, Home exclusion). 10f5237
 - [x] Task: Implement `NavigationService` logic. 10f5237
-- [~] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Services' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Foundation & Services' (Protocol in workflow.md) 06a7332
 
 ## Phase 2: ViewModel Integration [ ]
 - [ ] Task: Update `MainViewModel` to inject and use `INavigationService`.
