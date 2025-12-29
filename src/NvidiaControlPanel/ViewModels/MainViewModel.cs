@@ -174,7 +174,11 @@ namespace NvidiaControlPanel.ViewModels
                         this.CurrentPath = "3D Settings > Manage 3D settings";
                         break;
                     case "ChangeResolution":
-                        this.CurrentView = new DisplayResolutionViewModel();
+                        this.CurrentView = new DisplayResolutionViewModel(
+                            new MockDisplayService(),
+                            this._systemInfoService is SystemInfoService s ? new SimulationService() : new SimulationService(), // fallback
+                            new FlickerService(),
+                            new ConfirmationService());
                         this.CurrentPath = "Display > Change resolution";
                         break;
                     case "AdjustImageSettings":

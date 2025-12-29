@@ -55,7 +55,7 @@ namespace NvidiaControlPanel.ViewModels
             this._flickerService = flickerService;
             this._confirmationService = confirmationService;
 
-            this.Resolutions = this._displayService.GetAvailableResolutions();
+            this.Resolutions = new ObservableCollection<Resolution>(ResolutionProvider.GetAvailableResolutions());
             this.ApplyCommand = new RelayCommand(this.ExecuteApply);
             this.RestoreDefaultsCommand = new RelayCommand(this.ExecuteRestoreDefaults);
 

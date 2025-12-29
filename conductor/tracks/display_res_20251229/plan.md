@@ -16,13 +16,13 @@
 - [x] Task: Conductor - User Manual Verification 'ViewModels and Logic' (Protocol in workflow.md) [82e7ab2]
 
 ## Phase 3: UI and UX (The Flicker)
-- [ ] Task: Implement `FlickerService`
-    - [ ] Sub-task: Create a service that opens a full-screen, top-most black `Window` for a specified duration.
-- [ ] Task: Update `DisplayResolutionView.xaml`
-    - [ ] Sub-task: Design the layout to match the NVIDIA "Change Resolution" screen (Resolution list, Refresh rate combo box).
-- [ ] Task: Create `ConfirmationDialogView.xaml`
-    - [ ] Sub-task: Design a small, authentic-looking dialog with the "Keep changes?" message and timer.
-- [ ] Task: Conductor - User Manual Verification 'UI and UX (The Flicker)' (Protocol in workflow.md)
+- [x] Task: Implement `FlickerService` [f0b3b0f]
+    - [x] Sub-task: Create a service that opens a full-screen, top-most black `Window` for a specified duration.
+- [x] Task: Update `DisplayResolutionView.xaml` [f0b3b0f]
+    - [x] Sub-task: Design the layout to match the NVIDIA "Change Resolution" screen (Resolution list, Refresh rate combo box).
+- [x] Task: Create `ConfirmationDialogView.xaml` [f0b3b0f]
+    - [x] Sub-task: Design a small, authentic-looking dialog with the "Keep changes?" message and timer.
+- [x] Task: Conductor - User Manual Verification 'UI and UX (The Flicker)' (Protocol in workflow.md) [f0b3b0f]
 
 ## Phase 4: Final Verification
 - [ ] Task: Full UX Walkthrough

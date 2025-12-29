@@ -1,0 +1,35 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Easing Functions -->
+    <QuinticEase x:Key="QuinticEaseOut" EasingMode="EaseOut"/>
+    <ExponentialEase x:Key="ExpoEaseOut" EasingMode="EaseOut"/>
+    <ExponentialEase x:Key="ExpoEaseInOut" EasingMode="EaseInOut"/>
+
+    <!-- 1. Page Load Animation (Fade In + Slide Up) -->
+    <Storyboard x:Key="PageLoadAnimation">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="0.0" To="1.0"
+                         Duration="0:0:0.4"
+                         EasingFunction="{StaticResource ExpoEaseOut}"/>
+        <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                            From="0,20,0,0" To="0"
+                            Duration="0:0:0.4"
+                            EasingFunction="{StaticResource QuinticEaseOut}"/>
+    </Storyboard>
+
+    <!-- 2. Button Hover Animation (Scale Up) -->
+    <!-- Note: Applied via RenderTransform in Style triggers -->
+
+    <!-- 3. Global UserControl Style with Transition -->
+    <!-- This applies the PageLoadAnimation to ALL UserControls automatically -->
+    <Style TargetType="UserControl" x:Key="AnimatedUserControlStyle">
+        <Setter Property="Opacity" Value="0"/>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="Loaded">
+                <BeginStoryboard Storyboard="{StaticResource PageLoadAnimation}"/>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>
