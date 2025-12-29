@@ -2,7 +2,6 @@
 // Copyright (c) NvidiaControlPanel. All rights reserved.
 // </copyright>
 
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using NvidiaControlPanel.Models;
 
@@ -25,13 +24,26 @@ namespace NvidiaControlPanel.Services
                 {
                     Width = 2560,
                     Height = 1440,
-                    RefreshRates = { 60, 120, 144 },
+                    IsElite = true,
+                    RefreshRates =
+                    {
+                        new RefreshRate { Value = 60, IsElite = false },
+                        new RefreshRate { Value = 120, IsElite = true },
+                        new RefreshRate { Value = 144, IsElite = true },
+                    },
                 },
                 new Resolution
                 {
                     Width = 1920,
                     Height = 1080,
-                    RefreshRates = { 60, 75, 120, 144 },
+                    IsElite = false,
+                    RefreshRates =
+                    {
+                        new RefreshRate { Value = 60, IsElite = false },
+                        new RefreshRate { Value = 75, IsElite = true },
+                        new RefreshRate { Value = 120, IsElite = true },
+                        new RefreshRate { Value = 144, IsElite = true },
+                    },
                 },
             };
         }

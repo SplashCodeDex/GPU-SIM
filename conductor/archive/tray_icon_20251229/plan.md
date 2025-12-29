@@ -22,8 +22,8 @@
 - [x] Task: Conductor - User Manual Verification 'Application Lifecycle & Integration' (Protocol in workflow.md) [5c0204c]
 
 ## Phase 3: Final Verification
-- [ ] Task: Full UX Walkthrough
-    - [ ] Sub-task: Launch app, verify tray icon presence.
-    - [ ] Sub-task: Close window, verify app still runs in tray.
-    - [ ] Sub-task: Restore from tray, toggle off in settings, and verify removal.
-- [ ] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)
+- [x] Task: Full UX Walkthrough [bcb4b40]
+    - [x] Sub-task: Launch app, verify tray icon presence.
+    - [x] Sub-task: Close window, verify app still runs in tray.
+    - [x] Sub-task: Restore from tray, toggle off in settings, and verify removal.
+- [x] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md) [bcb4b40]

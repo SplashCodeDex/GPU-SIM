@@ -22,9 +22,14 @@ namespace NvidiaControlPanel.Models
         public int Height { get; set; }
 
         /// <summary>
-        /// Gets the collection of available refresh rates in Hz.
+        /// Gets the collection of available refresh rates.
         /// </summary>
-        public Collection<int> RefreshRates { get; } = new Collection<int>();
+        public Collection<RefreshRate> RefreshRates { get; } = new Collection<RefreshRate>();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this is an elite (high-end) resolution.
+        /// </summary>
+        public bool IsElite { get; set; }
 
         /// <summary>
         /// Gets the display name (e.g., "1920 x 1080").

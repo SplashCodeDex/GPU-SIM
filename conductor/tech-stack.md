@@ -10,7 +10,7 @@
 *   **Dependency Injection:** Interface-based services (e.g., `ISystemInfoService`) - This allows the app to swap between "real" system data and "simulated" data easily.
 *   **Configuration Management:** `SimulationService` loads static hardware definitions from `config/gpu_config.json`, enabling external control of the spoofed identity.
 *   **System Integration:** `RegistrySpoofService` and `ContextMenuService` provide on-demand UAC elevation to manage system-level integration (GPU reporting and desktop entry), ensuring external Windows tools and shell interactions report the simulated values.
-*   **UX Simulation:** `FlickerService` and `ConfirmationService` replicate hardware-level behaviors like screen blackouts and timeout-based confirmation dialogs during display reconfigurations.
+*   **UX Simulation:** `FlickerService`, `ConfirmationService`, and `TrayIconService` replicate hardware-level behaviors and OS-level presence (screen blackouts, confirmation dialogs, and persistent tray icons).
 *   **Visual Fidelity:** Dynamic XAML scaling and custom value converters (e.g., `DoubleToDurationConverter`) simulate hardware rendering constraints in the 3D preview without impacting real-time performance.
 
 ## Quality & Standards

@@ -27,6 +27,7 @@ To create a sophisticated simulation environment that mimics the presence of ded
 *   **Display Simulation:** Authentic "Change Resolution" page supporting elite resolutions (2K) and high refresh rates (144Hz) with simulated hardware mode switching (screen flicker) and confirmation timers.
 *   **Interactive 3D Preview:** High-fidelity "Adjust Image Settings" page featuring a reactive 3D NVIDIA logo that visually demonstrates the impact of "Performance vs. Quality" choices using real-time pixelation and animation speed changes.
 *   **Desktop Context Menu:** Authentic "NVIDIA Control Panel" entry in the Windows Desktop right-click menu, providing a realistic entry point and matching real driver behavior.
+*   **Persistent Tray Icon:** A green NVIDIA icon in the system notification area that ensures the application remains running in the background and provides quick access via context menu.
 *   **Static Configuration:** Loads hardware definitions from `config/gpu_config.json` for easy manual spoofing.
 
 ## 5. User Flow

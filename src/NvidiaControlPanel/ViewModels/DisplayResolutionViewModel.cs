@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -23,7 +24,7 @@ namespace NvidiaControlPanel.ViewModels
         private readonly IConfirmationService _confirmationService;
 
         private Resolution? _selectedResolution;
-        private int _selectedRefreshRate;
+        private RefreshRate? _selectedRefreshRateItem;
         private string? _appliedResolution;
         private int _appliedRefreshRate;
 
@@ -58,6 +59,7 @@ namespace NvidiaControlPanel.ViewModels
             this.Resolutions = new ObservableCollection<Resolution>(ResolutionProvider.GetAvailableResolutions());
             this.ApplyCommand = new RelayCommand(this.ExecuteApply);
             this.RestoreDefaultsCommand = new RelayCommand(this.ExecuteRestoreDefaults);
+            this.ShowUpdateRequiredCommand = new RelayCommand(this.ExecuteShowUpdateRequired);
 
             // Load saved settings
             var config = this._simulationService.GetConfig();
@@ -83,7 +85,7 @@ namespace NvidiaControlPanel.ViewModels
                 if (this.SetProperty(ref this._selectedResolution, value))
                 {
                     this.OnPropertyChanged(nameof(this.RefreshRates));
-                    this.SelectedRefreshRate = value?.RefreshRates.FirstOrDefault() ?? 0;
+                    this.SelectedRefreshRateItem = value?.RefreshRates.FirstOrDefault();
                 }
             }
         }
@@ -91,15 +93,15 @@ namespace NvidiaControlPanel.ViewModels
         /// <summary>
         /// Gets the collection of refresh rates for the selected resolution.
         /// </summary>
-        public ObservableCollection<int> RefreshRates => new ObservableCollection<int>(this.SelectedResolution?.RefreshRates ?? System.Linq.Enumerable.Empty<int>());
+        public ObservableCollection<RefreshRate> RefreshRates => new ObservableCollection<RefreshRate>(this.SelectedResolution?.RefreshRates ?? System.Linq.Enumerable.Empty<RefreshRate>());
 
         /// <summary>
-        /// Gets or sets the selected refresh rate.
+        /// Gets or sets the selected refresh rate item.
         /// </summary>
-        public int SelectedRefreshRate
+        public RefreshRate? SelectedRefreshRateItem
         {
-            get => this._selectedRefreshRate;
-            set => this.SetProperty(ref this._selectedRefreshRate, value);
+            get => this._selectedRefreshRateItem;
+            set => this.SetProperty(ref this._selectedRefreshRateItem, value);
         }
 
         /// <summary>
@@ -112,33 +114,35 @@ namespace NvidiaControlPanel.ViewModels
         /// </summary>
         public ICommand RestoreDefaultsCommand { get; }
 
+        /// <summary>
+        /// Gets the command to show the update required dialog.
+        /// </summary>
+        public ICommand ShowUpdateRequiredCommand { get; }
+
         private void InitializeSelection()
         {
             if (!string.IsNullOrEmpty(this._appliedResolution))
             {
                 this.SelectedResolution = this.Resolutions.FirstOrDefault(r => r.DisplayName == this._appliedResolution);
-                this.SelectedRefreshRate = this._appliedRefreshRate;
+                this.SelectedRefreshRateItem = this.SelectedResolution?.RefreshRates.FirstOrDefault(r => r.Value == this._appliedRefreshRate);
             }
 
             if (this.SelectedResolution == null)
             {
                 this.SelectedResolution = this.Resolutions.FirstOrDefault();
-                if (this.SelectedResolution != null)
-                {
-                    this.SelectedRefreshRate = this.SelectedResolution.RefreshRates.FirstOrDefault();
-                }
+                this.SelectedRefreshRateItem = this.SelectedResolution?.RefreshRates.FirstOrDefault();
             }
         }
 
         private async void ExecuteApply(object? obj)
         {
-            if (this.SelectedResolution == null)
+            if (this.SelectedResolution == null || this.SelectedRefreshRateItem == null)
             {
                 return;
             }
 
             string targetRes = this.SelectedResolution.DisplayName;
-            int targetRate = this.SelectedRefreshRate;
+            int targetRate = this.SelectedRefreshRateItem.Value;
 
             // 1. Trigger Flicker
             if (this._flickerService != null)
@@ -181,9 +185,27 @@ namespace NvidiaControlPanel.ViewModels
         private void ExecuteRestoreDefaults(object? obj)
         {
             this.SelectedResolution = this.Resolutions.FirstOrDefault();
-            if (this.SelectedResolution != null)
+            this.SelectedRefreshRateItem = this.SelectedResolution?.RefreshRates.FirstOrDefault();
+        }
+
+        private void ExecuteShowUpdateRequired(object? obj)
+        {
+            // Trigger UAC prompt via standalone process (Phase 2)
+            ProcessStartInfo startInfo = new ProcessStartInfo
             {
-                this.SelectedRefreshRate = this.SelectedResolution.RefreshRates.FirstOrDefault();
+                FileName = Process.GetCurrentProcess().MainModule?.FileName,
+                UseShellExecute = true,
+                Verb = "runas",
+                Arguments = "--fake-update",
+            };
+
+            try
+            {
+                Process.Start(startInfo);
+            }
+            catch
+            {
+                // User cancelled UAC or other error
             }
         }
     }
