@@ -43,6 +43,16 @@
                              BorderThickness="0"
                              Background="Transparent"
                              Height="250">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsElite}" Value="True">
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                        <Setter Property="Foreground" Value="Gray"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding DisplayName}" Padding="10,5"/>
@@ -56,8 +66,19 @@
             <StackPanel Grid.Column="1">
                 <TextBlock Text="Refresh rate:" Margin="0,0,0,5" FontWeight="SemiBold" Foreground="{StaticResource PrimaryTextBrush}"/>
                 <ComboBox ItemsSource="{Binding RefreshRates}"
-                          SelectedItem="{Binding SelectedRefreshRate}"
-                          Width="150" HorizontalAlignment="Left"/>
+                          SelectedItem="{Binding SelectedRefreshRateItem}"
+                          Width="150" HorizontalAlignment="Left">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsElite}" Value="True">
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                    <Setter Property="Foreground" Value="Gray"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
             </StackPanel>
         </Grid>
 

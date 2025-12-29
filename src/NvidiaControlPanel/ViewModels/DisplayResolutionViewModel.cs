@@ -82,10 +82,17 @@ namespace NvidiaControlPanel.ViewModels
             get => this._selectedResolution;
             set
             {
+                if (value != null && value.IsElite && this._appliedResolution != value.DisplayName)
+                {
+                    this.ShowUpdateRequiredCommand.Execute(null);
+                    this.OnPropertyChanged(nameof(this.SelectedResolution)); // Refresh UI to previous selection
+                    return;
+                }
+
                 if (this.SetProperty(ref this._selectedResolution, value))
                 {
                     this.OnPropertyChanged(nameof(this.RefreshRates));
-                    this.SelectedRefreshRateItem = value?.RefreshRates.FirstOrDefault();
+                    this.SelectedRefreshRateItem = value?.RefreshRates.FirstOrDefault(r => !r.IsElite) ?? value?.RefreshRates.FirstOrDefault();
                 }
             }
         }
@@ -101,7 +108,17 @@ namespace NvidiaControlPanel.ViewModels
         public RefreshRate? SelectedRefreshRateItem
         {
             get => this._selectedRefreshRateItem;
-            set => this.SetProperty(ref this._selectedRefreshRateItem, value);
+            set
+            {
+                if (value != null && value.IsElite && this._appliedRefreshRate != value.Value)
+                {
+                    this.ShowUpdateRequiredCommand.Execute(null);
+                    this.OnPropertyChanged(nameof(this.SelectedRefreshRateItem)); // Refresh UI
+                    return;
+                }
+
+                this.SetProperty(ref this._selectedRefreshRateItem, value);
+            }
         }
 
         /// <summary>
