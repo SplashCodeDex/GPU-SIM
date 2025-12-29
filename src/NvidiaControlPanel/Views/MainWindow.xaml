@@ -57,18 +57,17 @@
             <Border DockPanel.Dock="Top" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="10,5">
                 <Grid>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Button Width="40" Margin="0,0,5,0" 
+                        <Button Margin="0,0,5,0" 
                                 Command="{Binding BackCommand}"
                                 ToolTip="{Binding BackTooltip}"
-                                Style="{StaticResource BaseControlStyle}" Background="Transparent">
-                            <iconPacks:PackIconMaterial Kind="ArrowLeft" Width="16" Height="16">
+                                Style="{StaticResource CircleButtonStyle}">
+                            <iconPacks:PackIconMaterial Kind="ArrowLeft" Width="18" Height="18">
                                 <iconPacks:PackIconMaterial.Style>
                                     <Style TargetType="iconPacks:PackIconMaterial">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="False">
                                                 <Setter Property="Foreground" Value="{StaticResource SecondaryTextBrush}"/>
                                                 <Setter Property="Opacity" Value="0.5"/>
-                                                <Setter Property="Effect" Value="{x:Null}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
                                                 <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
@@ -81,7 +80,7 @@
                                                 </MultiDataTrigger.Conditions>
                                                 <Setter Property="Effect">
                                                     <Setter.Value>
-                                                        <DropShadowEffect Color="{StaticResource Color_NvidiaGreen}" BlurRadius="8" ShadowDepth="0" Opacity="0.8"/>
+                                                        <DropShadowEffect Color="{StaticResource Color_NvidiaGreen}" BlurRadius="10" ShadowDepth="0" Opacity="1.0"/>
                                                     </Setter.Value>
                                                 </Setter>
                                                 <Setter Property="Foreground" Value="{StaticResource NvidiaGreenBrush}"/>
@@ -91,18 +90,17 @@
                                 </iconPacks:PackIconMaterial.Style>
                             </iconPacks:PackIconMaterial>
                         </Button>
-                        <Button Width="40" 
+                        <Button 
                                 Command="{Binding ForwardCommand}"
                                 ToolTip="{Binding ForwardTooltip}"
-                                Style="{StaticResource BaseControlStyle}" Background="Transparent">
-                            <iconPacks:PackIconMaterial Kind="ArrowRight" Width="16" Height="16">
+                                Style="{StaticResource CircleButtonStyle}">
+                            <iconPacks:PackIconMaterial Kind="ArrowRight" Width="18" Height="18">
                                 <iconPacks:PackIconMaterial.Style>
                                     <Style TargetType="iconPacks:PackIconMaterial">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="False">
                                                 <Setter Property="Foreground" Value="{StaticResource SecondaryTextBrush}"/>
                                                 <Setter Property="Opacity" Value="0.5"/>
-                                                <Setter Property="Effect" Value="{x:Null}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="True">
                                                 <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
@@ -115,7 +113,7 @@
                                                 </MultiDataTrigger.Conditions>
                                                 <Setter Property="Effect">
                                                     <Setter.Value>
-                                                        <DropShadowEffect Color="{StaticResource Color_NvidiaGreen}" BlurRadius="8" ShadowDepth="0" Opacity="0.8"/>
+                                                        <DropShadowEffect Color="{StaticResource Color_NvidiaGreen}" BlurRadius="10" ShadowDepth="0" Opacity="1.0"/>
                                                     </Setter.Value>
                                                 </Setter>
                                                 <Setter Property="Foreground" Value="{StaticResource NvidiaGreenBrush}"/>
