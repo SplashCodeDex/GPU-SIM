@@ -15,6 +15,7 @@ namespace NvidiaControlPanel.ViewModels
         private readonly ISystemInfoService _systemInfoService;
         private readonly ITrayIconService _trayIconService;
         private readonly IAutoStartService _autoStartService;
+        private readonly INavigationService _navigationService;
         private object _currentView;
         private string _currentPath = "NVIDIA Control Panel";
         private string _statusBarText = string.Empty;
@@ -28,7 +29,7 @@ namespace NvidiaControlPanel.ViewModels
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Service lifecycle is managed by the application.")]
         public MainViewModel()
-            : this(new ContextMenuService(), new SystemInfoService(), new TrayIconService(), new AutoStartService())
+            : this(new ContextMenuService(), new SystemInfoService(), new TrayIconService(), new AutoStartService(), new NavigationService())
         {
             // Default constructor for design-time data if needed
         }
@@ -40,16 +41,19 @@ namespace NvidiaControlPanel.ViewModels
         /// <param name="systemInfoService">The system info service.</param>
         /// <param name="trayIconService">The tray icon service.</param>
         /// <param name="autoStartService">The auto-start service.</param>
+        /// <param name="navigationService">The navigation service.</param>
         public MainViewModel(
             IContextMenuService contextMenuService,
             ISystemInfoService systemInfoService,
             ITrayIconService trayIconService,
-            IAutoStartService autoStartService)
+            IAutoStartService autoStartService,
+            INavigationService navigationService)
         {
             this._contextMenuService = contextMenuService;
             this._systemInfoService = systemInfoService;
             this._trayIconService = trayIconService;
             this._autoStartService = autoStartService;
+            this._navigationService = navigationService;
 
             // Initialize Command
             this.ExitCommand = new RelayCommand(this.ExecuteExit);
@@ -58,6 +62,8 @@ namespace NvidiaControlPanel.ViewModels
             this.ToggleTrayIconCommand = new RelayCommand(this.ExecuteToggleTrayIcon);
             this.ToggleAutoStartCommand = new RelayCommand(this.ExecuteToggleAutoStart);
             this.NavigateCommand = new RelayCommand(this.ExecuteNavigate);
+            this.BackCommand = new RelayCommand(this.ExecuteBack, _ => this._navigationService.CanGoBack);
+            this.ForwardCommand = new RelayCommand(this.ExecuteForward, _ => this._navigationService.CanGoForward);
 
             // Load initial state
             this.IsContextMenuEnabled = this._contextMenuService.IsEnabled();
@@ -166,6 +172,16 @@ namespace NvidiaControlPanel.ViewModels
         /// </summary>
         public ICommand NavigateCommand { get; }
 
+        /// <summary>
+        /// Gets the command to navigate back in history.
+        /// </summary>
+        public ICommand BackCommand { get; }
+
+        /// <summary>
+        /// Gets the command to navigate forward in history.
+        /// </summary>
+        public ICommand ForwardCommand { get; }
+
         private async Task InitializeAsync()
         {
             try
@@ -194,7 +210,35 @@ namespace NvidiaControlPanel.ViewModels
         {
             if (obj is string viewName)
             {
-                switch (viewName)
+                this._navigationService.RecordNavigation(viewName);
+                this.NavigateToView(viewName);
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
+
+        private void ExecuteBack(object? obj)
+        {
+            var viewName = this._navigationService.GoBack();
+            if (viewName != null)
+            {
+                this.NavigateToView(viewName);
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
+
+        private void ExecuteForward(object? obj)
+        {
+            var viewName = this._navigationService.GoForward();
+            if (viewName != null)
+            {
+                this.NavigateToView(viewName);
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
+
+        private void NavigateToView(string viewName)
+        {
+            switch (viewName)
                 {
                     case "Home":
                         if (this._gpuInformation != null)
@@ -273,7 +317,6 @@ namespace NvidiaControlPanel.ViewModels
                         // Placeholder for other pages
                         break;
                 }
-            }
         }
 
         private async void ExecuteShowSystemInfo(object? obj)
