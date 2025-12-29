@@ -29,3 +29,9 @@ dotnet_naming_style.interface.required_prefix = I
 csharp_style_var_for_built_in_types = true:suggestion
 csharp_style_namespace_declarations = file_scoped:suggestion
 csharp_new_line_before_open_brace = all
+
+# Suppressions
+dotnet_diagnostic.SA1633.severity = none
+dotnet_diagnostic.CA1515.severity = none
+dotnet_diagnostic.SA1309.severity = none
+dotnet_diagnostic.CA1031.severity = none

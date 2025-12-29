@@ -12,6 +12,7 @@ namespace NvidiaControlPanel.ViewModels
     {
         private readonly IRegistryService _registryService;
         private readonly ISystemInfoService _systemInfoService;
+        private object _currentView = new Manage3DSettingsViewModel();
         private bool _isContextMenuEnabled;
 
         /// <summary>
@@ -37,9 +38,22 @@ namespace NvidiaControlPanel.ViewModels
             this.ExitCommand = new RelayCommand(this.ExecuteExit);
             this.ShowSystemInfoCommand = new RelayCommand(this.ExecuteShowSystemInfo);
             this.ToggleContextMenuCommand = new RelayCommand(this.ExecuteToggleContextMenu);
+            this.NavigateCommand = new RelayCommand(this.ExecuteNavigate);
 
             // Load initial state
             this.IsContextMenuEnabled = this._registryService.IsContextMenuEnabled();
+
+            // Default View
+            this.CurrentView = new Manage3DSettingsViewModel();
+        }
+
+        /// <summary>
+        /// Gets or sets the currently displayed view model.
+        /// </summary>
+        public object CurrentView
+        {
+            get => this._currentView;
+            set => this.SetProperty(ref this._currentView, value);
         }
 
         /// <summary>
@@ -72,9 +86,30 @@ namespace NvidiaControlPanel.ViewModels
         /// </summary>
         public ICommand ToggleContextMenuCommand { get; }
 
+        /// <summary>
+        /// Gets the command to navigate to a specific view.
+        /// </summary>
+        public ICommand NavigateCommand { get; }
+
         private void ExecuteExit(object? obj)
         {
             Application.Current.Shutdown();
+        }
+
+        private void ExecuteNavigate(object? obj)
+        {
+            if (obj is string viewName)
+            {
+                switch (viewName)
+                {
+                    case "Manage3DSettings":
+                        this.CurrentView = new Manage3DSettingsViewModel();
+                        break;
+                    default:
+                        // Placeholder for other pages
+                        break;
+                }
+            }
         }
 
         private void ExecuteShowSystemInfo(object? obj)
