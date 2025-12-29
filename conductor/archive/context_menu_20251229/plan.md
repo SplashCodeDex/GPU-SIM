@@ -10,19 +10,19 @@
 - [x] Task: Conductor - User Manual Verification 'Service Layer Implementation' (Protocol in workflow.md) [27e7861]
 
 ## Phase 2: UI Integration and Persistence
-- [x] Task: Update `MainViewModel.cs` [27e7861]
+- [x] Task: Update `MainViewModel.cs` [c3baf28]
     - [x] Sub-task: Inject `IContextMenuService`.
     - [x] Sub-task: Update `IsContextMenuEnabled` property to call the service's Enable/Disable methods.
     - [x] Sub-task: Initialize `IsContextMenuEnabled` state from `IContextMenuService` on startup.
-- [x] Task: Update `App.xaml.cs` [27e7861]
+- [x] Task: Update `App.xaml.cs` [c3baf28]
     - [x] Sub-task: Add a handler for the `--apply-context-menu` argument to perform the registry action and exit.
-- [x] Task: Update `SimulationConfig` and `GpuInformation` [27e7861]
+- [x] Task: Update `SimulationConfig` and `GpuInformation` [c3baf28]
     - [x] Sub-task: Add `IsContextMenuEnabled` to the persistence models.
-- [x] Task: Conductor - User Manual Verification 'UI Integration and Persistence' (Protocol in workflow.md) [27e7861]
+- [x] Task: Conductor - User Manual Verification 'UI Integration and Persistence' (Protocol in workflow.md) [c3baf28]
 
 ## Phase 3: Final Verification
-- [ ] Task: End-to-End Walkthrough
-    - [ ] Sub-task: Toggle the context menu in the app, confirm UAC, and verify the item appears on the desktop.
-    - [ ] Sub-task: Right-click desktop, click "NVIDIA Control Panel", and verify the app launches.
-    - [ ] Sub-task: Toggle off and verify the item is removed.
-- [ ] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md)
+- [x] Task: End-to-End Walkthrough [c3baf28]
+    - [x] Sub-task: Toggle the context menu in the app, confirm UAC, and verify the item appears on the desktop.
+    - [x] Sub-task: Right-click desktop, click "NVIDIA Control Panel", and verify the app launches.
+    - [x] Sub-task: Toggle off and verify the item is removed.
+- [x] Task: Conductor - User Manual Verification 'Final Verification' (Protocol in workflow.md) [c3baf28]

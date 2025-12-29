@@ -23,7 +23,10 @@ namespace NvidiaControlPanel.Tests
             });
 
             // Act
-            var viewModel = new MainViewModel(mockContextMenu.Object, mockSystemInfo.Object);
+            // Act
+            IContextMenuService contextMenuService = mockContextMenu.Object;
+            ISystemInfoService systemInfoService = mockSystemInfo.Object;
+            var viewModel = new MainViewModel(contextMenuService, systemInfoService);
 
             // Wait for async init (poor man's sync for fire-and-forget)
             // Ideally MainViewModel should expose a Task or IsInitialized property

@@ -186,7 +186,7 @@ namespace NvidiaControlPanel.ViewModels
                         this.CurrentPath = "3D Settings > Adjust image settings with preview";
                         break;
                     case "ConfigureSurroundPhysX":
-                        this.CurrentView = new PlaceholderViewModel("Configure Surround, PhysX");
+                        this.CurrentView = new ConfigureSurroundPhysXViewModel(this._systemInfoService);
                         this.CurrentPath = "3D Settings > Configure Surround, PhysX";
                         break;
                     case "AdjustDesktopColor":
