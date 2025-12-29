@@ -13,6 +13,7 @@ namespace NvidiaControlPanel.ViewModels
         private readonly IRegistryService _registryService;
         private readonly ISystemInfoService _systemInfoService;
         private object _currentView = new Manage3DSettingsViewModel();
+        private string _currentPath = "3D Settings > Manage 3D settings";
         private bool _isContextMenuEnabled;
 
         /// <summary>
@@ -54,6 +55,15 @@ namespace NvidiaControlPanel.ViewModels
         {
             get => this._currentView;
             set => this.SetProperty(ref this._currentView, value);
+        }
+
+        /// <summary>
+        /// Gets or sets the current navigation path.
+        /// </summary>
+        public string CurrentPath
+        {
+            get => this._currentPath;
+            set => this.SetProperty(ref this._currentPath, value);
         }
 
         /// <summary>
@@ -104,6 +114,11 @@ namespace NvidiaControlPanel.ViewModels
                 {
                     case "Manage3DSettings":
                         this.CurrentView = new Manage3DSettingsViewModel();
+                        this.CurrentPath = "3D Settings > Manage 3D settings";
+                        break;
+                    case "ChangeResolution":
+                        this.CurrentView = new DisplayResolutionViewModel();
+                        this.CurrentPath = "Display > Change resolution";
                         break;
                     default:
                         // Placeholder for other pages

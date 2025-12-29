@@ -13,9 +13,7 @@
 <!-- Standard Nvidia-ish Style for TreeView is now GLOBAL in App.xaml -->
     <Window.Resources>
         <!-- View Mapping -->
-        <DataTemplate DataType="{x:Type viewModels:Manage3DSettingsViewModel}">
-            <views:Manage3DSettingsView/>
-        </DataTemplate>
+        <!-- View Mappings moved to App.xaml -->
 
         <!-- Menu Style -->
         <Style TargetType="MenuItem">
@@ -53,7 +51,7 @@
                         <Button Content="Back" Width="60" Margin="0,0,5,0" IsEnabled="False" Style="{StaticResource BaseControlStyle}" Background="Transparent" Foreground="{StaticResource SecondaryTextBrush}"/>
                         <Button Content="Forward" Width="80" IsEnabled="False" Style="{StaticResource BaseControlStyle}" Background="Transparent" Foreground="{StaticResource SecondaryTextBrush}"/>
                         <Rectangle Width="1" Fill="{StaticResource BorderBrush}" Margin="5,5"/>
-                        <TextBlock Text="Standard Tasks" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource SecondaryTextBrush}" Margin="5,0"/>
+                        <TextBlock Text="{Binding CurrentPath}" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource SecondaryTextBrush}" Margin="5,0"/>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -88,7 +86,13 @@
                             <TreeViewItem Header="Configure Surround, PhysX"/>
                         </TreeViewItem>
                         <TreeViewItem Header="Display" IsExpanded="True" FontWeight="Bold">
-                            <TreeViewItem Header="Change resolution"/>
+                            <TreeViewItem Header="Change resolution">
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Selected">
+                                        <b:InvokeCommandAction Command="{Binding NavigateCommand}" CommandParameter="ChangeResolution"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </TreeViewItem>
                             <TreeViewItem Header="Adjust desktop color settings"/>
                             <TreeViewItem Header="Rotate display"/>
                             <TreeViewItem Header="View HDCP status"/>
