@@ -1,26 +1,26 @@
 # Plan: Defensive Spoofing - Unselectable High-End Options
 
 ## Phase 1: Model & Logic Thresholds
-- [x] Task: Update Display Models [27e7861]
+- [x] Task: Update Display Models [08188f3]
     - [x] Sub-task: Create `RefreshRate.cs` model with `Value` (int) and `IsElite` (bool).
     - [x] Sub-task: Update `Resolution.cs` to use `ObservableCollection<RefreshRate>` and add an `IsElite` property.
-- [x] Task: Update `ResolutionProvider.cs` [27e7861]
+- [x] Task: Update `ResolutionProvider.cs` [08188f3]
     - [x] Sub-task: Mark 2K resolutions as `IsElite = true`.
     - [x] Sub-task: Mark refresh rates > 60Hz as `IsElite = true`.
-- [x] Task: Update `DisplayResolutionViewModel.cs` [27e7861]
+- [x] Task: Update `DisplayResolutionViewModel.cs` [08188f3]
     - [x] Sub-task: Add logic to intercept selection of Elite items and instead trigger the `ShowUpdateRequiredCommand`.
-- [x] Task: Conductor - User Manual Verification 'Model & Logic Thresholds' (Protocol in workflow.md) [27e7861]
+- [x] Task: Conductor - User Manual Verification 'Model & Logic Thresholds' (Protocol in workflow.md) [08188f3]
 
 ## Phase 2: The "Convincing Failure" UI
-- [ ] Task: Implement `FakeUpdateViewModel.cs`
-    - [ ] Sub-task: Implement a timer that advances a `ProgressValue` to exactly 19 and then stops.
-    - [ ] Sub-task: Implement `ErrorMessage` visibility logic after the 19% stall.
-- [ ] Task: Create `FakeUpdateView.xaml`
-    - [ ] Sub-task: Design an authentic NVIDIA-branded dialog with a `ProgressBar` and status labels.
-    - [ ] Sub-task: Ensure no clickable links are present in the final error state.
-- [ ] Task: Update `App.xaml.cs`
-    - [ ] Sub-task: Handle `--fake-update` argument to launch the `FakeUpdateView` as a standalone Admin process.
-- [ ] Task: Conductor - User Manual Verification 'The "Convincing Failure" UI' (Protocol in workflow.md)
+- [x] Task: Implement `FakeUpdateViewModel.cs` [08188f3]
+    - [x] Sub-task: Implement a timer that advances a `ProgressValue` to exactly 19 and then stops.
+    - [x] Sub-task: Implement `ErrorMessage` visibility logic after the 19% stall.
+- [x] Task: Create `FakeUpdateView.xaml` [08188f3]
+    - [x] Sub-task: Design an authentic NVIDIA-branded dialog with a `ProgressBar` and status labels.
+    - [x] Sub-task: Ensure no clickable links are present in the final error state.
+- [x] Task: Update `App.xaml.cs` [08188f3]
+    - [x] Sub-task: Handle `--fake-update` argument to launch the `FakeUpdateView` as a standalone Admin process.
+- [x] Task: Conductor - User Manual Verification 'The "Convincing Failure" UI' (Protocol in workflow.md) [08188f3]
 
 ## Phase 3: UI Styling & Wiring
 - [ ] Task: Update `DisplayResolutionView.xaml`

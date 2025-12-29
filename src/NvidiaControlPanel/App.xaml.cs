@@ -57,6 +57,14 @@ namespace NvidiaControlPanel
                 return;
             }
 
+            if (e.Args.Contains("--fake-update"))
+            {
+                var view = new Views.FakeUpdateView();
+                view.ShowDialog();
+                this.Shutdown(0);
+                return;
+            }
+
             base.OnStartup(e);
 
             this._trayIconService = new TrayIconService();
