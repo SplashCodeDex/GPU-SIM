@@ -56,14 +56,28 @@ namespace NvidiaControlPanel.Services
                             {
                                 if (adapterKey != null)
                                 {
-                                    // Update Name
+                                    // Update Name (Used by apps and dxdiag)
                                     adapterKey.SetValue("HardwareInformation.AdapterString", info.GpuName, RegistryValueKind.String);
 
-                                    // Update VRAM (Simulated as 4GB for now in memory size format if needed)
-                                    // Windows uses qwMemorySize for 64-bit systems
-                                    if (ulong.TryParse(info.VideoMemory.Split(' ')[0], out ulong memoryGb))
+                                    // Update Driver Description (Used by Device Manager)
+                                    adapterKey.SetValue("DriverDesc", info.GpuName, RegistryValueKind.String);
+
+                                    // Update VRAM
+                                    // Extract the number from "4096 MB" or "24 GB"
+                                    string[] parts = info.VideoMemory.Split(' ');
+                                    if (parts.Length >= 2 && ulong.TryParse(parts[0], out ulong value))
                                     {
-                                        ulong bytes = memoryGb * 1024 * 1024 * 1024;
+                                        ulong bytes;
+                                        if (parts[1].Equals("GB", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            bytes = value * 1024 * 1024 * 1024;
+                                        }
+                                        else
+                                        {
+                                            // Default to MB
+                                            bytes = value * 1024 * 1024;
+                                        }
+
                                         adapterKey.SetValue("HardwareInformation.qwMemorySize", (long)bytes, RegistryValueKind.QWord);
                                         adapterKey.SetValue("HardwareInformation.MemorySize", (int)bytes, RegistryValueKind.DWord);
                                     }

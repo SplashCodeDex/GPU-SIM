@@ -35,7 +35,7 @@
 
                 <Image Source="pack://application:,,,/Resources/Images/nvidia_logo_full.png"
                        Grid.Column="0"
-                       Width="150"
+                       Width="50"
                        VerticalAlignment="Center"
                        RenderOptions.BitmapScalingMode="HighQuality"
                        Cursor="Arrow">

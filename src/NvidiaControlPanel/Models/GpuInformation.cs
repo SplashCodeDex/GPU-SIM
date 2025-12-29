@@ -44,5 +44,15 @@ namespace NvidiaControlPanel.Models
         /// Gets or sets the Vendor ID (e.g., "10DE").
         /// </summary>
         public string VendorId { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the selected resolution (e.g., "2560 x 1440").
+        /// </summary>
+        public string SelectedResolution { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the selected refresh rate (e.g., 144).
+        /// </summary>
+        public int SelectedRefreshRate { get; set; }
     }
 }

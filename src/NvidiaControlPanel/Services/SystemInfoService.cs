@@ -42,6 +42,8 @@ namespace NvidiaControlPanel.Services
                 DirectXSupport = config.DirectXSupport,
                 DeviceId = config.DeviceId,
                 VendorId = config.VendorId,
+                SelectedResolution = config.SelectedResolution,
+                SelectedRefreshRate = config.SelectedRefreshRate,
             };
         }
 
@@ -60,6 +62,8 @@ namespace NvidiaControlPanel.Services
                 DirectXSupport = config.DirectXSupport,
                 DeviceId = config.DeviceId,
                 VendorId = config.VendorId,
+                SelectedResolution = config.SelectedResolution,
+                SelectedRefreshRate = config.SelectedRefreshRate,
             };
         }
     }

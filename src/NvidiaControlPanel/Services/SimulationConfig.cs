@@ -44,5 +44,15 @@ namespace NvidiaControlPanel.Services
         /// Gets or sets the Vendor ID.
         /// </summary>
         public string VendorId { get; set; } = "10DE";
+
+        /// <summary>
+        /// Gets or sets the selected resolution.
+        /// </summary>
+        public string SelectedResolution { get; set; } = "1920 x 1080";
+
+        /// <summary>
+        /// Gets or sets the selected refresh rate.
+        /// </summary>
+        public int SelectedRefreshRate { get; set; } = 60;
     }
 }

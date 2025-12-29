@@ -18,5 +18,18 @@ namespace NvidiaControlPanel.Services
         /// </summary>
         /// <returns>The <see cref="SimulationConfig"/>.</returns>
         SimulationConfig GetConfig();
+
+        /// <summary>
+        /// Saves the simulation configuration asynchronously.
+        /// </summary>
+        /// <param name="config">The configuration to save.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task SaveConfigAsync(SimulationConfig config);
+
+        /// <summary>
+        /// Saves the simulation configuration synchronously.
+        /// </summary>
+        /// <param name="config">The configuration to save.</param>
+        void SaveConfig(SimulationConfig config);
     }
 }

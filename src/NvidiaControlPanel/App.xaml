@@ -257,6 +257,7 @@
                                             Grid.Row="1"
                                             Grid.Column="1"
                                             Grid.ColumnSpan="2"
+                                            Margin="15,0,0,0"
                                             Visibility="Collapsed"/>
                         </Grid>
                         <ControlTemplate.Triggers>

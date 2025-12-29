@@ -9,6 +9,7 @@
 *   **Pattern:** MVVM (Model-View-ViewModel) - A standard industry pattern that keeps the user interface (View) separate from the logic (ViewModel), making the app easier to maintain and test.
 *   **Dependency Injection:** Interface-based services (e.g., `ISystemInfoService`) - This allows the app to swap between "real" system data and "simulated" data easily.
 *   **Configuration Management:** `SimulationService` loads static hardware definitions from `config/gpu_config.json`, enabling external control of the spoofed identity.
+*   **System Integration:** `RegistrySpoofService` provides on-demand UAC elevation to write spoofed hardware data into `HKLM` registry keys, ensuring external Windows tools report the simulated values.
 
 ## Quality & Standards
 *   **Static Analysis:** 

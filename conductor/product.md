@@ -21,9 +21,9 @@ To create a sophisticated simulation environment that mimics the presence of ded
 
 ## 4. Key Features
 *   **GPU Profile Manager:** Configure the "virtual" GPU's details (Name, VRAM size, Driver Version, Bus Support, BIOS Version, DirectX Support, Device/Vendor IDs).
-*   **System Hooking/Spoofing:** (Future/Advanced) Mechanisms to inject these values into Windows reporting tools.
+*   **System Hooking/Spoofing:** Mechanisms to inject these values into Windows reporting tools (Task Manager, dxdiag) via registry modification.
 *   **High-Fidelity UI:** A WPF-based interface that strictly adheres to the visual style of the legacy NVIDIA Control Panel.
-*   **One-Click "Installation":** A setup routine that registers the spoofed values and places the Control Panel app appropriately.
+*   **One-Click "Installation":** A hidden trigger in the System Information dialog that applies the spoof system-wide with a UAC elevation prompt.
 *   **Static Configuration:** Loads hardware definitions from `config/gpu_config.json` for easy manual spoofing.
 
 ## 5. User Flow

@@ -83,5 +83,29 @@ namespace NvidiaControlPanel.Tests
             Assert.Equal("999.99", config.DriverVersion);
             Assert.Equal("24 GB", config.VideoMemory);
         }
+
+        [Fact]
+        public async Task SaveConfigAsync_ShouldPersistDataToFile()
+        {
+            // Arrange
+            var service = new SimulationService();
+            var newConfig = new SimulationConfig
+            {
+                GpuName = "Saved GPU",
+                SelectedResolution = "3840 x 2160",
+                SelectedRefreshRate = 60
+            };
+
+            // Act
+            await service.SaveConfigAsync(newConfig);
+
+            // Assert
+            string json = File.ReadAllText(ConfigPath);
+            var savedConfig = JsonSerializer.Deserialize<SimulationConfig>(json);
+            Assert.NotNull(savedConfig);
+            Assert.Equal("Saved GPU", savedConfig.GpuName);
+            Assert.Equal("3840 x 2160", savedConfig.SelectedResolution);
+            Assert.Equal(60, savedConfig.SelectedRefreshRate);
+        }
     }
 }

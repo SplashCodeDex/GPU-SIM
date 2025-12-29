@@ -1,3 +1,7 @@
+// <copyright file="SimulationService.cs" company="NvidiaControlPanel">
+// Copyright (c) NvidiaControlPanel. All rights reserved.
+// </copyright>
+
 using System;
 using System.IO;
 using System.Text.Json;
@@ -48,7 +52,7 @@ namespace NvidiaControlPanel.Services
                 else
                 {
                     this._cachedConfig = CreateDefaultConfig();
-                    await SaveConfigAsync(this._cachedConfig).ConfigureAwait(false);
+                    await this.SaveConfigAsync(this._cachedConfig).ConfigureAwait(false);
                 }
             }
             catch (Exception)
@@ -70,15 +74,29 @@ namespace NvidiaControlPanel.Services
             return this.GetConfigAsync().GetAwaiter().GetResult();
         }
 
+        /// <inheritdoc/>
+        public async Task SaveConfigAsync(SimulationConfig config)
+        {
+            this._cachedConfig = config;
+
+            if (!Directory.Exists(ConfigDirectory))
+            {
+                Directory.CreateDirectory(ConfigDirectory);
+            }
+
+            string json = JsonSerializer.Serialize(config, SerializerOptions);
+            await File.WriteAllTextAsync(ConfigPath, json).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc/>
+        public void SaveConfig(SimulationConfig config)
+        {
+            this.SaveConfigAsync(config).GetAwaiter().GetResult();
+        }
+
         private static SimulationConfig CreateDefaultConfig()
         {
             return new SimulationConfig();
-        }
-
-        private static async Task SaveConfigAsync(SimulationConfig config)
-        {
-            string json = JsonSerializer.Serialize(config, SerializerOptions);
-            await File.WriteAllTextAsync(ConfigPath, json).ConfigureAwait(false);
         }
     }
 }
