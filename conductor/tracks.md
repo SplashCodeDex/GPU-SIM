@@ -1,7 +1,7 @@
-# Project Tracks
+---
 
-This file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.
-
+## [~] Track: NVIDIA Desktop Context Menu Simulation
+*Link: [./conductor/tracks/context_menu_20251229/](./conductor/tracks/context_menu_20251229/)*
 
 
 

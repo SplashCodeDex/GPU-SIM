@@ -22,6 +22,20 @@ namespace NvidiaControlPanel
                 return;
             }
 
+            if (e.Args.Contains("--enable-context-menu"))
+            {
+                new ContextMenuService().Enable();
+                this.Shutdown(0);
+                return;
+            }
+
+            if (e.Args.Contains("--disable-context-menu"))
+            {
+                new ContextMenuService().Disable();
+                this.Shutdown(0);
+                return;
+            }
+
             base.OnStartup(e);
         }
 

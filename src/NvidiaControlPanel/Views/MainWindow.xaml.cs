@@ -15,7 +15,7 @@ namespace NvidiaControlPanel.Views
         public MainWindow()
         {
             this.InitializeComponent();
-            this.DataContext = new MainViewModel(new RegistryService(), new SystemInfoService());
+            this.DataContext = new MainViewModel(new ContextMenuService(), new SystemInfoService());
         }
     }
 }

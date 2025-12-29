@@ -64,5 +64,10 @@ namespace NvidiaControlPanel.Models
         /// Gets or sets the preference level (0=Performance, 1=Balanced, 2=Quality).
         /// </summary>
         public int PreferenceLevel { get; set; } = 1;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the context menu is enabled.
+        /// </summary>
+        public bool IsContextMenuEnabled { get; set; }
     }
 }

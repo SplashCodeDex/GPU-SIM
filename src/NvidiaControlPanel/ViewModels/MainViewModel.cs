@@ -11,7 +11,7 @@ namespace NvidiaControlPanel.ViewModels
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private readonly IRegistryService _registryService;
+        private readonly IContextMenuService _contextMenuService;
         private readonly ISystemInfoService _systemInfoService;
         private object _currentView;
         private string _currentPath = "NVIDIA Control Panel";
@@ -24,7 +24,7 @@ namespace NvidiaControlPanel.ViewModels
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
         /// </summary>
         public MainViewModel()
-            : this(new RegistryService(), new SystemInfoService())
+            : this(new ContextMenuService(), new SystemInfoService())
         {
             // Default constructor for design-time data if needed
         }
@@ -32,11 +32,11 @@ namespace NvidiaControlPanel.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class with dependencies.
         /// </summary>
-        /// <param name="registryService">The registry service.</param>
+        /// <param name="contextMenuService">The context menu service.</param>
         /// <param name="systemInfoService">The system info service.</param>
-        public MainViewModel(IRegistryService registryService, ISystemInfoService systemInfoService)
+        public MainViewModel(IContextMenuService contextMenuService, ISystemInfoService systemInfoService)
         {
-            this._registryService = registryService;
+            this._contextMenuService = contextMenuService;
             this._systemInfoService = systemInfoService;
 
             // Initialize Command
@@ -47,7 +47,7 @@ namespace NvidiaControlPanel.ViewModels
             this.NavigateCommand = new RelayCommand(this.ExecuteNavigate);
 
             // Load initial state
-            this.IsContextMenuEnabled = this._registryService.IsContextMenuEnabled();
+            this.IsContextMenuEnabled = this._contextMenuService.IsEnabled();
 
             // Default valid value to satisfy non-nullable requirement
             this._currentView = new PlaceholderViewModel("Loading...");
@@ -245,11 +245,11 @@ namespace NvidiaControlPanel.ViewModels
         {
             if (this.IsContextMenuEnabled)
             {
-                this._registryService.EnableContextMenu();
+                this._contextMenuService.Enable();
             }
             else
             {
-                this._registryService.DisableContextMenu();
+                this._contextMenuService.Disable();
             }
         }
 

@@ -64,5 +64,10 @@ namespace NvidiaControlPanel.Services
         /// Gets or sets the preference level.
         /// </summary>
         public int PreferenceLevel { get; set; } = 1;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the context menu is enabled.
+        /// </summary>
+        public bool IsContextMenuEnabled { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace NvidiaControlPanel.Tests
         public async Task Constructor_ShouldInitializeGpuNameFromService()
         {
             // Arrange
-            var mockRegistry = new Mock<IRegistryService>();
+            var mockContextMenu = new Mock<IContextMenuService>();
             var mockSystemInfo = new Mock<ISystemInfoService>();
             var tcs = new TaskCompletionSource<Models.GpuInformation>();
 
@@ -23,7 +23,7 @@ namespace NvidiaControlPanel.Tests
             });
 
             // Act
-            var viewModel = new MainViewModel(mockRegistry.Object, mockSystemInfo.Object);
+            var viewModel = new MainViewModel(mockContextMenu.Object, mockSystemInfo.Object);
 
             // Wait for async init (poor man's sync for fire-and-forget)
             // Ideally MainViewModel should expose a Task or IsInitialized property

@@ -46,6 +46,7 @@ namespace NvidiaControlPanel.Services
                 SelectedRefreshRate = config.SelectedRefreshRate,
                 ImageSettingsMode = config.ImageSettingsMode,
                 PreferenceLevel = config.PreferenceLevel,
+                IsContextMenuEnabled = config.IsContextMenuEnabled,
             };
         }
 
@@ -68,6 +69,7 @@ namespace NvidiaControlPanel.Services
                 SelectedRefreshRate = config.SelectedRefreshRate,
                 ImageSettingsMode = config.ImageSettingsMode,
                 PreferenceLevel = config.PreferenceLevel,
+                IsContextMenuEnabled = config.IsContextMenuEnabled,
             };
         }
     }
