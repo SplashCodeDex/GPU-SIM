@@ -33,3 +33,9 @@ _ReSharper*/
 # OS specific files
 .DS_Store
 Thumbs.db
+
+# Logs
+*.log
+
+# Publish output
+publish_output/
