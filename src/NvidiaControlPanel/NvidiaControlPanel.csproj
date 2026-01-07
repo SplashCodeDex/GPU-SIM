@@ -29,6 +29,8 @@
     <TrimMode>partial</TrimMode>
     <_SuppressWinFormsTrimError>true</_SuppressWinFormsTrimError>
     <_SuppressWpfTrimError>true</_SuppressWpfTrimError>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>none</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

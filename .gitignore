@@ -40,3 +40,4 @@ Thumbs.db
 # Publish output
 publish_output/
 publish_optimized/
+publish_compressed/
