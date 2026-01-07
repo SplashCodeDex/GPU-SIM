@@ -23,6 +23,12 @@
     <NoWarn>$(NoWarn);1591;SA1633;CA1515;SA1309;CA1031</NoWarn>
     <AssemblyName>NvidiaControlPanel</AssemblyName>
     <RootNamespace>NvidiaControlPanel</RootNamespace>
+
+    <!-- Optimization: Reduce Release Size -->
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <_SuppressWinFormsTrimError>true</_SuppressWinFormsTrimError>
+    <_SuppressWpfTrimError>true</_SuppressWpfTrimError>
   </PropertyGroup>
 
   <ItemGroup>
