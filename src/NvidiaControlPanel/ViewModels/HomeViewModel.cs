@@ -52,5 +52,25 @@ namespace NvidiaControlPanel.ViewModels
         /// Gets the DirectX Support level.
         /// </summary>
         public string DirectXSupport => this._gpuInfo.DirectXSupport;
+
+        /// <summary>
+        /// Gets the Device Name.
+        /// </summary>
+        public string DeviceName => this._gpuInfo.DeviceName;
+
+        /// <summary>
+        /// Gets the Processor info.
+        /// </summary>
+        public string Processor => this._gpuInfo.Processor;
+
+        /// <summary>
+        /// Gets the Installed RAM.
+        /// </summary>
+        public string InstalledRam => this._gpuInfo.InstalledRam;
+
+        /// <summary>
+        /// Gets the System Type.
+        /// </summary>
+        public string SystemType => this._gpuInfo.SystemType;
     }
 }

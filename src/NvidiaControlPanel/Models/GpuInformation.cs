@@ -74,5 +74,25 @@ namespace NvidiaControlPanel.Models
         /// Gets or sets a value indicating whether the tray icon is visible.
         /// </summary>
         public bool IsTrayIconVisible { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the Device Name (e.g., "Dell Latitude 14 7000 Series").
+        /// </summary>
+        public string DeviceName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the Processor info (e.g., "Intel(R) Core(TM)...").
+        /// </summary>
+        public string Processor { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the Installed RAM (e.g., "16.0 GB (15.9 GB usable)").
+        /// </summary>
+        public string InstalledRam { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the System Type (e.g., "64-bit operating system...").
+        /// </summary>
+        public string SystemType { get; set; } = string.Empty;
     }
 }

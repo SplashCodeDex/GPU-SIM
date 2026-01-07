@@ -1,0 +1,14 @@
+{
+    "GpuName": "NVIDIA GeForce GTX 1650",
+    "DeviceName": "Dell Latitude 14 7000 Series",
+    "Processor": "Intel(R) Core(TM) i7-10850G (8 CPUs) ~ @ 4.10GHz (1.80 GHz)",
+    "InstalledRam": "16.0 GB (15.9 GB usable)",
+    "DeviceId": "1F82",
+    "SystemType": "64-bit operating system, x64-based processor",
+    "DriverVersion": "471.11",
+    "VideoMemory": "4096 MB GDDR5",
+    "BiosVersion": "90.16.25.00.4C",
+    "VendorId": "10DE",
+    "BusSupport": "PCI Express x16 Gen3",
+    "DirectXSupport": "12 (12_1)"
+}

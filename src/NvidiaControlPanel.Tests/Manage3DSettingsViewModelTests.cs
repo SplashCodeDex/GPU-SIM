@@ -16,7 +16,7 @@ namespace NvidiaControlPanel.Tests
             var mockSettingsService = new Mock<ISettingsService>();
             var expectedSettings = new Collection<FeatureSetting>
             {
-                new FeatureSetting { Name = "TestSetting", Value = "TestValue" }
+                new FeatureSetting { Name = "Ambient Occlusion", Value = "Performance" }
             };
             var expectedPrograms = new Collection<string> { "Program1", "Program2" };
 
@@ -29,7 +29,9 @@ namespace NvidiaControlPanel.Tests
             var viewModel = new Manage3DSettingsViewModel(mockSettingsService.Object, gpuInfo);
 
             // Assert
-            Assert.Contains(viewModel.Settings, s => s.Name == "TestSetting");
+            var setting = viewModel.Settings.FirstOrDefault(s => s.Name == "Ambient Occlusion");
+            Assert.NotNull(setting);
+            Assert.Equal("Performance", setting.Value);
             Assert.Equal(2, viewModel.Programs.Count);
             Assert.Equal("Program1", viewModel.SelectedProgram);
         }

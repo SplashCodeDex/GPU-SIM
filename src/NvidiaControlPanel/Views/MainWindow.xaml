@@ -38,12 +38,12 @@
                               IsCheckable="True"
                               IsChecked="{Binding IsContextMenuEnabled}"
                               Command="{Binding ToggleContextMenuCommand}"/>
-                    <MenuItem Header="Show Notification Tray Icon" 
-                              IsCheckable="True" 
+                    <MenuItem Header="Show Notification Tray Icon"
+                              IsCheckable="True"
                               IsChecked="{Binding IsTrayIconVisible}"
                               Command="{Binding ToggleTrayIconCommand}"/>
-                    <MenuItem Header="Enable Persistence (Auto-Start with Windows)" 
-                              IsCheckable="True" 
+                    <MenuItem Header="Enable Persistence (Auto-Start with Windows)"
+                              IsCheckable="True"
                               IsChecked="{Binding IsAutoStartEnabled}"
                               Command="{Binding ToggleAutoStartCommand}"/>
                 </MenuItem>
@@ -57,7 +57,7 @@
             <Border DockPanel.Dock="Top" Background="{StaticResource BackgroundBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="10,5">
                 <Grid>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Button Margin="0,0,5,0" 
+                        <Button Margin="0,0,5,0"
                                 Command="{Binding BackCommand}"
                                 ToolTip="{Binding BackTooltip}"
                                 Style="{StaticResource CircleButtonStyle}">
@@ -90,7 +90,7 @@
                                 </iconPacks:PackIconMaterial.Style>
                             </iconPacks:PackIconMaterial>
                         </Button>
-                        <Button 
+                        <Button
                                 Command="{Binding ForwardCommand}"
                                 ToolTip="{Binding ForwardTooltip}"
                                 Style="{StaticResource CircleButtonStyle}">
@@ -124,7 +124,7 @@
                             </iconPacks:PackIconMaterial>
                         </Button>
                         <Rectangle Width="1" Fill="{StaticResource BorderBrush}" Margin="5,5"/>
-                        
+
                         <!-- Dynamic Breadcrumbs -->
                         <ItemsControl ItemsSource="{Binding CurrentPathSegments}" VerticalAlignment="Center" Margin="5,0">
                             <ItemsControl.ItemsPanel>
@@ -388,7 +388,7 @@
                     <Grid>
                         <!-- Background Noise -->
                         <Rectangle Fill="{StaticResource NoiseBrush}" Opacity="0.3" IsHitTestVisible="False"/>
-                        
+
                         <!-- Background Watermark -->
                         <Image Source="pack://application:,,,/Resources/Images/nvidia_logo_2.png"
                                Opacity="0.15"
@@ -404,12 +404,14 @@
         </DockPanel>
 
         <!-- GTX Logo Overlay -->
-        <Image Source="pack://application:,,,/Resources/Images/geforce_gtx_logo.png"
+        <!-- GTX Logo Overlay -->
+        <Image Source="pack://application:,,,/Resources/Images/image.png"
                HorizontalAlignment="Right"
                VerticalAlignment="Top"
                Height="165"
                Margin="2,30,8,0"
                IsHitTestVisible="False"
-               RenderOptions.BitmapScalingMode="HighQuality"/>
+               RenderOptions.BitmapScalingMode="HighQuality"
+               Visibility="{Binding IsLogoVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
     </Grid>
 </Window>

@@ -28,8 +28,9 @@
   <ItemGroup>
     <Resource Include="Resources\**\*.png" />
     <Resource Include="Resources\**\*.ico" />
+    <Resource Include="..\..\assets\images\**\*.png" Link="Assets\Images\%(RecursiveDir)%(Filename)%(Extension)" />
     <Resource Include="icon.ico" />
-    <None Update="simulation_config.json">
+    <None Update="GPU_Config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

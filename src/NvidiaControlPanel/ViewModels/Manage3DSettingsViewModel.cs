@@ -65,49 +65,61 @@ namespace NvidiaControlPanel.ViewModels
 
         private Collection<FeatureSetting> GetDefaultSettings()
         {
-            return new Collection<FeatureSetting>
+            var defaults = new Collection<FeatureSetting>
             {
-                new FeatureSetting { Name = "Image Sharpening", Value = "Off", Options = { "Off", "On" } },
-                new FeatureSetting { Name = "Ambient Occlusion", Value = "Performance", Options = { "Off", "Performance", "Quality" } },
-                new FeatureSetting { Name = "Anisotropic filtering", Value = "Application-controlled", Options = { "Application-controlled", "Off", "2x", "4x", "8x", "16x" } },
-                new FeatureSetting { Name = "Antialiasing - FXAA", Value = "Off", Options = { "Off", "On" } },
-                new FeatureSetting { Name = "Antialiasing - Gamma correction", Value = "On", Options = { "Off", "On" } },
-                new FeatureSetting { Name = "Antialiasing - Mode", Value = "Application-controlled", Options = { "Application-controlled", "Off", "Enhance the application setting", "Override any application setting" } },
-                new FeatureSetting { Name = "Background Application Max Frame Rate", Value = "Off", Options = { "Off", "On" } },
-                new FeatureSetting { Name = "CUDA - GPUs", Value = "All", Options = { "All", "None" } },
-                new FeatureSetting { Name = "DSR - Factors", Value = "Off", Options = { "Off", "1.20x", "1.50x", "2.00x", "4.00x" } },
-                new FeatureSetting { Name = "Low Latency Mode", Value = "Off", Options = { "Off", "On", "Ultra" } },
-                new FeatureSetting { Name = "Max Frame Rate", Value = "Off", Options = { "Off", "On" } },
-                new FeatureSetting { Name = "Monitor Technology", Value = "G-SYNC Compatible", Options = { "Fixed Refresh", "G-SYNC Compatible" } },
-                new FeatureSetting { Name = "Multi-Frame Sampled AA (MFAA)", Value = "Off", Options = { "Off", "On" } },
-                new FeatureSetting { Name = "OpenGL rendering GPU", Value = "Auto-select", Options = { "Auto-select", this._gpuInformation?.GpuName ?? "NVIDIA GPU" } },
-                new FeatureSetting { Name = "Power management mode", Value = "Normal", Options = { "Normal", "Prefer maximum performance" } },
-                new FeatureSetting { Name = "Preferred refresh rate", Value = "Highest available", Options = { "Application-controlled", "Highest available" } },
-                new FeatureSetting { Name = "Shader Cache Size", Value = "Driver Default", Options = { "Driver Default", "Disabled", "Unlimited", "10 GB", "100 GB" } },
-                new FeatureSetting { Name = "Texture filtering - Anisotropic sample optimization", Value = "Off", Options = { "Off", "On" } },
-                new FeatureSetting { Name = "Texture filtering - Negative LOD bias", Value = "Allow", Options = { "Allow", "Clamp" } },
-                new FeatureSetting { Name = "Texture filtering - Quality", Value = "Quality", Options = { "High Quality", "Quality", "Performance", "High Performance" } },
-                new FeatureSetting { Name = "Texture filtering - Trilinear optimization", Value = "On", Options = { "Off", "On" } },
-                new FeatureSetting { Name = "Threaded optimization", Value = "Auto", Options = { "Auto", "Off", "On" } },
-                new FeatureSetting { Name = "Triple buffering", Value = "Off", Options = { "Off", "On" } },
-                new FeatureSetting { Name = "Vertical sync", Value = "Use the 3D application setting", Options = { "Use the 3D application setting", "Off", "On", "Adaptive", "Adaptive (half refresh rate)", "Fast" } },
-                new FeatureSetting { Name = "Virtual Reality pre-rendered frames", Value = "1", Options = { "1", "2", "3", "4" } },
+                new FeatureSetting { Name = "Image Sharpening", Value = "Off", DefaultValue = "Off", Options = { "Off", "On" } },
+                new FeatureSetting { Name = "Ambient Occlusion", Value = "Performance", DefaultValue = "Performance", Options = { "Off", "Performance", "Quality" } },
+                new FeatureSetting { Name = "Anisotropic filtering", Value = "Application-controlled", DefaultValue = "Application-controlled", Options = { "Application-controlled", "Off", "2x", "4x", "8x", "16x" } },
+                new FeatureSetting { Name = "Antialiasing - FXAA", Value = "Off", DefaultValue = "Off", Options = { "Off", "On" } },
+                new FeatureSetting { Name = "Antialiasing - Gamma correction", Value = "On", DefaultValue = "On", Options = { "Off", "On" } },
+                new FeatureSetting { Name = "Antialiasing - Mode", Value = "Application-controlled", DefaultValue = "Application-controlled", Options = { "Application-controlled", "Off", "Enhance the application setting", "Override any application setting" } },
+                new FeatureSetting { Name = "Background Application Max Frame Rate", Value = "Off", DefaultValue = "Off", Options = { "Off", "On" } },
+                new FeatureSetting { Name = "CUDA - GPUs", Value = "All", DefaultValue = "All", Options = { "All", "None" } },
+                new FeatureSetting { Name = "DSR - Factors", Value = "Off", DefaultValue = "Off", Options = { "Off", "1.20x", "1.50x", "2.00x", "4.00x" } },
+                new FeatureSetting { Name = "Low Latency Mode", Value = "Off", DefaultValue = "Off", Options = { "Off", "On", "Ultra" } },
+                new FeatureSetting { Name = "Max Frame Rate", Value = "Off", DefaultValue = "Off", Options = { "Off", "On" } },
+                new FeatureSetting { Name = "Monitor Technology", Value = "G-SYNC Compatible", DefaultValue = "G-SYNC Compatible", Options = { "Fixed Refresh", "G-SYNC Compatible" } },
+                new FeatureSetting { Name = "Multi-Frame Sampled AA (MFAA)", Value = "Off", DefaultValue = "Off", Options = { "Off", "On" } },
+                new FeatureSetting { Name = "OpenGL rendering GPU", Value = "Auto-select", DefaultValue = "Auto-select", Options = { "Auto-select", this._gpuInformation?.GpuName ?? "NVIDIA GPU" } },
+                new FeatureSetting { Name = "Power management mode", Value = "Normal", DefaultValue = "Normal", Options = { "Normal", "Prefer maximum performance" } },
+                new FeatureSetting { Name = "Preferred refresh rate", Value = "Highest available", DefaultValue = "Highest available", Options = { "Application-controlled", "Highest available" } },
+                new FeatureSetting { Name = "Shader Cache Size", Value = "Driver Default", DefaultValue = "Driver Default", Options = { "Driver Default", "Disabled", "Unlimited", "10 GB", "100 GB" } },
+                new FeatureSetting { Name = "Texture filtering - Anisotropic sample optimization", Value = "Off", DefaultValue = "Off", Options = { "Off", "On" } },
+                new FeatureSetting { Name = "Texture filtering - Negative LOD bias", Value = "Allow", DefaultValue = "Allow", Options = { "Allow", "Clamp" } },
+                new FeatureSetting { Name = "Texture filtering - Quality", Value = "Quality", DefaultValue = "Quality", Options = { "High Quality", "Quality", "Performance", "High Performance" } },
+                new FeatureSetting { Name = "Texture filtering - Trilinear optimization", Value = "On", DefaultValue = "On", Options = { "Off", "On" } },
+                new FeatureSetting { Name = "Threaded optimization", Value = "Auto", DefaultValue = "Auto", Options = { "Auto", "Off", "On" } },
+                new FeatureSetting { Name = "Triple buffering", Value = "Off", DefaultValue = "Off", Options = { "Off", "On" } },
+                new FeatureSetting { Name = "Vertical sync", Value = "Use the 3D application setting", DefaultValue = "Use the 3D application setting", Options = { "Use the 3D application setting", "Off", "On", "Adaptive", "Adaptive (half refresh rate)", "Fast" } },
+                new FeatureSetting { Name = "Virtual Reality pre-rendered frames", Value = "1", DefaultValue = "1", Options = { "1", "2", "3", "4" } },
             };
+            return defaults;
         }
 
         private void LoadSettings()
         {
+            // Start with defaults
+            var settings = this.GetDefaultSettings();
+
+            // Try load saved
             var loaded = this._settingsService.Load3DSettings();
             if (loaded != null && loaded.Count > 0)
             {
-                foreach (var setting in loaded)
+                foreach (var loadedSetting in loaded)
                 {
-                    this.Settings.Add(setting);
+                    // Find matching default setting
+                    var existing = System.Linq.Enumerable.FirstOrDefault(settings, s => s.Name == loadedSetting.Name);
+                    if (existing != null)
+                    {
+                        existing.Value = loadedSetting.Value;
+                    }
                 }
             }
-            else
+
+            this.Settings.Clear();
+            foreach (var setting in settings)
             {
-                this.ExecuteRestoreDefaults(null);
+                this.Settings.Add(setting);
             }
 
             // Load Programs
@@ -130,12 +142,15 @@ namespace NvidiaControlPanel.ViewModels
 
         private void ExecuteRestoreDefaults(object? obj)
         {
-            this.Settings.Clear();
-            var defaults = this.GetDefaultSettings();
-            foreach (var setting in defaults)
+            // Reset all to default values
+            foreach (var setting in this.Settings)
             {
-                this.Settings.Add(setting);
+                setting.Value = setting.DefaultValue;
             }
+
+            // Save immediately or let user Click Apply? Real NCP usually applies Restore immediately or updates UI.
+            // For now just update UI.
+            // Ideally we might want to refresh the view or force property changed if needed, but binding should handle it.
         }
     }
 }

@@ -8,6 +8,9 @@ namespace NvidiaControlPanel.Services
     /// </summary>
     public class SystemInfoService : ISystemInfoService
     {
+        /// <summary>
+        /// The simulation service.
+        /// </summary>
         private readonly ISimulationService _simulationService;
 
         /// <summary>
@@ -42,6 +45,10 @@ namespace NvidiaControlPanel.Services
                 DirectXSupport = config.DirectXSupport,
                 DeviceId = config.DeviceId,
                 VendorId = config.VendorId,
+                DeviceName = config.DeviceName,
+                Processor = config.Processor,
+                InstalledRam = config.InstalledRam,
+                SystemType = config.SystemType,
                 SelectedResolution = config.SelectedResolution,
                 SelectedRefreshRate = config.SelectedRefreshRate,
                 ImageSettingsMode = config.ImageSettingsMode,
@@ -66,6 +73,10 @@ namespace NvidiaControlPanel.Services
                 DirectXSupport = config.DirectXSupport,
                 DeviceId = config.DeviceId,
                 VendorId = config.VendorId,
+                DeviceName = config.DeviceName,
+                Processor = config.Processor,
+                InstalledRam = config.InstalledRam,
+                SystemType = config.SystemType,
                 SelectedResolution = config.SelectedResolution,
                 SelectedRefreshRate = config.SelectedRefreshRate,
                 ImageSettingsMode = config.ImageSettingsMode,

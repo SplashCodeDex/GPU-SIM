@@ -24,6 +24,7 @@ namespace NvidiaControlPanel.ViewModels
         private bool _isAutoStartEnabled;
         private NvidiaControlPanel.Models.GpuInformation? _gpuInformation;
         private System.Collections.ObjectModel.ObservableCollection<string> _currentPathSegments = new ();
+        private bool _isLogoVisible = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
@@ -178,6 +179,15 @@ namespace NvidiaControlPanel.ViewModels
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the overlay logo is visible.
+        /// </summary>
+        public bool IsLogoVisible
+        {
+            get => this._isLogoVisible;
+            set => this.SetProperty(ref this._isLogoVisible, value);
+        }
+
+        /// <summary>
         /// Gets the command to navigate to a specific view.
         /// </summary>
         public ICommand NavigateCommand { get; }
@@ -212,9 +222,10 @@ namespace NvidiaControlPanel.ViewModels
                 this.IsTrayIconVisible = info.IsTrayIconVisible;
                 this._trayIconService.SetVisibility(this.IsTrayIconVisible);
 
+                this._trayIconService.SetVisibility(this.IsTrayIconVisible);
+
                 // Default View
-                this.CurrentView = new HomeViewModel(info);
-                this.UpdatePathSegments();
+                this.NavigateToView("Home");
             }
             catch
             {
@@ -266,85 +277,90 @@ namespace NvidiaControlPanel.ViewModels
 
         private void NavigateToView(string viewName)
         {
+            // Toggle Logo Visibility: Check BEFORE setting CurrentView to ensure clean binding update if needed,
+            // though property change notification handles it.
+            // Hide logo only on Home view
+            this.IsLogoVisible = viewName != "Home";
+
             switch (viewName)
-                {
-                    case "Home":
-                        if (this._gpuInformation != null)
-                        {
-                            this.CurrentView = new HomeViewModel(this._gpuInformation);
-                        }
-                        else
-                        {
-                            this.CurrentView = new PlaceholderViewModel("Home");
-                        }
+            {
+                case "Home":
+                    if (this._gpuInformation != null)
+                    {
+                        this.CurrentView = new HomeViewModel(this._gpuInformation);
+                    }
+                    else
+                    {
+                        this.CurrentView = new PlaceholderViewModel("Home");
+                    }
 
-                        this.CurrentPath = "NVIDIA Control Panel";
-                        break;
-                    case "Manage3DSettings":
-                        if (this._gpuInformation != null)
-                        {
-                            this.CurrentView = new Manage3DSettingsViewModel(new JsonSettingsService(), this._gpuInformation);
-                        }
-                        else
-                        {
-                            // Output a default if not yet loaded
-                            this.CurrentView = new Manage3DSettingsViewModel();
-                        }
+                    this.CurrentPath = "NVIDIA Control Panel";
+                    break;
+                case "Manage3DSettings":
+                    if (this._gpuInformation != null)
+                    {
+                        this.CurrentView = new Manage3DSettingsViewModel(new JsonSettingsService(), this._gpuInformation);
+                    }
+                    else
+                    {
+                        // Output a default if not yet loaded
+                        this.CurrentView = new Manage3DSettingsViewModel();
+                    }
 
-                        this.CurrentPath = "3D Settings > Manage 3D settings";
-                        break;
-                    case "ChangeResolution":
-                        this.CurrentView = new DisplayResolutionViewModel(
-                            new MockDisplayService(),
-                            this._systemInfoService is SystemInfoService s ? new SimulationService() : new SimulationService(), // fallback
-                            new FlickerService(),
-                            new ConfirmationService());
-                        this.CurrentPath = "Display > Change resolution";
-                        break;
-                    case "AdjustImageSettings":
-                        this.CurrentView = new AdjustImageSettingsViewModel();
-                        this.CurrentPath = "3D Settings > Adjust image settings with preview";
-                        break;
-                    case "ConfigureSurroundPhysX":
-                        this.CurrentView = new PlaceholderViewModel("Configure Surround, PhysX");
-                        this.CurrentPath = "3D Settings > Configure Surround, PhysX";
-                        break;
-                    case "AdjustDesktopColor":
-                        this.CurrentView = new PlaceholderViewModel("Adjust desktop color settings");
-                        this.CurrentPath = "Display > Adjust desktop color settings";
-                        break;
-                    case "RotateDisplay":
-                        this.CurrentView = new PlaceholderViewModel("Rotate display");
-                        this.CurrentPath = "Display > Rotate display";
-                        break;
-                    case "ViewHDCPStatus":
-                        this.CurrentView = new PlaceholderViewModel("View HDCP status");
-                        this.CurrentPath = "Display > View HDCP status";
-                        break;
-                    case "SetupDigitalAudio":
-                        this.CurrentView = new PlaceholderViewModel("Set up digital audio");
-                        this.CurrentPath = "Display > Set up digital audio";
-                        break;
-                    case "AdjustDesktopSizePosition":
-                        this.CurrentView = new PlaceholderViewModel("Adjust desktop size and position");
-                        this.CurrentPath = "Display > Adjust desktop size and position";
-                        break;
-                    case "SetupMultipleDisplays":
-                        this.CurrentView = new PlaceholderViewModel("Set up multiple displays");
-                        this.CurrentPath = "Display > Set up multiple displays";
-                        break;
-                    case "AdjustVideoColor":
-                        this.CurrentView = new PlaceholderViewModel("Adjust video color settings");
-                        this.CurrentPath = "Video > Adjust video color settings";
-                        break;
-                    case "AdjustVideoImage":
-                        this.CurrentView = new PlaceholderViewModel("Adjust video image settings");
-                        this.CurrentPath = "Video > Adjust video image settings";
-                        break;
-                    default:
-                        // Placeholder for other pages
-                        break;
-                }
+                    this.CurrentPath = "3D Settings > Manage 3D settings";
+                    break;
+                case "ChangeResolution":
+                    this.CurrentView = new DisplayResolutionViewModel(
+                        new MockDisplayService(),
+                        this._systemInfoService is SystemInfoService s ? new SimulationService() : new SimulationService(), // fallback
+                        new FlickerService(),
+                        new ConfirmationService());
+                    this.CurrentPath = "Display > Change resolution";
+                    break;
+                case "AdjustImageSettings":
+                    this.CurrentView = new AdjustImageSettingsViewModel();
+                    this.CurrentPath = "3D Settings > Adjust image settings with preview";
+                    break;
+                case "ConfigureSurroundPhysX":
+                    this.CurrentView = new PlaceholderViewModel("Configure Surround, PhysX");
+                    this.CurrentPath = "3D Settings > Configure Surround, PhysX";
+                    break;
+                case "AdjustDesktopColor":
+                    this.CurrentView = new PlaceholderViewModel("Adjust desktop color settings");
+                    this.CurrentPath = "Display > Adjust desktop color settings";
+                    break;
+                case "RotateDisplay":
+                    this.CurrentView = new PlaceholderViewModel("Rotate display");
+                    this.CurrentPath = "Display > Rotate display";
+                    break;
+                case "ViewHDCPStatus":
+                    this.CurrentView = new PlaceholderViewModel("View HDCP status");
+                    this.CurrentPath = "Display > View HDCP status";
+                    break;
+                case "SetupDigitalAudio":
+                    this.CurrentView = new PlaceholderViewModel("Set up digital audio");
+                    this.CurrentPath = "Display > Set up digital audio";
+                    break;
+                case "AdjustDesktopSizePosition":
+                    this.CurrentView = new PlaceholderViewModel("Adjust desktop size and position");
+                    this.CurrentPath = "Display > Adjust desktop size and position";
+                    break;
+                case "SetupMultipleDisplays":
+                    this.CurrentView = new PlaceholderViewModel("Set up multiple displays");
+                    this.CurrentPath = "Display > Set up multiple displays";
+                    break;
+                case "AdjustVideoColor":
+                    this.CurrentView = new PlaceholderViewModel("Adjust video color settings");
+                    this.CurrentPath = "Video > Adjust video color settings";
+                    break;
+                case "AdjustVideoImage":
+                    this.CurrentView = new PlaceholderViewModel("Adjust video image settings");
+                    this.CurrentPath = "Video > Adjust video image settings";
+                    break;
+                default:
+                    // Placeholder for other pages
+                    break;
+            }
 
             this.UpdatePathSegments();
         }

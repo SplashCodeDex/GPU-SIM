@@ -1,0 +1,13 @@
+  Determining projects to restore...
+  Restored w:\CodeDeX\GPU-SIM\src\NvidiaControlPanel\NvidiaControlPanel.csproj (in 496 ms).
+w:\CodeDeX\GPU-SIM\src\NvidiaControlPanel\Models\FeatureSetting.cs(69,9): error SA1201: A event should not follow a property (https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1201.md) [w:\CodeDeX\GPU-SIM\src\NvidiaControlPanel\NvidiaControlPanel_xzuxtybt_wpftmp.csproj]
+w:\CodeDeX\GPU-SIM\src\NvidiaControlPanel\Models\FeatureSetting.cs(71,24): error SA1600: Elements should be documented (https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1600.md) [w:\CodeDeX\GPU-SIM\src\NvidiaControlPanel\NvidiaControlPanel_xzuxtybt_wpftmp.csproj]
+
+Build FAILED.
+
+w:\CodeDeX\GPU-SIM\src\NvidiaControlPanel\Models\FeatureSetting.cs(69,9): error SA1201: A event should not follow a property (https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1201.md) [w:\CodeDeX\GPU-SIM\src\NvidiaControlPanel\NvidiaControlPanel_xzuxtybt_wpftmp.csproj]
+w:\CodeDeX\GPU-SIM\src\NvidiaControlPanel\Models\FeatureSetting.cs(71,24): error SA1600: Elements should be documented (https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/documentation/SA1600.md) [w:\CodeDeX\GPU-SIM\src\NvidiaControlPanel\NvidiaControlPanel_xzuxtybt_wpftmp.csproj]
+    0 Warning(s)
+    2 Error(s)
+
+Time Elapsed 00:00:05.83

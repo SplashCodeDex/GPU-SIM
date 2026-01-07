@@ -8,15 +8,18 @@ Implement a navigation history system (Back and Forward) for the NVIDIA Control 
 - **Back Navigation**: 
     - Implement a "Back" command that navigates to the previous view in the history stack.
     - Enable the Back button in the toolbar only when there is history to go back to.
-    - Tooltip should display the name of the previous view (e.g., "Back to Manage 3D settings").
+    - Tooltip should display the name of the previous view.
 - **Forward Navigation**:
-    - Implement a "Forward" command that navigates to the next view in the history stack (available after using the Back button).
+    - Implement a "Forward" command that navigates to the next view in the history stack.
     - Enable the Forward button in the toolbar only when there is history to go forward to.
     - Tooltip should display the name of the next view.
-- **Navigation Interaction**:
-    - Navigating to a new page via the TreeView or File menu clears the "Forward" stack and adds the new page to the "Back" stack.
-    - Navigating via Back/Forward buttons does not clear the stacks but moves the current position pointer.
-- **Home View Exclusion**: The Home view is treated as the root/initial state and is not added to the navigation history stacks.
+
+## Modern UI/UX Requirements
+- **Smooth View Transitions**: Views must cross-fade or slide subtly when changed.
+- **NVIDIA Glow Effect**: Navigation buttons should exhibit a soft green glow (`#76B900`) when enabled and hovered.
+- **Interactive Breadcrumbs**: The navigation path should use a more dynamic, segments-based layout rather than a single string.
+- **Micro-Interactions**: Subtle scale or opacity shifts on button press/hover to provide tactile feedback.
+- **Premium Background**: Apply a subtle noise texture to the main content background to add a premium, tactile feel.
 
 ## Non-Functional Requirements
 - **MVVM Adherence**: History logic should reside in the `MainViewModel` or a dedicated `NavigationService`.

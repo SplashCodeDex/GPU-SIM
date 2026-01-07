@@ -49,44 +49,69 @@
 
         <!-- Settings List -->
         <!-- Style is now implicit from App.xaml -->
-        <DataGrid Grid.Row="2"
-                  ItemsSource="{Binding Settings}"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False"
-                  HeadersVisibility="Column"
-                  GridLinesVisibility="Horizontal"
-                  BorderThickness="1"
-                  BorderBrush="{StaticResource BorderBrush}"
-                  Margin="10,0,10,10">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Feature" Binding="{Binding Name}" Width="2*" IsReadOnly="True">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="FontWeight" Value="SemiBold"/>
-                            <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
-                            <Setter Property="Padding" Value="5,0"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-
-                <DataGridTemplateColumn Header="Setting" Width="1.5*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Value}" VerticalAlignment="Center" Padding="5,0" Foreground="{StaticResource SecondaryTextBrush}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate>
-                            <ComboBox ItemsSource="{Binding Options}"
-                                      SelectedItem="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEditable="False"
-                                      BorderThickness="0"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+        <!-- Settings List -->
+        <Border Grid.Row="2" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Margin="10,0,10,10" Background="White">
+            <ListView ItemsSource="{Binding Settings}"
+                      HorizontalContentAlignment="Stretch"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      BorderThickness="0">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                        <Setter Property="BorderBrush" Value="#E5E5E5"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#E5F3FF"/> <!-- Light Blue/Green selection tint -->
+                                <Setter Property="BorderBrush" Value="{StaticResource NvidiaGreenBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F7F7F7"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Feature" Width="380">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" Padding="5" VerticalAlignment="Center" Foreground="{StaticResource PrimaryTextBrush}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsModified}" Value="True">
+                                                        <Setter Property="FontWeight" Value="Bold"/>
+                                                        <Setter Property="Foreground" Value="Black"/> <!-- Darker when modified -->
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsModified}" Value="False">
+                                                        <Setter Property="FontWeight" Value="Normal"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Setting" Width="280">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding Options}"
+                                              SelectedItem="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                              Style="{StaticResource {x:Type ComboBox}}"
+                                              Margin="2"
+                                              HorizontalAlignment="Stretch">
+                                        <!-- Custom ComboBox Item Styling if needed -->
+                                    </ComboBox>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Border>
 
         <!-- Bottom Description Area -->
         <Border Grid.Row="3" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Margin="10,0,10,10" Height="80" CornerRadius="4" Background="{StaticResource BackgroundAltBrush}">

@@ -46,6 +46,26 @@ namespace NvidiaControlPanel.Services
         public string VendorId { get; set; } = "10DE";
 
         /// <summary>
+        /// Gets or sets the Device Name (e.g., Laptop model).
+        /// </summary>
+        public string DeviceName { get; set; } = "Dell Latitude 14 7000 Series";
+
+        /// <summary>
+        /// Gets or sets the Processor name.
+        /// </summary>
+        public string Processor { get; set; } = "Intel(R) Core(TM) i7-10850G (8 CPUs) ~ @ 4.10GHz (1.80 GHz)";
+
+        /// <summary>
+        /// Gets or sets the Installed RAM.
+        /// </summary>
+        public string InstalledRam { get; set; } = "16.0 GB (15.9 GB usable)";
+
+        /// <summary>
+        /// Gets or sets the System Type.
+        /// </summary>
+        public string SystemType { get; set; } = "64-bit operating system, x64-based processor";
+
+        /// <summary>
         /// Gets or sets the selected resolution.
         /// </summary>
         public string SelectedResolution { get; set; } = "1920 x 1080";

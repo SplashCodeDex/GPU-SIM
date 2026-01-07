@@ -15,52 +15,117 @@
                        Foreground="{StaticResource PrimaryTextBrush}"
                        Margin="0,0,0,20"/>
 
-            <Border Background="White" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="4" Padding="20">
-                <StackPanel>
-                    <TextBlock Text="Graphics Card Information"
-                               FontSize="18"
-                               FontWeight="SemiBold"
-                               Foreground="{StaticResource NvidiaGreenBrush}"
-                               Margin="0,0,0,15"/>
+            <!-- Graphics Card Information -->
+            <Border Background="White" BorderBrush="#D3D3D3" BorderThickness="1" CornerRadius="0" Padding="20" Margin="0,0,0,20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Graphics Card Information"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource NvidiaGreenBrush}"
+                                   Margin="0,0,0,15"/>
 
-                        <TextBlock Text="GPU:" Grid.Row="0" Grid.Column="0" Margin="0,5" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding GpuName}" Grid.Row="0" Grid.Column="1" Margin="0,5"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                        <TextBlock Text="Driver Version:" Grid.Row="1" Grid.Column="0" Margin="0,5" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding DriverVersion}" Grid.Row="1" Grid.Column="1" Margin="0,5"/>
+                            <TextBlock Text="GPU:" Grid.Row="0" Grid.Column="0" Margin="0,3" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding GpuName}" Grid.Row="0" Grid.Column="1" Margin="0,3"/>
 
-                        <TextBlock Text="Dedicated Video Memory:" Grid.Row="2" Grid.Column="0" Margin="0,5" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding VideoMemory}" Grid.Row="2" Grid.Column="1" Margin="0,5"/>
+                            <TextBlock Text="Driver Version:" Grid.Row="1" Grid.Column="0" Margin="0,3" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding DriverVersion}" Grid.Row="1" Grid.Column="1" Margin="0,3"/>
 
-                        <TextBlock Text="Bus Support:" Grid.Row="3" Grid.Column="0" Margin="0,5" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding BusSupport}" Grid.Row="3" Grid.Column="1" Margin="0,5"/>
+                            <TextBlock Text="Dedicated Video Memory:" Grid.Row="2" Grid.Column="0" Margin="0,3" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding VideoMemory}" Grid.Row="2" Grid.Column="1" Margin="0,3"/>
 
-                        <TextBlock Text="BIOS Version:" Grid.Row="4" Grid.Column="0" Margin="0,5" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding BiosVersion}" Grid.Row="4" Grid.Column="1" Margin="0,5"/>
+                            <TextBlock Text="Bus Support:" Grid.Row="3" Grid.Column="0" Margin="0,3" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding BusSupport}" Grid.Row="3" Grid.Column="1" Margin="0,3"/>
 
-                        <TextBlock Text="DirectX Support:" Grid.Row="5" Grid.Column="0" Margin="0,5" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding DirectXSupport}" Grid.Row="5" Grid.Column="1" Margin="0,5"/>
-                    </Grid>
-                </StackPanel>
+                            <TextBlock Text="BIOS Version:" Grid.Row="4" Grid.Column="0" Margin="0,3" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding BiosVersion}" Grid.Row="4" Grid.Column="1" Margin="0,3"/>
+
+                            <TextBlock Text="DirectX Support:" Grid.Row="5" Grid.Column="0" Margin="0,3" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding DirectXSupport}" Grid.Row="5" Grid.Column="1" Margin="0,3"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <Image Grid.Column="1"
+                           Source="pack://application:,,,/Assets/Images/image_GTX-1650.png"
+                           Width="200"
+                           VerticalAlignment="Top"
+                           Margin="20,0,0,0"/>
+                </Grid>
             </Border>
 
-            <TextBlock Text="Use the tree on the left to navigate through the various settings."
-                       Margin="0,20,0,0"
-                       Foreground="{StaticResource SecondaryTextBrush}"/>
+            <!-- Device Specification -->
+            <Border Background="White" BorderBrush="#D3D3D3" BorderThickness="1" CornerRadius="0" Padding="20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Device Specification"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource NvidiaGreenBrush}"
+                                   Margin="0,0,0,15"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Device name:" Grid.Row="0" Grid.Column="0" Margin="0,3" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding DeviceName}" Grid.Row="0" Grid.Column="1" Margin="0,3"/>
+
+                            <TextBlock Text="Processor:" Grid.Row="1" Grid.Column="0" Margin="0,3" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding Processor}" Grid.Row="1" Grid.Column="1" Margin="0,3"/>
+
+                            <TextBlock Text="Installed RAM:" Grid.Row="2" Grid.Column="0" Margin="0,3" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding InstalledRam}" Grid.Row="2" Grid.Column="1" Margin="0,3"/>
+
+                            <TextBlock Text="Device ID:" Grid.Row="3" Grid.Column="0" Margin="0,3" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding DeviceId}" Grid.Row="3" Grid.Column="1" Margin="0,3"/>
+
+                            <TextBlock Text="System type:" Grid.Row="4" Grid.Column="0" Margin="0,3" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding SystemType}" Grid.Row="4" Grid.Column="1" Margin="0,3"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <Image Grid.Column="1"
+                           Source="pack://application:,,,/Assets/Images/laptop-icon-png-image.png"
+                           Width="200"
+                           VerticalAlignment="Top"
+                           Margin="20,0,0,0"/>
+                </Grid>
+            </Border>
+
+
         </StackPanel>
     </Grid>
 </UserControl>

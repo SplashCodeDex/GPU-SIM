@@ -52,10 +52,10 @@ namespace NvidiaControlPanel.Services
         /// <inheritdoc/>
         public bool IsContextMenuEnabled()
         {
-             using (RegistryKey? key = Registry.CurrentUser.OpenSubKey(ContextMenuPath))
-             {
-                 return key != null;
-             }
+            using (RegistryKey? key = Registry.CurrentUser.OpenSubKey(ContextMenuPath))
+            {
+                return key != null;
+            }
         }
     }
 }
