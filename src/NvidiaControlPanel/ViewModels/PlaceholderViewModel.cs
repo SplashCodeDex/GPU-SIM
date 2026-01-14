@@ -21,7 +21,7 @@ namespace NvidiaControlPanel.ViewModels
         public PlaceholderViewModel(string title)
         {
             this._title = title;
-            this._message = "This feature is coming soon.";
+            this._message = "Update Drivers";
         }
 
         /// <summary>

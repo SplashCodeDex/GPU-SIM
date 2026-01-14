@@ -25,11 +25,11 @@
     <RootNamespace>NvidiaControlPanel</RootNamespace>
 
     <!-- Optimization: Reduce Release Size -->
-    <PublishTrimmed>true</PublishTrimmed>
+    <!-- <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
     <_SuppressWinFormsTrimError>true</_SuppressWinFormsTrimError>
     <_SuppressWpfTrimError>true</_SuppressWpfTrimError>
-    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile> -->
     <DebugType>none</DebugType>
   </PropertyGroup>
 
