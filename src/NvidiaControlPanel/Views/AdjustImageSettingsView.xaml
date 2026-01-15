@@ -81,19 +81,19 @@
             </StackPanel>
 
             <!-- Preview Side (The "WOW" part) -->
-            <Border Grid.Column="1" Background="Black" CornerRadius="4" ClipToBounds="True">
+            <Border Grid.Column="1" Background="White" CornerRadius="4" ClipToBounds="True">
                 <Grid x:Name="PreviewContainer">
                     <!-- Background Grid/Floor -->
-                    <Canvas Background="#111111" IsHitTestVisible="False">
-                         <Ellipse Width="400" Height="200" Fill="#222222" Canvas.Left="-25" Canvas.Top="250">
+                    <Canvas Background="Transparent" IsHitTestVisible="False">
+                         <!-- <Ellipse Width="400" Height="200" Fill="#222222" Canvas.Left="-25" Canvas.Top="250">
                             <Ellipse.Effect>
                                 <BlurEffect Radius="50"/>
                             </Ellipse.Effect>
-                         </Ellipse>
+                         </Ellipse> -->
                     </Canvas>
 
                     <!-- Hidden container for real 3D rendering (at full size or scaled) -->
-                    <Grid x:Name="Real3DHost" Opacity="0">
+                    <Grid x:Name="Real3DHost" Opacity="1">
                         <Viewport3D>
                              <Viewport3D.Camera>
                                 <PerspectiveCamera Position="0,0,5" LookDirection="0,0,-1" UpDirection="0,1,0" FieldOfView="45" />
@@ -123,6 +123,7 @@
                                                             </VisualBrush.Visual>
                                                         </VisualBrush>
                                                     </DiffuseMaterial.Brush>
+
                                                 </DiffuseMaterial>
                                             </GeometryModel3D.Material>
 
@@ -141,14 +142,14 @@
                     </Grid>
 
                     <!-- Pixelated Display (Uses VisualBrush of Real3DHost) -->
-                    <Border RenderOptions.BitmapScalingMode="NearestNeighbor">
+                    <!-- <Border RenderOptions.BitmapScalingMode="NearestNeighbor">
                         <Border.Background>
                             <VisualBrush Visual="{Binding ElementName=Real3DHost}"/>
                         </Border.Background>
                         <Border.LayoutTransform>
                             <ScaleTransform ScaleX="{Binding PixelationScale}" ScaleY="{Binding PixelationScale}"/>
                         </Border.LayoutTransform>
-                    </Border>
+                    </Border> -->
 
                     <!-- Text Overlay -->
                     <TextBlock Text="PREVIEW" Foreground="#3376b900" FontSize="40" FontWeight="Black"
